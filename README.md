@@ -1,3 +1,5 @@
+## 转自 https://www.jianshu.com/p/adc33ac846f9?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation
+
 ## vue-cli3项目搭建配置以及性能优化
 
 在之前的开发中主要用的是vue-cli2，最近空闲时间比较多，接下来有新项目，本着偷懒的本能，自己打算搭建一个基础包以备后期开发应用，并对其进行性能优化和配置。
