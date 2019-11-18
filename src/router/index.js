@@ -9,6 +9,16 @@ export const router = new Router({
             path: '/',
             name: 'index',
             component:  () => import('../views/index')
+        },
+        {
+            path:'/login',
+            name:'login',
+            component: ()=>import('../views/login/login')
+        },
+        {
+            path:'/register',
+            name:'register',
+            component: ()=>import('../views/register/register')
         }
     ]
 })
