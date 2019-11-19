@@ -74,7 +74,7 @@ module.exports = {
       'vuex': 'Vuex',
       'vue-router': 'VueRouter',
       'mint-ui': 'MINT',  // 需用MINT
-      'element-ui':'ELEMENT',
+      // 'element-ui':'ELEMENT',
       'axios': 'axios'
     })
   },
@@ -87,6 +87,7 @@ module.exports = {
         // @/ is an alias to src/
         // so this assumes you have a file named `src/variables.scss`
         data: `
+               @import "@/assets/css/reselem.scss";
                @import "@/assets/css/variable.scss"; 
                @import "@/assets/css/common.scss";
                @import "@/assets/css/mixin.scss";

@@ -1,8 +1,18 @@
 <template>
   <div id="app">
-      <router-view ></router-view>
+      <Nav></Nav>
+      <router-view></router-view>
   </div>
 </template>
+<script>
+import Nav from '@/views/index/nav'
+export default {
+  name: 'App',
+  components: {
+    Nav
+  },
+}
+</script>
 <style lang="scss">
   @import "assets/css/reset";
   body{

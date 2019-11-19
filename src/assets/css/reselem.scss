@@ -1,0 +1,14 @@
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: #8DAFFC;
+}
+.el-menu-item.is-active {
+    border-color: #8DAFFC;
+    color: #8DAFFC;
+}
+.el-menu--horizontal {
+    border: none;
+}
+.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+    background-color: #f4f7ff;
+    color: #8DAFFC;
+}
