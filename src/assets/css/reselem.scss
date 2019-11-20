@@ -12,3 +12,37 @@
     background-color: #f4f7ff;
     color: #8DAFFC;
 }
+.icon-sex {
+    margin-left: 10px; 
+}
+.el-icon-female {
+    color: #F696D5;
+}
+.el-icon-male {
+    color: #A2B9EE;
+}
+.el-input.is-active .el-input__inner, .el-input__inner:focus {
+    border-color: #8DAFFC;
+}
+.el-button--primary {
+    background-color: #8DAFFC;
+    border-color: #8DAFFC;
+}
+.el-button--primary:focus, .el-button--primary:hover {
+    background-color: #A2B9EE;
+    border-color: #A2B9EE;
+}
+.el-button:focus, .el-button:hover {
+    color: #8DAFFC;
+    border-color: #8DAFFC;
+    background-color: #f4f7ff;
+}
+.el-tabs--border-card>.el-tabs__header {
+    background-color: #f4f7ff;
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover {
+    color: #8DAFFC;
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+    color: #8DAFFC;
+}

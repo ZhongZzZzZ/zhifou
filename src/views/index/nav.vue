@@ -1,13 +1,11 @@
 <template>
     <div class="nav">
         <div class="com">
-            <div class="nav_logo"><img src="../../assets/logo.png" class="nav_logo_pic"></div>
+            <div class="nav_logo"><img src="../../assets/logo2.jpg" class="nav_logo_pic"></div>
             <div class="nav_menu"> 
-                <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
+                <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item index="/" class="nav_index" >首页</el-menu-item>
                     <el-menu-item index="/about" class="nav_index">兴趣</el-menu-item>
-                    <!-- <el-menu-item index="/register" class="nav_register" >注册</el-menu-item>
-                    <el-menu-item index="/login" class="nav_login" >登录</el-menu-item> -->
                 </el-menu>
             </div>
             <div class="nav_user">
@@ -16,15 +14,19 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item><router-link to="/login">登录</router-link></el-dropdown-item>
                         <el-dropdown-item><router-link to="/register">注册</router-link></el-dropdown-item>
+                        <el-dropdown-item><router-link to="/userinfo">个人主页</router-link></el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-dropdown v-else>
                     <img class="user_avatar" src="../../assets/avatar.jpg">
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item><a class="user_link">个人主页</a></el-dropdown-item>
+                        <el-dropdown-item><router-link to="/userinfo">个人主页</router-link></el-dropdown-item>
                         <el-dropdown-item><a class="user_link" @click="exit">退出</a></el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+            </div>
+            <div class="nav_message">
+                <i class="el-icon-chat-dot-round"></i>
             </div>
         </div>
     </div>
@@ -43,10 +45,6 @@
 
         },
         methods:{
-            handleSelect(key, keyPath) {
-                // eslint-disable-next-line no-console
-                console.log(key, keyPath);
-            }
         }
     }
 </script>
@@ -67,7 +65,6 @@
         align-items: center;
         .nav_logo{
             float: left;
-            width: 60px;
             margin: 5px 0px;
         }
         .nav_logo_pic{
@@ -77,9 +74,15 @@
             margin: 0px 10px;
             display: inline-block;
         }
+        .nav_message {
+            float: right;
+            margin: 11px 20px;
+            font-size: 35px;
+            color: #8DAFFC;
+        }
         .nav_user{
             float: right;
-            margin: 9px 0px;
+            margin: 11px 0px;
         }
         .nav_login{
             float: right;
@@ -90,8 +93,8 @@
             margin-right: 150px;
         }
         .user_avatar{
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border: 1px solid #99999940;
             border-radius: 50%;
         }

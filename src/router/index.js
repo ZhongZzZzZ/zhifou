@@ -19,6 +19,11 @@ export const router = new Router({
             path:'/register',
             name:'register',
             component: ()=>import('../views/register/register')
+        },
+        {
+            path:'/userinfo',
+            name:'userinfo',
+            component: ()=>import('../views/userinfo/userinfo')
         }
     ]
 })
