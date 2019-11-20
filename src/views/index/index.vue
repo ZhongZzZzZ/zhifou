@@ -1,23 +1,24 @@
 <template>
     <div class="main">
-       
+
     </div>
 </template>
 
 <script>
     export default {
         name: "index",
-        
+
         created(){
 
         },
-        
-        
+
+
     }
 </script>
 
 <style lang="scss" scoped>
     .main{
+        position: relative;
         width: 940px;
         height: 1000px;
         margin: 10px auto;
