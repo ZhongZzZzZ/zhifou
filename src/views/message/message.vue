@@ -1,12 +1,12 @@
 <template>
     <div class="main">
-       
+       message
     </div>
 </template>
 
 <script>
     export default {
-        name: "index",
+        name: "message",
         
         created(){
 
