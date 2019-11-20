@@ -24,6 +24,21 @@ export const router = new Router({
             path:'/userinfo',
             name:'userinfo',
             component: ()=>import('../views/userinfo/userinfo')
-        }
+        },
+        {
+            path:'/editinfo',
+            name:'editinfo',
+            component: ()=>import('../views/userinfo/editinfo')
+        },
+        {
+            path:'/editpsw',
+            name:'editpsw',
+            component: ()=>import('../views/userinfo/editpsw')
+        },
+        {
+            path:'/message',
+            name:'message',
+            component: ()=>import('../views/message/message')
+        },
     ]
 })

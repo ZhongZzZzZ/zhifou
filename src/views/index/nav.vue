@@ -26,7 +26,7 @@
                 </el-dropdown>
             </div>
             <div class="nav_message">
-                <i class="el-icon-chat-dot-round"></i>
+                <router-link to="/message"><i class="el-icon-chat-dot-round"></i></router-link>
             </div>
         </div>
     </div>

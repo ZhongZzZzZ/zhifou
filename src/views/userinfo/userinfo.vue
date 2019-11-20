@@ -1,50 +1,23 @@
 <template>
     <div class="main">
-        <div class="info_show"  v-if="!editshow">
+        <div class="info_show">
             <div class="pic_box"><img class="pic" src="../../assets/avatar.jpg"></div>
             <div class="info">
                 <div class="info_title">
                     <span>LinhZ</span>
                     <i v-if="sex == 1" class="icon-sex el-icon-female"></i>
                     <i v-else class="icon-sex el-icon-male"></i>
+                    <el-badge value="hot" class="item">
+                        <el-tag>1000</el-tag>
+                    </el-badge>
                 </div>
                 <div class="info_detail">
                     <div>工号：<span>S0000</span></div>
                     <div>电话：<span>158</span></div>
                     <div>邮箱：<span>qq.com</span></div>
-                    <el-button class="edit_btn" icon="el-icon-edit" @click="editshow=true" plain>编辑个人信息</el-button>
+                    <el-button class="edit_btn" icon="el-icon-edit" @click="jump" plain>编辑个人信息</el-button>
                 </div>
             </div>
-        </div>
-       
-        <div class="info_edit" v-else>
-            <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-            <el-form  class="userinfo-form" ref="form" :model="form" label-width="50px">
-                <el-form-item label="昵称">
-                    <el-input v-model="form.username"></el-input>
-                </el-form-item>
-                <el-form-item label="性别">
-                    <el-input v-model="form.sex"></el-input>
-                    </el-form-item>
-                <el-form-item label="电话">
-                    <el-input v-model="form.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input v-model="form.email"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">确定</el-button>
-                    <el-button @click="editshow=false">取消</el-button>
-                </el-form-item>
-            </el-form>
         </div>
 
         <div class="article_list"> 
@@ -65,42 +38,14 @@
         name: "userinfo",
         data(){
             return {
-                 sex: 1,
-                 editshow: false,
-                 form: {
-                    id: 'S0000',
-                    username: 'LinhZ',
-                    phone: '158',
-                    email: 'qq.com',
-                    sex: '女',
-                    picture: {
-                        id: 1,
-                        resourcePath: '../../assets/avatar.jpg'
-                    },
-                },
-                imageUrl: '',
+                sex: 1,
                 activeName: 'first',
             }
         },
         methods: {
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
-                var resourcePath = '/picture/' + file.name;
-                this.form.picture.id = -1;
-                this.form.picture.resourcePath = resourcePath;
-            },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            },
+            jump() {
+                this.$router.push('/editinfo')
+            }
         },
         created(){
 
@@ -136,6 +81,26 @@
         .info_title {
             font-size: 26px;
             font-weight: 600;
+            .icon-sex {
+                margin: 0px 5px 0px 10px; 
+            }
+            .el-tag {
+                background-color: #f4f7ff;
+                padding: 0 5px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 6px;
+                color: #8DAFFC;
+                border: 1px solid #8DAFFC;
+            }
+            .el-badge__content {
+                background-color: #8DAFFC;
+                font-size: 6px;
+                height: 12px;
+                line-height: 12px;
+                padding: 0 5px;
+                top: 7px;
+            }
         }
         .info_detail {
             position: relative;
@@ -148,39 +113,8 @@
                 position: absolute;
                 right: 0px;
                 bottom: 0px;
-                color: #8DAFFC;
-                border-color: #8DAFFC;
-            }
-            .edit_btn:hover {
-                background-color: #f4f7ff;
             }
         }
-    }
-    .avatar-uploader{
-        margin-bottom: 10px;
-        .el-upload {
-            border: 1px dashed #8c939d;
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        .el-upload:hover {
-            border-color: #8DAFFC;
-        }
-    }
-    .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
-    }
-    .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
     }
     .article_list {
         margin-top: 30px;
