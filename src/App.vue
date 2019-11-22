@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import Nav from '@/views/index/nav'
+import Nav from './components/navBar/nav'
 export default {
   name: 'App',
   components: {

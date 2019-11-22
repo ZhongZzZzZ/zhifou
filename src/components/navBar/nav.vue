@@ -3,9 +3,9 @@
         <div class="com">
             <div class="nav_logo"><img src="../../assets/logo2.jpg" class="nav_logo_pic"></div>
             <div class="nav_menu">
-                <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
-                    <el-menu-item index="/" class="nav_index" >首页</el-menu-item>
-                    <el-menu-item index="/about" class="nav_index">兴趣</el-menu-item>
+                <el-menu default-active="/" class="el-menu-demo" mode="horizontal" router>
+                    <el-menu-item index="/" class="nav_index" @click="addBorder" >首页</el-menu-item>
+                    <el-menu-item index="/interest" class="nav_index" @click="addBorder" :class="{actived:!isActived}">兴趣</el-menu-item>
                 </el-menu>
             </div>
             <div class="nav_user">
@@ -39,12 +39,16 @@
             return{
                 activeIndex: '/',
                 userData: null,
+                isActived:true
             }
         },
         created(){
 
         },
         methods:{
+            // addBorder(){
+            //     this.isActived = !this.isActived
+            // }
         }
     }
 </script>
@@ -97,6 +101,9 @@
             height: 35px;
             border: 1px solid #99999940;
             border-radius: 50%;
+        }
+        .actived{
+            border-bottom: 2px solid #000;
         }
     }
 </style>
