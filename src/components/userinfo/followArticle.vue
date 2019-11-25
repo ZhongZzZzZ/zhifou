@@ -20,21 +20,21 @@
 
 <script>
     export default {
-        name: "myarticle",
+        name: "followarticle",
         data(){
             return {
                 articles: [
-                    { id: 1, title: 'Vue.js新手入门指南', 
+                    { id: 1, title: '我关注的一篇', 
                     content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
                     create_time: '2019年11月21日 15:31:32',
                     img_url: 'https://pic1.zhimg.com/50/v2-3b25801a03a296c8c663e82eee8f9544_hd.jpg',
                     comment_num: 1000},
-                    { id: 2, title: 'Vue.js新手入门指南', 
+                    { id: 2, title: '我关注的一篇', 
                     content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
                     create_time: '2019年11月21日 15:31:32',
                     img_url: 'https://pic1.zhimg.com/50/v2-3b25801a03a296c8c663e82eee8f9544_hd.jpg',
                     comment_num: 1000},
-                    { id: 3, title: 'Vue.js新手入门指南', 
+                    { id: 3, title: '我关注的一篇', 
                     content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。' + 
                     '在做的过程中也对Vue.js的官方文档以及其各种特性有了许多认识。作为一个之前以PHP+模版引擎为主的开发，从一个从未接触过除HTML+CSS+JavaScript+JQuery以外的前端技术的人到现在可以独立使用Vue.js以及各种附属的UI库来开发项目，我总结了一些知识和经验想与大家分享。',
                     create_time: '2019年11月21日 15:31:32',
@@ -49,7 +49,7 @@
                 this.articles.splice(this.articles.indexOf(item), 1);
             },
             detail() {
-                this.$router.push('/artdetail')
+
             }
         },
         created(){
@@ -59,7 +59,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .article_box {
         height: 185px;
         padding: 20px 20px;

@@ -59,14 +59,11 @@ export const router = new Router({
             component: ()=>import('../views/message/message')
         },
         {
-            path:'/artdetail',
-            name:'artdetail',
-            component: ()=>import('../views/artdetail/artdetail')
-        },
             path:'/editBlog',
             name:'editBlog',
             component: () => import('../views/editBlog/editBlog')
-        },{
+        },
+        {
             path:'/articleDetail',
             name:'articleDetail',
             component:() => import('../views/articleDetail/articleDetail')

@@ -24,7 +24,7 @@
                 <el-tab-pane label="已发帖子" name="myarticle">
                     <myarticle></myarticle>
                 </el-tab-pane>
-                <el-tab-pane label="关注帖子" name="followarticle">
+                <el-tab-pane label="收藏帖子" name="followarticle">
                     <followarticle></followarticle>
                 </el-tab-pane>
             </el-tabs>
@@ -33,8 +33,8 @@
 </template>
 
 <script>
-    import myarticle from '../userinfo/myArticle'
-    import followarticle from '../userinfo/followArticle'
+    import myarticle from '@/components/userinfo/myArticle'
+    import followarticle from '@/components/userinfo/followArticle'
     export default {
         name: "userinfo",
         data(){
