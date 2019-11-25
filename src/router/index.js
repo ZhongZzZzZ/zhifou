@@ -8,12 +8,30 @@ export const router = new Router({
         {
             path: '/',
             name: 'index',
-            component:  () => import('../views/index')
+            redirect:'/hotPoint',
+            component:  () => import('../views/index'),
+            children:[
+                {
+                    path:'follow',
+                    name:'follow',
+                    component:()=> import('../views/follow/follow')
+                },
+                {
+                    path:'hotPoint',
+                    name:'hotPoint',
+                    component:()=> import('../views/hotPoint/hotPoint')
+                }
+            ]
         },
         {
             path:'/login',
             name:'login',
             component: ()=>import('../views/login/login')
+        },
+        {
+            path:'/interest',
+            name:'interest',
+            component: ()=>import('../views/interest/interest')
         },
         {
             path:'/register',
@@ -45,5 +63,13 @@ export const router = new Router({
             name:'artdetail',
             component: ()=>import('../views/artdetail/artdetail')
         },
+            path:'/editBlog',
+            name:'editBlog',
+            component: () => import('../views/editBlog/editBlog')
+        },{
+            path:'/articleDetail',
+            name:'articleDetail',
+            component:() => import('../views/articleDetail/articleDetail')
+        }
     ]
 })

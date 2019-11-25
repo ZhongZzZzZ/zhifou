@@ -12,14 +12,14 @@
                     </el-badge>
                 </div>
                 <div class="info_detail">
-                    <div>工号：<span>S0000</span></div>
-                    <div>电话：<span>158</span></div>
-                    <div>邮箱：<span>qq.com</span></div>
-                    <el-button class="edit_btn" icon="el-icon-edit" @click="jump" plain>编辑个人信息</el-button>
+                    <div>工号：S0000</div>
+                    <div>电话：158</div>
+                    <div>邮箱：qq.com</div>
+                    <el-button class="edit_btn" icon="el-icon-edit" @click="goEditInfo" plain>编辑个人信息</el-button>
                 </div>
             </div>
         </div>
-        <div class="article_list"> 
+        <div class="article_list">
             <el-tabs type="border-card" v-model="activeName">
                 <el-tab-pane label="已发帖子" name="myarticle">
                     <myarticle></myarticle>
@@ -48,14 +48,14 @@
             'followarticle' : followarticle
         },
         methods: {
-            jump() {
+            goEditInfo() {
                 this.$router.push('/editinfo')
             },
         },
         created(){
 
         },
-        
+
     }
 </script>
 
@@ -87,7 +87,7 @@
             font-size: 26px;
             font-weight: 600;
             .icon-sex {
-                margin: 0px 5px 0px 10px; 
+                margin: 0px 5px 0px 10px;
             }
             .el-tag {
                 background-color: #f4f7ff;
@@ -112,7 +112,7 @@
             font-size: 14px;
             color: #909399;
             div {
-                margin-top:10px; 
+                margin-top:10px;
             }
             .edit_btn {
                 position: absolute;
