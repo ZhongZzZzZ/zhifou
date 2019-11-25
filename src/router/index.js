@@ -23,7 +23,7 @@ export const router = new Router({
         {
             path:'/userinfo',
             name:'userinfo',
-            component: ()=>import('../views/userinfo/userinfo')
+            component: ()=>import('../views/userinfo/userinfo'),
         },
         {
             path:'/editinfo',
@@ -39,6 +39,11 @@ export const router = new Router({
             path:'/message',
             name:'message',
             component: ()=>import('../views/message/message')
+        },
+        {
+            path:'/artdetail',
+            name:'artdetail',
+            component: ()=>import('../views/artdetail/artdetail')
         },
     ]
 })
