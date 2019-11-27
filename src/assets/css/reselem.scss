@@ -73,3 +73,15 @@
     height: 25px;
     line-height: 25px;
 }
+.el-textarea__inner:focus {
+    border-color: #8DAFFC;
+}
+.el-pagination button:hover {
+    color: #8DAFFC;
+}
+.el-pager li.active {
+    color: #8DAFFC;
+}
+.el-pager li:hover {
+    color: #8DAFFC;
+}
