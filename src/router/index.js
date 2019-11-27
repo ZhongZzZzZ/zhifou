@@ -41,7 +41,7 @@ export const router = new Router({
         {
             path:'/userinfo',
             name:'userinfo',
-            component: ()=>import('../views/userinfo/userinfo')
+            component: ()=>import('../views/userinfo/userinfo'),
         },
         {
             path:'/editinfo',
@@ -62,7 +62,8 @@ export const router = new Router({
             path:'/editBlog',
             name:'editBlog',
             component: () => import('../views/editBlog/editBlog')
-        },{
+        },
+        {
             path:'/articleDetail',
             name:'articleDetail',
             component:() => import('../views/articleDetail/articleDetail')

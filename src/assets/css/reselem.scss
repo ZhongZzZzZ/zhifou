@@ -30,9 +30,9 @@
     border-color: #A2B9EE;
 }
 .el-button:focus, .el-button:hover {
-    color: #8DAFFC;
+    color: #fff;
     border-color: #8DAFFC;
-    background-color: #f4f7ff;
+    background-color: #739eff;
 }
 .el-tabs--border-card>.el-tabs__header {
     background-color: #f4f7ff;
@@ -61,4 +61,27 @@
 }
 .el-menu-item:focus, .el-menu-item:hover {
     background-color: #f4f7ff;
+}
+.el-button.is-plain:focus, .el-button.is-plain:hover {
+    border-color: #8DAFFC;
+    color: #8DAFFC;
+}
+.el-tag {
+    border: 1px solid #8DAFFC;
+    background-color: #f4f7ff;
+    color: #8DAFFC;
+    height: 25px;
+    line-height: 25px;
+}
+.el-textarea__inner:focus {
+    border-color: #8DAFFC;
+}
+.el-pagination button:hover {
+    color: #8DAFFC;
+}
+.el-pager li.active {
+    color: #8DAFFC;
+}
+.el-pager li:hover {
+    color: #8DAFFC;
 }

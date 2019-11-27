@@ -21,11 +21,11 @@
         </div>
         <div class="article_list">
             <el-tabs type="border-card" v-model="activeName">
-                <el-tab-pane label="已发帖子" name="first">
-                    内容
+                <el-tab-pane label="已发帖子" name="myarticle">
+                    <myarticle></myarticle>
                 </el-tab-pane>
-                <el-tab-pane label="关注帖子" name="second">
-                    内容
+                <el-tab-pane label="收藏帖子" name="followarticle">
+                    <followarticle></followarticle>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -33,18 +33,24 @@
 </template>
 
 <script>
+    import myarticle from '@/components/userinfo/myArticle'
+    import followarticle from '@/components/userinfo/followArticle'
     export default {
         name: "userinfo",
         data(){
             return {
                 sex: 1,
-                activeName: 'first',
+                activeName: 'myarticle',
             }
+        },
+        components: {
+            'myarticle' : myarticle,
+            'followarticle' : followarticle
         },
         methods: {
             goEditInfo() {
                 this.$router.push('/editinfo')
-            }
+            },
         },
         created(){
 
