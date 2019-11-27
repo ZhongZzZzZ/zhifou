@@ -98,7 +98,7 @@
         width: 600px;
         height: 300px;
         position: absolute;
-        top:250px;
+        top:200px;
         left: 50%;
         transform: translate(-50%,0);
         box-shadow: 0 0 10px 10px #f3f3f3;

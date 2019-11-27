@@ -99,7 +99,6 @@
             sendCode(){
                 this.sendflag = true
                 this.computedTime = 30
-                console.log('sendEmail')
                 var timer = setInterval(() => {
                     this.sendflag = false
                     clearInterval(timer)
@@ -109,7 +108,6 @@
                         this.computedTime --
                     }else{
                         clearInterval(computedTimer)
-                        console.log(this.computedTime)
                     }
                 },1000)
             }
@@ -128,7 +126,7 @@
             width: 600px;
             height: 400px;
             position: absolute;
-            top:250px;
+            top:150px;
             left: 50%;
             transform: translate(-50%,0);
             box-shadow: 0 0 10px 10px #f3f3f3;

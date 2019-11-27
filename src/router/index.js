@@ -66,6 +66,15 @@ export const router = new Router({
             path:'/articleDetail',
             name:'articleDetail',
             component:() => import('../views/articleDetail/articleDetail')
+        },
+        {
+            path:'/classification',
+            name:'classification',
+            component:()=> import('../views/classification/classification')
+        },
+        {
+            path:'*',
+            component:()=> import('../views/404page/404page')
         }
     ]
 })

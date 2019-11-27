@@ -1,5 +1,7 @@
 <template>
-    <div>关注</div>
+    <div>
+        <video src="https://i.imgur.com/u3LRdWW.mp4" controls="controls"></video>
+    </div>
 </template>
 
 <script>

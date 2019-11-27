@@ -12,7 +12,7 @@
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
                 <div class="article_picture" v-show="item.picture != ''">
-                    <img :src="item.picture" alt="" >
+                    <img :src="item.picture" alt="" style="width: 250px" >
                 </div>
                 <p class="article_content" ><span @click="goArticle">{{item.content | articleFilter}}</span>
                     <span class="readMore" @click="readMore(index)">阅读全文></span>
@@ -31,7 +31,8 @@
             </div>
             <span class="iconfont iconpinglun common" @click="openComment">{{item.commentNum}}条评论</span>
             <span class="iconfont iconxingxing common">收藏</span>
-            <span class="iconfont iconbuoumaotubiao16 common">{{item.likes}}个点赞</span>
+            <span class="iconfont  icondianzan" :class="[item.isLike > 0 ? 'islike_active':'common']" @click="addLikes">{{item.likes}}个点赞</span>
+            <span class="common page_view" >{{item.page_view}}阅读数</span>
             <el-divider></el-divider>
         </div>
     </div>
@@ -60,6 +61,10 @@
             },
             openComment(){
                 this.showComment = ! this.showComment
+            },
+            addLikes(index){
+                this.item.isLike = !this.item.isLike
+                console.log('点赞成功')
             }
         },
         computed:{
@@ -160,6 +165,19 @@
         margin: 0 15px;
         cursor: pointer;
         font-size: 14px;
+        user-select: none;
+    }
+    .islike_active{
+        color: #ffa81c;
+        margin: 0 15px;
+        cursor: pointer;
+        font-size: 14px;
+        user-select: none;
+    }
+    .page_view{
+        float: right;
+        margin-right: 25px;
+        cursor: auto;
     }
     }
 </style>

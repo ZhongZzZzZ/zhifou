@@ -46,16 +46,18 @@
 
         },
         methods:{
-            // addBorder(){
-            //     this.isActived = !this.isActived
-            // }
+            addBorder(){
+                this.isActived = !this.isActived
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
     .nav {
-        position: relative;
+        position: sticky;
+        top: 0;
+        z-index: 999;
         overflow: hidden;
         min-width: 1032px;
         height: 60px;
@@ -77,6 +79,8 @@
         .nav_menu{
             margin: 0px 10px;
             display: inline-block;
+            font-size:15px;
+            font-weight: 600;
         }
         .nav_message {
             float: right;
