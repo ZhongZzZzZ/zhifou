@@ -1,33 +1,36 @@
 <template>
-    <div class="main">
-        <div class="info_show">
-            <div class="pic_box"><img class="pic" src="../../assets/avatar.jpg"></div>
-            <div class="info">
-                <div class="info_title">
-                    <span>LinhZ</span>
-                    <i v-if="sex == 1" class="icon-sex el-icon-female"></i>
-                    <i v-else class="icon-sex el-icon-male"></i>
-                    <el-badge value="hot" class="item">
-                        <el-tag>1000</el-tag>
-                    </el-badge>
-                </div>
-                <div class="info_detail">
-                    <div>工号：S0000</div>
-                    <div>电话：158</div>
-                    <div>邮箱：qq.com</div>
-                    <el-button class="edit_btn" icon="el-icon-edit" @click="goEditInfo" plain>编辑个人信息</el-button>
+    <div>
+        <Nav style="position:sticky;"></Nav>
+        <div class="main">
+            <div class="info_show">
+                <div class="pic_box"><img class="pic" src="../../assets/avatar.jpg"></div>
+                <div class="info">
+                    <div class="info_title">
+                        <span>LinhZ</span>
+                        <i v-if="sex == 1" class="icon-sex el-icon-female"></i>
+                        <i v-else class="icon-sex el-icon-male"></i>
+                        <el-badge value="hot" class="item">
+                            <el-tag>1000</el-tag>
+                        </el-badge>
+                    </div>
+                    <div class="info_detail">
+                        <div>工号：S0000</div>
+                        <div>电话：158</div>
+                        <div>邮箱：qq.com</div>
+                        <el-button class="edit_btn" icon="el-icon-edit" @click="goEditInfo" plain>编辑个人信息</el-button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="article_list">
-            <el-tabs type="border-card" v-model="activeName">
-                <el-tab-pane label="已发帖子" name="myarticle">
-                    <myarticle></myarticle>
-                </el-tab-pane>
-                <el-tab-pane label="收藏帖子" name="followarticle">
-                    <followarticle></followarticle>
-                </el-tab-pane>
-            </el-tabs>
+            <div class="article_list">
+                <el-tabs type="border-card" v-model="activeName">
+                    <el-tab-pane label="已发帖子" name="myarticle">
+                        <myarticle></myarticle>
+                    </el-tab-pane>
+                    <el-tab-pane label="收藏帖子" name="followarticle">
+                        <followarticle></followarticle>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
     </div>
 </template>
@@ -35,6 +38,7 @@
 <script>
     import myarticle from '@/components/userinfo/myArticle'
     import followarticle from '@/components/userinfo/followArticle'
+    import Nav from '../../components/navBar/nav'
     export default {
         name: "userinfo",
         data(){
@@ -45,7 +49,8 @@
         },
         components: {
             'myarticle' : myarticle,
-            'followarticle' : followarticle
+            'followarticle' : followarticle,
+            Nav
         },
         methods: {
             goEditInfo() {
@@ -55,7 +60,6 @@
         created(){
 
         },
-
     }
 </script>
 

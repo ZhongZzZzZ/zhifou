@@ -13,7 +13,7 @@
             </div>
             <div style="display: flex;flex-direction: column;">
                 <div class="side_bar" style="height: 80px">
-                   <div class="slide_bar_item"><p class="iconfont iconwenzhang1 icon_draft" ></p>写文章</div>
+                   <div class="slide_bar_item" @click="$router.push('/editBlog')"><p class="iconfont iconwenzhang1 icon_draft" ></p>写文章</div>
                    <div class="slide_bar_item" ><p class="iconfont iconcaogaoxiang icon_draft" ></p>草稿箱</div>
                 </div>
                 <div class="side_bar" style="top:172px">

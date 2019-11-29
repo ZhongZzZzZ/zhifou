@@ -1,4 +1,6 @@
 <template>
+<div>
+    <Nav style="position:sticky;"></Nav>
     <div class="main">
         <div class="info_edit">
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -19,9 +21,11 @@
             </el-form>
         </div>
     </div>
+</div>
 </template>
     
 <script>
+import Nav from '../../components/navBar/nav'
 export default {
     name: "editinfo",
     data() {
@@ -88,6 +92,9 @@ export default {
         back() {
             this.$router.back();
         }
+    },
+    components: {
+        Nav
     }
 }
 </script>

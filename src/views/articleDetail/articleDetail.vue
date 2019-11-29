@@ -1,101 +1,104 @@
 <template>
-<div class="main">
-    <div class="title_main">
-        <div class="title">{{ article.title }}</div>
-        <div class="tags"><el-tag v-for="item in article.tags">{{item}}</el-tag></div>
-        <el-button type="primary" icon="el-icon-star-on" @click="detail(item.id)">收藏</el-button>
-        <el-button type="primary" icon="el-icon-edit" @click="detail(item.id)">写评论</el-button>
-        <i class="el-icon-chat-line-square article_icon">{{ article.comment_num }}条评论</i>
-        <div class="hot_info">
-            <div class="star_account">
-                <div class="hot_title">被收藏</div>
-                <strong>{{ article.star_accout }}</strong>
-            </div>
-            <div class="comment_account">
-                <div class="hot_title">被浏览</div>
-                <strong>{{ article.article_views }}</strong>
-            </div>
-        </div>
-    </div>
-    <div class="article_main">
-        {{ article.content }}
-        <div class="article_time">{{ article.create_time }}</div>
-        <i class="el-icon-chat-line-square article_icon">{{ article.comment_num }}条评论</i>
-        <el-button type="primary" icon="el-icon-star-on" @click="detail(item.id)">收藏</el-button>
-        <el-button type="primary" class="like_btn" icon="el-icon-thumb" @click="detail(item.id)">点赞 {{article.like_account}}</el-button>
-    </div>
-    <div class="user_main">
-        <div class="user_title">关于作者</div>
-        <div class="user_info">
-            <img :src="article.user_avatar" class="user_avatar">
-            <div class="user_name">{{ article.user_name }}</div>
-            <div class="user_like">
-                <div class="article">
-                    <div class="hot_title">文章</div>
-                    <strong>{{ article.user_article }}</strong>
+<div>
+    <Nav style="position:sticky;"></Nav>
+    <div class="main">
+        <div class="title_main">
+            <div class="title">{{ article.title }}</div>
+            <div class="tags"><el-tag v-for="item in article.tags">{{item}}</el-tag></div>
+            <el-button type="primary" icon="el-icon-star-on" @click="detail(item.id)">收藏</el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="detail(item.id)">写评论</el-button>
+            <i class="el-icon-chat-line-square article_icon">{{ article.comment_num }}条评论</i>
+            <div class="hot_info">
+                <div class="star_account">
+                    <div class="hot_title">被收藏</div>
+                    <strong>{{ article.star_accout }}</strong>
                 </div>
-                <div class="collection">
-                    <div class="hot_title">收藏</div>
-                    <strong>{{ article.user_collection }}</strong>
+                <div class="comment_account">
+                    <div class="hot_title">被浏览</div>
+                    <strong>{{ article.article_views }}</strong>
                 </div>
             </div>
-            <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="detail(item.id)">私信</el-button>
         </div>
-    </div>
-    <div class="comment_main" id="comment">
-        <div class="comment-title">
-            <span class="maintitle">评论</span>
-            <span>共有{{ article.comment_num }}条评论</span>
+        <div class="article_main">
+            {{ article.content }}
+            <div class="article_time">{{ article.create_time }}</div>
+            <i class="el-icon-chat-line-square article_icon">{{ article.comment_num }}条评论</i>
+            <el-button type="primary" icon="el-icon-star-on" @click="detail(item.id)">收藏</el-button>
+            <el-button type="primary" class="like_btn" icon="el-icon-thumb" @click="detail(item.id)">点赞 {{article.like_account}}</el-button>
         </div>
-        <div class="my-comment" > 
-            <img :src="user.user_avatar">
-            <textarea></textarea>
-            <div class="corr">
-                <em class="arrline">◆</em>
-                <span class="arrclr">◆</span>
+        <div class="user_main">
+            <div class="user_title">关于作者</div>
+            <div class="user_info">
+                <img :src="article.user_avatar" class="user_avatar">
+                <div class="user_name">{{ article.user_name }}</div>
+                <div class="user_like">
+                    <div class="article">
+                        <div class="hot_title">文章</div>
+                        <strong>{{ article.user_article }}</strong>
+                    </div>
+                    <div class="collection">
+                        <div class="hot_title">收藏</div>
+                        <strong>{{ article.user_collection }}</strong>
+                    </div>
+                </div>
+                <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="detail(item.id)">私信</el-button>
             </div>
-            <el-button class="comment-btn" type="primary">评论</el-button>
         </div>
-        <div class="user-comments">
+        <div class="comment_main" id="comment">
             <div class="comment-title">
-                <span>用户评论</span>
+                <span class="maintitle">评论</span>
+                <span>共有{{ article.comment_num }}条评论</span>
             </div>
-            <div class="comment-item" v-for="item in article.comments">
-                <img :src="item.user_avatar" >
-                <div class="comment-content">
-                    <span class="content-username">{{ item.user_name }}：</span>
-                    <span>{{ item.content }}</span>
+            <div class="my-comment" > 
+                <img :src="user.user_avatar">
+                <textarea></textarea>
+                <div class="corr">
+                    <em class="arrline">◆</em>
+                    <span class="arrclr">◆</span>
                 </div>
-                <div class="comment-time">{{ item.time }}</div>
-                <i class="el-icon-s-comment" @click="responseShow=item.id" v-if="responseShow != item.id">查看回复</i>
-                <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
-                <i class="el-icon-chat-round" @click="myresponseShow=item.id">回复</i>
-                <div class="my_response" v-if="myresponseShow == item.id">
-                    <img :src="user.user_avatar">
-                    <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
-                    <el-button class="comment-btn" type="primary">发送</el-button>
-                    <i class="el-icon-arrow-up" @click="myresponseShow=0">收起</i>
+                <el-button class="comment-btn" type="primary">评论</el-button>
+            </div>
+            <div class="user-comments">
+                <div class="comment-title">
+                    <span>用户评论</span>
                 </div>
-                <div class="response" v-if="responseShow == item.id">
-                    <div class="comment-item" v-for="res in response">
-                        <img :src="res.user_avatar" >
-                        <div class="comment-content">
-                            <span class="content-username">{{ res.user_name }} 回复 {{ res.returned_name }}：</span>
-                            <span>{{ res.content }}</span>
-                        </div>
-                        <div class="comment-time">{{ res.time }}</div>
-                         <i class="el-icon-chat-round" @click="myreplyShow = res.id">回复</i>
-                        <div class="my_response" v-if="myreplyShow == res.id">
-                            <img :src="user.user_avatar">
-                            <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
-                            <el-button class="comment-btn" type="primary">发送</el-button>
-                            <i class="el-icon-arrow-up" @click="myreplyShow=0">收起</i>
+                <div class="comment-item" v-for="item in article.comments">
+                    <img :src="item.user_avatar" >
+                    <div class="comment-content">
+                        <span class="content-username">{{ item.user_name }}：</span>
+                        <span>{{ item.content }}</span>
+                    </div>
+                    <div class="comment-time">{{ item.time }}</div>
+                    <i class="el-icon-s-comment" @click="responseShow=item.id" v-if="responseShow != item.id">查看回复</i>
+                    <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
+                    <i class="el-icon-chat-round" @click="myresponseShow=item.id">回复</i>
+                    <div class="my_response" v-if="myresponseShow == item.id">
+                        <img :src="user.user_avatar">
+                        <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
+                        <el-button class="comment-btn" type="primary">发送</el-button>
+                        <i class="el-icon-arrow-up" @click="myresponseShow=0">收起</i>
+                    </div>
+                    <div class="response" v-if="responseShow == item.id">
+                        <div class="comment-item" v-for="res in response">
+                            <img :src="res.user_avatar" >
+                            <div class="comment-content">
+                                <span class="content-username">{{ res.user_name }} 回复 {{ res.returned_name }}：</span>
+                                <span>{{ res.content }}</span>
+                            </div>
+                            <div class="comment-time">{{ res.time }}</div>
+                            <i class="el-icon-chat-round" @click="myreplyShow = res.id">回复</i>
+                            <div class="my_response" v-if="myreplyShow == res.id">
+                                <img :src="user.user_avatar">
+                                <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
+                                <el-button class="comment-btn" type="primary">发送</el-button>
+                                <i class="el-icon-arrow-up" @click="myreplyShow=0">收起</i>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <el-pagination small layout="prev, pager, next" :total="50"></el-pagination>
-        </div>    
+                <el-pagination small layout="prev, pager, next" :total="50"></el-pagination>
+            </div>    
+        </div>
     </div>
 </div>
 </template>
@@ -103,6 +106,7 @@
 <script>
     import my_url from '../../assets/avatar.jpg'
     import author_url from '../../assets/ray.jpg'
+    import Nav from '../../components/navBar/nav'
     export default {
         name: "articleDetail",
         data(){
@@ -118,7 +122,7 @@
                 article: { 
                     id: 1, 
                     title: 'Vue.js新手入门指南', 
-                    tags: ['js','vue','前端','技术','IT'],
+                    tags: ['其他','前端'],
                     content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
                     create_time: '2019年11月21日 15:31:32',
                     img_url: 'https://pic1.zhimg.com/50/v2-3b25801a03a296c8c663e82eee8f9544_hd.jpg',
@@ -157,6 +161,9 @@
         created(){
 
         },
+        components: {
+            Nav
+        }
     }
 </script>
 

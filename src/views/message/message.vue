@@ -1,38 +1,41 @@
 <template>
-    <div class="content">  
-        <el-col :span="6">
-            <el-menu default-active="1" class="el-menu-vertical-demo">
-                <el-menu-item  v-for="item in users" :key="item.id" @click="chat(item)" :index="item.id">
-                    <img class="user_avatar" :src="item.url">
-                    <span slot="title">{{ item.name }}</span>
-                </el-menu-item>
-            </el-menu>
-        </el-col>
-        <div class="chat_window" v-if="chatShow">
-            <div class="chat_name">{{ current.name }}</div>
-            <div class="chat_content">
-                <div class="chat_message" v-for="item in current.message" :key="item">
-                    <div class="other_side" v-if="!item.role">
-                        <img :src="current.url" class="message_avatar">
-                        <div class="message_content"> {{ item.content }}</div>
-                        <div class="corr">
-                            <em class="arrline">◆</em>
-                            <span class="arrclr">◆</span>
+    <div>
+        <Nav style="position:sticky;"></Nav>
+        <div class="content">  
+            <el-col :span="6">
+                <el-menu default-active="1" class="el-menu-vertical-demo">
+                    <el-menu-item  v-for="item in users" :key="item.id" @click="chat(item)" :index="item.id">
+                        <img class="user_avatar" :src="item.url">
+                        <span slot="title">{{ item.name }}</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-col>
+            <div class="chat_window" v-if="chatShow">
+                <div class="chat_name">{{ current.name }}</div>
+                <div class="chat_content">
+                    <div class="chat_message" v-for="item in current.message" :key="item">
+                        <div class="other_side" v-if="!item.role">
+                            <img :src="current.url" class="message_avatar">
+                            <div class="message_content"> {{ item.content }}</div>
+                            <div class="corr">
+                                <em class="arrline">◆</em>
+                                <span class="arrclr">◆</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="my_side" v-else>
-                        <div class="message_content"> {{ item.content }}</div>
-                        <img :src="myimg" class="message_avatar">
-                        <div class="corr">
-                            <em class="arrline">◆</em>
-                            <span class="arrclr">◆</span>
+                        <div class="my_side" v-else>
+                            <div class="message_content"> {{ item.content }}</div>
+                            <img :src="myimg" class="message_avatar">
+                            <div class="corr">
+                                <em class="arrline">◆</em>
+                                <span class="arrclr">◆</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="chat_textbox">
-                <textarea v-model="mymsg" @keyup.enter="onSubmit"></textarea>
-                <el-button type="primary" @click="onSubmit">发送</el-button>
+                <div class="chat_textbox">
+                    <textarea v-model="mymsg" @keyup.enter="onSubmit"></textarea>
+                    <el-button type="primary" @click="onSubmit">发送</el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -41,6 +44,7 @@
 <script>
     import imgsrc from "../../assets/avatar.jpg"
     import myimg from "../../assets/unlogin.png"
+    import Nav from '../../components/navBar/nav'
     export default {
         name: "message",
         data() {
@@ -82,6 +86,9 @@
         created(){
 
         },
+        components: {
+            Nav
+        }
     }
 </script>
 

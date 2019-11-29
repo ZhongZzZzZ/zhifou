@@ -1,43 +1,47 @@
 <template>
-    <div class="main">
-        <div class="info_edit">
-            <el-upload
-                class="avatar-uploader"
-                action="#"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img :src="imageUrl" class="avatar">
-                <i class="el-icon-camera-solid avatar-uploader-icon"><span>修改头像</span></i>
-            </el-upload>
-            <el-form  class="userinfo-form" ref="form" :model="form" label-width="50px">
-                <el-form-item label="昵称">
-                    <el-input v-model="form.username"></el-input>
-                </el-form-item>
-                <el-form-item label="性别">
-                    <el-radio-group v-model="form.sex">
-                        <el-radio label="男"></el-radio>
-                        <el-radio label="女"></el-radio>
-                    </el-radio-group>    
-                </el-form-item>
-                <el-form-item label="电话">
-                    <el-input v-model="form.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input v-model="form.email"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button class="edit_btn" icon="el-icon-edit" @click="jump" plain>修改密码</el-button>
-                    <el-button type="primary" @click="onSubmit">确定</el-button>
-                    <el-button @click="back">取消</el-button>
-                </el-form-item>
-            </el-form>
+    <div>
+        <Nav style="position:sticky;"></Nav>
+        <div class="main">
+            <div class="info_edit">
+                <el-upload
+                    class="avatar-uploader"
+                    action="#"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img :src="imageUrl" class="avatar">
+                    <i class="el-icon-camera-solid avatar-uploader-icon"><span>修改头像</span></i>
+                </el-upload>
+                <el-form  class="userinfo-form" ref="form" :model="form" label-width="50px">
+                    <el-form-item label="昵称">
+                        <el-input v-model="form.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                        <el-radio-group v-model="form.sex">
+                            <el-radio label="男"></el-radio>
+                            <el-radio label="女"></el-radio>
+                        </el-radio-group>    
+                    </el-form-item>
+                    <el-form-item label="电话">
+                        <el-input v-model="form.phone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱">
+                        <el-input v-model="form.email"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="edit_btn" icon="el-icon-edit" @click="jump" plain>修改密码</el-button>
+                        <el-button type="primary" @click="onSubmit">确定</el-button>
+                        <el-button @click="back">取消</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
         </div>
     </div>
 </template>
     
 <script>
     import imgsrc from '../../assets/avatar.jpg'
+    import Nav from '../../components/navBar/nav'
     export default {
         name: "editinfo",
         data(){
@@ -80,7 +84,9 @@
         created(){
 
         },
-        
+        components: {
+            Nav
+        }
     }
 </script>
 
