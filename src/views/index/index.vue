@@ -37,7 +37,7 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
-    import api from '../../api/user'
+    import api from '../../api/article'
     export default {
         name: "index",
         data(){

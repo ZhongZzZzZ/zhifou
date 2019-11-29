@@ -16,11 +16,11 @@ export default {
       method: 'get'
     })
   },
-  getIndexInfo(data){
+  // 获取用户已发文章列表
+  getLauchedArticleInfo () {
     return request({
-      url:'/article/queryArticle',
-      method:'post',
-      data
+      url: '/article/queryArticleByMyself',
+      method: 'post'
     })
   },
   // getIndexInfo(){
