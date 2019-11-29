@@ -3,20 +3,20 @@
         <Nav style="position:sticky;"></Nav>
         <div class="index_container">
             <div class="main1">
-                <el-menu default-active="/hotPoint"  class="el-menu-demo" mode="horizontal"  router>
-                    <el-menu-item index="/hotPoint" class="index_nav"  >热榜</el-menu-item>
+                <el-menu :default-active="$route.path"  class="el-menu-demo" mode="horizontal"  router>
+                    <el-menu-item index="/hotPoint" class="index_nav" >热榜</el-menu-item>
                     <el-menu-item index="/follow" class="index_nav">关注</el-menu-item>
-                    <el-menu-item @click="goEditBlog" class="editBlog"><el-button class="el-icon-plus">写博客</el-button></el-menu-item>
+<!--                    <el-menu-item @click="goEditBlog" class="editBlog"><el-button class="el-icon-plus">写博客</el-button></el-menu-item>-->
                 </el-menu>
                 <el-divider></el-divider>
                 <router-view></router-view>
             </div>
             <div style="display: flex;flex-direction: column;">
                 <div class="side_bar" style="height: 80px">
-                   <div class="slide_bar_item" ><p class="iconfont iconcaogaoxiang icon_draft" ></p>草稿箱</div>
                    <div class="slide_bar_item"><p class="iconfont iconwenzhang1 icon_draft" ></p>写文章</div>
+                   <div class="slide_bar_item" ><p class="iconfont iconcaogaoxiang icon_draft" ></p>草稿箱</div>
                 </div>
-                <div class="side_bar" style="top:175px">
+                <div class="side_bar" style="top:172px">
                     <div class="slide_bar_item" @click="goToClass('1001')"><p class="iconfont iconWEBqianduan icon_fontend" ></p><span>前端</span></div>
                     <div class="slide_bar_item" @click="goToClass('1002')"><p class="iconfont iconapphoutaiguanli icon_backend"></p>后端</div>
                     <div class="slide_bar_item" @click="goToClass('1003')"><p class="iconfont iconshouji icon_mobile" ></p>移动端</div>
@@ -27,7 +27,9 @@
                     <div class="slide_bar_item" @click="goToClass('1008')"><p class="iconfont iconicon4 icon_design" ></p>设计</div>
                     <div class="slide_bar_item" @click="goToClass('1009')"><p class="iconfont iconicon-test icon_else" ></p>其他</div>
                 </div>
-
+                <div class="side_bar_img" >
+                    <img src="../../assets/advantage.png" alt="" class="advan_img">
+                </div>
             </div>
         </div>
     </div>
@@ -35,33 +37,39 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
+    import api from '../../api/user'
     export default {
         name: "index",
         data(){
             return{
                 activeName: 'first',
-                isActived:false
+                isActived:false,
+                data:[]
             }
         },
-        created(){},
+        created(){
+
+        },
         methods: {
-            goEditBlog(){
-                let routeUrl = this.$router.resolve({
-                    path:'/editBlog',
-                    query:{id:1}
-                })
-                window.open(routeUrl.href,'_blank')
-            },
-            goToHotPoint(){
-                console.log('goToHotPoint')
-            },
+
+            // goEditBlog(){
+            //     let routeUrl = this.$router.resolve({
+            //         path:'/editBlog',
+            //         query:{id:1}
+            //     })
+            //     window.open(routeUrl.href,'_blank')
+            // },
+            // goToHotPoint(){
+            //     console.log('goToHotPoint')
+            // },
             goToClass(val){
-                let routeUrl = this.$router.resolve({
-                    path:'/classification',
-                    query:{id:val}
-                })
-                console.log(this.$route)
-                window.open(routeUrl.href,'_blank')
+                // let routeUrl = this.$router.resolve({
+                //     path:'/classification',
+                //     query:{id:val}
+                // })
+                // console.log(this.$route)
+                // window.open(routeUrl.href,'_blank')
+                this.$router.push({path:'/classification',query:{id:val}})
             }
         },
         components:{
@@ -107,6 +115,27 @@
             display: flex;
             flex-wrap:wrap;
             justify-content: space-around;
+            &_img{
+                min-width: 250px;
+                max-width: 250px;
+                background-color: #ffffff;
+                height: 135px;
+                margin-top: 15px;
+                box-shadow: 0 0px 15px rgba(26,26,26,.1);
+                border-radius: 5px;
+                position: sticky;
+                top: 450px;
+                padding: 0px;
+                box-sizing: border-box;
+                display: flex;
+                flex-wrap:wrap;
+                justify-content: space-around;
+                align-items: center;
+                .advan_img{
+                    width: 240px;
+                    border-radius: 8px;
+                }
+            }
             .slide_bar_item{
                 display: inline-block;
                 text-align: center;

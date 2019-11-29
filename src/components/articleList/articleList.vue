@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="article_list" >
-            <img :src="item.avatar" alt="" class="article_avatar">
+            <img :src="item.user_url" alt="" class="article_avatar">
             <div class="article_time_name">
-                <span class="article_name">{{item.name}}</span>
-                <p class="article_time">{{item.time}}</p>
+                <span class="article_name">{{item.user_name}}</span>
+                <p class="article_time">{{item.create_time}}</p>
             </div>
             <p class="article_title">
                 <span @click="goArticle">{{item.title}}</span>
@@ -12,9 +12,9 @@
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
                 <div class="article_picture" v-show="item.picture != ''">
-                    <img :src="item.picture" alt="" style="width: 250px" >
+                    <img :src="item.photo_url" alt="" style="width: 250px" >
                 </div>
-                <p class="article_content" ><span @click="goArticle">{{item.content | articleFilter}}</span>
+                <p class="article_content" ><span @click="goArticle">{{item.simple_content}}</span>
                     <span class="readMore" @click="readMore(index)">阅读全文></span>
                 </p>
             </div >
@@ -29,9 +29,9 @@
             <div v-for="comment in item.comment" v-show="showComment">
                  <p>{{comment}}</p>
             </div>
-            <span class="iconfont iconpinglun common" @click="openComment">{{item.commentNum}}条评论</span>
+            <span class="iconfont iconpinglun common" @click="openComment">{{item.comment_count}}条评论</span>
             <span class="iconfont iconxingxing common">收藏</span>
-            <span class="iconfont  icondianzan" :class="[item.isLike > 0 ? 'islike_active':'common']" @click="addLikes">{{item.likes}}个点赞</span>
+            <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes">{{item.point_count}}个点赞</span>
             <span class="common page_view" >{{item.page_view}}阅读数</span>
             <el-divider></el-divider>
         </div>
@@ -71,17 +71,17 @@
 
         },
         filters:{
-            articleFilter(content){
-                if(content.length >=500){
-                    return content.substring(0,100) + '...'
-                }else if(content.length<500 && content.length >=100){
-                    let length = content.length * 0.3
-                    return content.substring(0,length) + '...'
-                }else{
-                    let length = content.length * 0.6
-                    return content.substring(0,length) + '...'
-                }
-            }
+            // articleFilter(content){
+            //     if(content.length >=500){
+            //         return content.substring(0,100) + '...'
+            //     }else if(content.length<500 && content.length >=100){
+            //         let length = content.length * 0.3
+            //         return content.substring(0,length) + '...'
+            //     }else{
+            //         let length = content.length * 0.6
+            //         return content.substring(0,length) + '...'
+            //     }
+            // }
         }
     }
 </script>

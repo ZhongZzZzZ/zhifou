@@ -6,6 +6,7 @@
                 page-size="10"
                 :total="total"
                 @current-change="currentChange"
+                :current-page="currentPage"
             >
         </el-pagination>
     </div>

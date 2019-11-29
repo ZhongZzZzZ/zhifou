@@ -15,5 +15,18 @@ export default {
       url: '/userinfo',
       method: 'get'
     })
-  }
+  },
+  getIndexInfo(data){
+    return request({
+      url:'/article/queryArticle',
+      method:'post',
+      data
+    })
+  },
+  // getIndexInfo(){
+  //   return request({
+  //     url:'/article/test',
+  //     method:'get'
+  //   })
+  // }
 }
