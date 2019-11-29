@@ -1,8 +1,9 @@
 <template>
     <div class="main">
         <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit"></Editor>
+        <div>{{}}</div>
     </div>
-    </div>
+
 </template>
 
 <script>
@@ -17,6 +18,7 @@
     import 'tinymce/plugins/lists'
     import 'tinymce/plugins/contextmenu'
     import 'tinymce/plugins/wordcount'
+    import 'tinymce/plugins/media'
     export default {
         name: "editBlog",
         data () {
@@ -27,9 +29,9 @@
                     language: 'zh_CN',
                     skin_url: '/tinymce/skins/lightgray',
                     height: 300,
-                    plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu',
+                    plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu media ',
                     toolbar:
-                    'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image code | removeformat',
+                    'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image code media | removeformat',
                     branding: false
                 }
             }

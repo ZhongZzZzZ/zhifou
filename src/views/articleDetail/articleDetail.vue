@@ -49,7 +49,7 @@
                 <span class="maintitle">评论</span>
                 <span>共有{{ article.comment_num }}条评论</span>
             </div>
-            <div class="my-comment" > 
+            <div class="my-comment" >
                 <img :src="user.user_avatar">
                 <textarea></textarea>
                 <div class="corr">
@@ -62,7 +62,7 @@
                 <div class="comment-title">
                     <span>用户评论</span>
                 </div>
-                <div class="comment-item" v-for="item in article.comments">
+                <div class="comment-item" v-for="(item,index)in article.comments" :key="index">
                     <img :src="item.user_avatar" >
                     <div class="comment-content">
                         <span class="content-username">{{ item.user_name }}：</span>
@@ -79,7 +79,7 @@
                         <i class="el-icon-arrow-up" @click="myresponseShow=0">收起</i>
                     </div>
                     <div class="response" v-if="responseShow == item.id">
-                        <div class="comment-item" v-for="res in response">
+                        <div class="comment-item" v-for="(res , index)in response" :key="index">
                             <img :src="res.user_avatar" >
                             <div class="comment-content">
                                 <span class="content-username">{{ res.user_name }} 回复 {{ res.returned_name }}：</span>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <el-pagination small layout="prev, pager, next" :total="50"></el-pagination>
-            </div>    
+            </div>
         </div>
     </div>
 </div>
@@ -113,15 +113,15 @@
             return {
                 responseShow: 0,
                 myresponseShow: 0,
-                myreplyShow: 0, 
+                myreplyShow: 0,
                 myresponse:'',
                 user: {
                     user_avatar: my_url,
                     user_name: 'isMe'
                 },
-                article: { 
-                    id: 1, 
-                    title: 'Vue.js新手入门指南', 
+                article: {
+                    id: 1,
+                    title: 'Vue.js新手入门指南',
                     tags: ['其他','前端'],
                     content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
                     create_time: '2019年11月21日 15:31:32',
@@ -398,7 +398,7 @@
                     height: 24px;
                     border: 1px solid #99999940;
                     border-radius: 2px;
-                }  
+                }
                 i {
                     font-size: 13px;
                     color: #8590a6;
@@ -455,7 +455,7 @@
                 border-bottom: 0;
                 border-top: 1px solid #f6f6f6;
                 margin-top: 10px;
-                padding-top: 10px; 
+                padding-top: 10px;
             }
             .comment-content {
                 width: 602px;
