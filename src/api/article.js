@@ -20,7 +20,7 @@ export default {
     // 获取文章所有评论信息
     getCommentInfo(data) {
         return request({
-            url:'/article/queryComment',
+            url:'/comment/queryComment',
             method:'post',
             data
         })

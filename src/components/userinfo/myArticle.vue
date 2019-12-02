@@ -64,13 +64,14 @@
             }
         },
         created(){
-            api.getLauchedArticleInfo(
-                {
-                user_id: 1,
+            api.getLauchedArticleInfo({
+                user_id: 1002,
                 token:'123456',
-                page:1}
-            ).then(res => {
+                page:1
+            }).then(res => {
+                //console.log(res);
                 this.articles = res.article;
+                //console.log(this.articles)
                 // this.user = res.user;
                 // console.log(this.article);
                 // console.log(this.user);                   

@@ -20,7 +20,8 @@
             </div>
         </div>
         <div class="article_main">
-            {{ article.content }}
+            <div class="article_content" v-html="article.content"></div>
+            <!-- {{ article.content }} -->
             <div class="article_time">{{ article.create_time }}</div>
             <i class="el-icon-chat-line-square article_icon">{{ comment_count }}条评论</i>
             <el-button type="primary" icon="el-icon-star-on" @click="detail(item.article_id)">收藏</el-button>
@@ -159,8 +160,7 @@
             }
         },
         created(){
-            api.getDetailInfo(
-                {
+            api.getDetailInfo({
                 article_id: 10001,
                 token:'123456'}
             ).then(res => {
@@ -168,14 +168,14 @@
                 this.user = res.user;
                 // console.log(this.article);
                 // console.log(this.user);                
-                console.log(this.$route.query.id);       
+                // console.log(this.$route.query.id);       
             }),
-            api.getCommentInfo(
-                {
+            api.getCommentInfo({
                 article_id: 10001,
                 token:'123456',
                 page:1}
             ).then(res => {
+                console.log(res);
                 this.comments = res.comment;
                 this.comment_count = res.comment_count;
                 // console.log(this.comments);
@@ -255,6 +255,7 @@
         font-size: 15px;
         line-height: 1.5;
         word-break: break-word;
+        
         .article_time {
             margin: 10px;
             color:#909399;

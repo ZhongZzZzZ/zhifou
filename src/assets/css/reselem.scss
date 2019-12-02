@@ -50,15 +50,6 @@
     border-color: #8DAFFC;
     background-color: #8DAFFC;
 }
-.edit_btn {
-    color: #8DAFFC;
-    border-color: #8DAFFC;
-}
-.edit_btn:hover {
-    color: #8DAFFC !important;
-    border-color: #8DAFFC !important;
-    background-color: #f4f7ff !important; 
-}
 .el-menu-item:focus, .el-menu-item:hover {
     background-color: #f4f7ff;
 }
@@ -84,4 +75,8 @@
 }
 .el-pager li:hover {
     color: #8DAFFC;
+}
+.el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
+    background-color: #c6d7fe;
+    border-color: #c6d7fe;
 }

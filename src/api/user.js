@@ -17,10 +17,18 @@ export default {
     })
   },
   // 获取用户已发文章列表
-  getLauchedArticleInfo () {
+  getLauchedArticleInfo (data) {
     return request({
       url: '/article/queryArticleByMyself',
-      method: 'post'
+      method: 'post',
+      data
+    })
+  },
+  getCollectionArticleInfo (data) {
+    return request({
+      url: '/article/queryCollectionByUserId',
+      method: 'post',
+      data
     })
   },
   // getIndexInfo(){
