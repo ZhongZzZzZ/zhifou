@@ -23,6 +23,16 @@ export default {
       data
     })
   },
+  uploadPhoto(data){
+    return request({
+      url:'/article/uploadPhoto',
+      headers: {
+        'Content-Type': 'multipart/form-data' //设置post文件的请求头
+      },
+      method:'post',
+      data
+    })
+  },
   // getIndexInfo(){
   //   return request({
   //     url:'/article/test',

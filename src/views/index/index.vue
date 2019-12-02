@@ -29,6 +29,7 @@
                 </div>
                 <div class="side_bar_img" >
                     <img src="../../assets/advantage.png" alt="" class="advan_img">
+
                 </div>
             </div>
         </div>
