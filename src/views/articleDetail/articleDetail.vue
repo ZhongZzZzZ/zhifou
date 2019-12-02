@@ -4,10 +4,10 @@
     <div class="main">
         <div class="title_main">
             <div class="title">{{ article.title }}</div>
-            <div class="tags"><el-tag v-for="item in article.tags">{{item}}</el-tag></div>
-            <el-button type="primary" icon="el-icon-star-on" @click="detail(item.id)">收藏</el-button>
-            <el-button type="primary" icon="el-icon-edit" @click="detail(item.id)">写评论</el-button>
-            <i class="el-icon-chat-line-square article_icon">{{ article.comment_num }}条评论</i>
+            <div class="tags"><el-tag>{{article.type_name}}</el-tag></div>
+            <el-button type="primary" icon="el-icon-star-on" @click="detail(item.article_id)">收藏</el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="detail(item.article_id)">写评论</el-button>
+            <i class="el-icon-chat-line-square article_icon">{{ comment_count }}条评论</i>
             <div class="hot_info">
                 <div class="star_account">
                     <div class="hot_title">被收藏</div>
@@ -15,42 +15,43 @@
                 </div>
                 <div class="comment_account">
                     <div class="hot_title">被浏览</div>
-                    <strong>{{ article.article_views }}</strong>
+                    <strong>{{ article.page_view }}</strong>
                 </div>
             </div>
         </div>
         <div class="article_main">
-            {{ article.content }}
+            <div class="article_content" v-html="article.content"></div>
+            <!-- {{ article.content }} -->
             <div class="article_time">{{ article.create_time }}</div>
-            <i class="el-icon-chat-line-square article_icon">{{ article.comment_num }}条评论</i>
-            <el-button type="primary" icon="el-icon-star-on" @click="detail(item.id)">收藏</el-button>
-            <el-button type="primary" class="like_btn" icon="el-icon-thumb" @click="detail(item.id)">点赞 {{article.like_account}}</el-button>
+            <i class="el-icon-chat-line-square article_icon">{{ comment_count }}条评论</i>
+            <el-button type="primary" icon="el-icon-star-on" @click="detail(item.article_id)">收藏</el-button>
+            <el-button type="primary" class="like_btn" icon="el-icon-thumb" @click="detail(item.article_id)">点赞 {{article.like_account}}</el-button>
         </div>
         <div class="user_main">
             <div class="user_title">关于作者</div>
             <div class="user_info">
-                <img :src="article.user_avatar" class="user_avatar">
+                <img :src="article.user_url" class="user_avatar">
                 <div class="user_name">{{ article.user_name }}</div>
                 <div class="user_like">
                     <div class="article">
                         <div class="hot_title">文章</div>
-                        <strong>{{ article.user_article }}</strong>
+                        <strong>{{ article.write_count }}</strong>
                     </div>
                     <div class="collection">
                         <div class="hot_title">收藏</div>
-                        <strong>{{ article.user_collection }}</strong>
+                        <strong>{{ article.star_count }}</strong>
                     </div>
                 </div>
-                <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="detail(item.id)">私信</el-button>
+                <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="detail(item.article_id)">私信</el-button>
             </div>
         </div>
         <div class="comment_main" id="comment">
             <div class="comment-title">
                 <span class="maintitle">评论</span>
-                <span>共有{{ article.comment_num }}条评论</span>
+                <span>共有{{ comment_count }}条评论</span>
             </div>
-            <div class="my-comment" >
-                <img :src="user.user_avatar">
+            <div class="my-comment" > 
+                <img :src="user.user_url">
                 <textarea></textarea>
                 <div class="corr">
                     <em class="arrline">◆</em>
@@ -62,24 +63,24 @@
                 <div class="comment-title">
                     <span>用户评论</span>
                 </div>
-                <div class="comment-item" v-for="(item,index)in article.comments" :key="index">
-                    <img :src="item.user_avatar" >
+                <div class="comment-item" v-for="item in comments">
+                    <img :src="item.user_url" >
                     <div class="comment-content">
                         <span class="content-username">{{ item.user_name }}：</span>
-                        <span>{{ item.content }}</span>
+                        <span>{{ item.conment_content }}</span>
                     </div>
-                    <div class="comment-time">{{ item.time }}</div>
-                    <i class="el-icon-s-comment" @click="responseShow=item.id" v-if="responseShow != item.id">查看回复</i>
+                    <div class="comment-time">{{ item.create_time }}</div>
+                    <i class="el-icon-s-comment" @click="responseShow=item.comment_id" v-if="responseShow != item.comment_id">查看回复</i>
                     <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
-                    <i class="el-icon-chat-round" @click="myresponseShow=item.id">回复</i>
-                    <div class="my_response" v-if="myresponseShow == item.id">
-                        <img :src="user.user_avatar">
+                    <i class="el-icon-chat-round" @click="myresponseShow=item.comment_id">回复</i>
+                    <div class="my_response" v-if="myresponseShow == item.comment_id">
+                        <img :src="user.user_url">
                         <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
                         <el-button class="comment-btn" type="primary">发送</el-button>
                         <i class="el-icon-arrow-up" @click="myresponseShow=0">收起</i>
                     </div>
-                    <div class="response" v-if="responseShow == item.id">
-                        <div class="comment-item" v-for="(res , index)in response" :key="index">
+                    <div class="response" v-if="responseShow == item.comment_id">
+                        <div class="comment-item" v-for="res in response">
                             <img :src="res.user_avatar" >
                             <div class="comment-content">
                                 <span class="content-username">{{ res.user_name }} 回复 {{ res.returned_name }}：</span>
@@ -88,7 +89,7 @@
                             <div class="comment-time">{{ res.time }}</div>
                             <i class="el-icon-chat-round" @click="myreplyShow = res.id">回复</i>
                             <div class="my_response" v-if="myreplyShow == res.id">
-                                <img :src="user.user_avatar">
+                                <img :src="user.user_url">
                                 <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
                                 <el-button class="comment-btn" type="primary">发送</el-button>
                                 <i class="el-icon-arrow-up" @click="myreplyShow=0">收起</i>
@@ -97,48 +98,48 @@
                     </div>
                 </div>
                 <el-pagination small layout="prev, pager, next" :total="50"></el-pagination>
-            </div>
+            </div>    
         </div>
     </div>
 </div>
 </template>
 
 <script>
-    import my_url from '../../assets/avatar.jpg'
-    import author_url from '../../assets/ray.jpg'
     import Nav from '../../components/navBar/nav'
+    import api from '../../api/article'
     export default {
         name: "articleDetail",
         data(){
             return {
                 responseShow: 0,
                 myresponseShow: 0,
-                myreplyShow: 0,
+                myreplyShow: 0, 
                 myresponse:'',
                 user: {
-                    user_avatar: my_url,
-                    user_name: 'isMe'
+                    // user_avatar: my_url,
+                    // user_name: 'isMe'
                 },
-                article: {
-                    id: 1,
-                    title: 'Vue.js新手入门指南',
-                    tags: ['其他','前端'],
-                    content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
-                    create_time: '2019年11月21日 15:31:32',
-                    img_url: 'https://pic1.zhimg.com/50/v2-3b25801a03a296c8c663e82eee8f9544_hd.jpg',
-                    comment_num: 1000,
-                    article_views: 1000000,
-                    star_accout: 5200,
-                    like_account: 520,
-                    user_name: 'author',
-                    user_avatar: author_url,
-                    user_article: 5,
-                    user_collection: 23,
-                    comments: [
-                        { id: 1, user_avatar: '', user_name: 'other', content:'嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。', time:'2016-05-25 11:36:00' },
-                        { id: 2, user_avatar: '', user_name: 'other', content:'嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。', time:'2016-05-25 11:36:00' }
-                    ]
+                article: { 
+                    // article_id: 1, 
+                    // title: 'Vue.js新手入门指南', 
+                    // type_id: ['其他','前端'],
+                    // content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
+                    // create_time: '2019年11月21日 15:31:32',
+                    // comment_num: 1000,
+                    // article_views: 1000000,
+                    // star_accout: 5200,
+                    // like_account: 520,
+                    // user_name: 'author',
+                    // user_avatar: author_url,
+                    // user_article: 5,
+                    // user_collection: 23,
+                    // comments: [
+                    //     { id: 1, user_avatar: '', user_name: 'other', content:'嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。', time:'2016-05-25 11:36:00' },
+                    //     { id: 2, user_avatar: '', user_name: 'other', content:'嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。', time:'2016-05-25 11:36:00' }
+                    // ]
                 },
+                comments: [],
+                comment_count:0,
                 response: [
                     { id: 1, user_avatar: '', user_name: 'otherother',  returned_name: 'other' , content:'闭麦', time:'2016-05-25 11:40:00' },
                     { id: 2, user_avatar: '', user_name: 'another',  returned_name: 'other' , content:'一天天的', time:'2016-05-25 11:41:00' }
@@ -159,7 +160,27 @@
             }
         },
         created(){
-
+            api.getDetailInfo(
+                {
+                article_id: 10001,
+                token:'123456'}
+            ).then(res => {
+                this.article = res.article;
+                this.user = res.user;
+                // console.log(this.article);
+                // console.log(this.user);                
+                console.log(this.$route.query.id);       
+            }),
+            api.getCommentInfo(
+                {
+                article_id: 10001,
+                token:'123456',
+                page:1}
+            ).then(res => {
+                this.comments = res.comment;
+                this.comment_count = res.comment_count;
+                // console.log(this.comments);
+            })
         },
         components: {
             Nav
@@ -235,6 +256,7 @@
         font-size: 15px;
         line-height: 1.5;
         word-break: break-word;
+        
         .article_time {
             margin: 10px;
             color:#909399;
@@ -398,7 +420,7 @@
                     height: 24px;
                     border: 1px solid #99999940;
                     border-radius: 2px;
-                }
+                }  
                 i {
                     font-size: 13px;
                     color: #8590a6;
@@ -455,7 +477,7 @@
                 border-bottom: 0;
                 border-top: 1px solid #f6f6f6;
                 margin-top: 10px;
-                padding-top: 10px;
+                padding-top: 10px; 
             }
             .comment-content {
                 width: 602px;

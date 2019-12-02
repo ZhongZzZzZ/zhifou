@@ -64,13 +64,11 @@
                             let file, formData;
                             input.onchange = function() {
                                 file = this.files[0];
-                                formData = new FormData();
                                 //假设接口接收参数为file,值为选中的文件
+                                formData = new FormData();
                                 formData.append('file', file);
                                 console.log(file);
                             }
-                            const media = 'data:media/mp4;base64,' + file.base64()
-                            cb(media)
                         }
                     }
                 }
