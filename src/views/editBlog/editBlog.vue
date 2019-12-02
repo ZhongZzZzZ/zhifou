@@ -1,7 +1,9 @@
 <template>
+
     <div>
         <Nav></Nav>
         <div class="main">
+<<<<<<< HEAD
             <textarea class="title" v-model="title" placeholder="请输入标题"></textarea>
             <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
             <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
@@ -9,8 +11,14 @@
             <div class="showcontent">{{ tinymceHtml }}</div>
             <div class="showcontent" v-html="tinymceHtml">
             </div>
+=======
+            <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit"></Editor>
+            <el-button @click="uploadImg">上传</el-button>
+            {{tinymceHtml}}
+>>>>>>> 1d8924b33faa17467f3c73e0d1c60cb8a73c1eab
         </div>
     </div>
+
 </template>
 
 <script>
@@ -27,7 +35,12 @@
     import 'tinymce/plugins/lists'
     import 'tinymce/plugins/contextmenu'
     import 'tinymce/plugins/wordcount'
+<<<<<<< HEAD
     import api from '../../api/article'
+=======
+    import 'tinymce/plugins/media'
+    import api from '../../api/user'
+>>>>>>> 1d8924b33faa17467f3c73e0d1c60cb8a73c1eab
     export default {
         props: {
             value: {
@@ -46,9 +59,9 @@
                     language: 'zh_CN',
                     skin_url: '/tinymce/skins/lightgray',
                     height: 600,
-                    plugins: 'link lists image media code table colorpicker textcolor wordcount contextmenu',
+                    plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu media ',
                     toolbar:
-                    'bold italic | fontsizeselect | bullist numlist | undo redo | image media link unlink code | removeformat',
+                    'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image code media | removeformat',
                     branding: false,
                     menubar: false,
                     resize:false,
@@ -61,6 +74,7 @@
                     maxSize: 2100000, // 文件大小2M
                     // 此处为图片上传处理函数
                     images_upload_handler: (blobInfo, success, failure) => {
+<<<<<<< HEAD
                         if (blobInfo.blob().size > this.maxSize) {
                             failure('图片大小不能超过2M') 
                         }
@@ -76,13 +90,24 @@
                         // const img = 'data:image/jpeg;base64,' + blobInfo.base64() // 地址
                         console.log(img);
                         success(img)
+=======
+                        // tinymce.get('tinymce').insertContent('<div style="max-width:250px;display: block;margin:0 auto;overflow: hidden;"></div>');
+                        var formdata = new FormData()
+                        formdata.append('photo',blobInfo.blob())
+                        formdata.append('token','123456')
+                        formdata.append('article_id','10001')
+                        api.uploadPhoto(formdata).then(res => success(res.photo_name))
+                        // console.log(formdata.get('photo'))
+                        // tinymce.get('tinymce').insertContent('<img style="max-width:250px;display: block;margin:0 auto;" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3620678974,412273927&fm=26&gp=0.jpg" >');
+
+>>>>>>> 1d8924b33faa17467f3c73e0d1c60cb8a73c1eab
                     },
                     file_picker_types: 'media',
                     file_picker_callback: function(cb, value, meta) {
                         if(meta.filetype == 'media') {
                             // 给input加accept属性来限制上传的文件类型
                             let input = document.createElement('input');
-                            input.setAttribute('type', 'file');
+                            input.setAttribute('type', 'file');0..
                             input.click();
                             let file, formData;
                             input.onchange = function() {
@@ -128,13 +153,18 @@
         mounted() {
             tinymce.init({})
         },
+        methods:{
+            uploadImg(){
+
+            }
+        },
         components: {Editor,Nav}
     }
 </script>
 
 <style lang="scss" scoped>
     .main{
-        width: 940px;
+        width: 70%;
         height: 1000px;
         margin: 10px auto;
         background-color: #fff;

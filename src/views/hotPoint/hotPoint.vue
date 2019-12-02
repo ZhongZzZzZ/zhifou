@@ -1,6 +1,6 @@
 <template>
     <div class="article_container">
-        <div v-for="(item,index) in result">
+        <div v-for="(item,index) in result" :key="index">
             <articleList :item="item"></articleList>
         </div>
         <pagination :total="result.length" @getNewList="getNewList"></pagination>

@@ -11,7 +11,7 @@
             </p>
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
-                <div class="article_picture" v-show="item.picture != ''">
+                <div class="article_picture" v-show="item.photo_url != null">
                     <img :src="item.photo_url" alt="" style="width: 250px" >
                 </div>
                 <p class="article_content" ><span @click="goArticle">{{item.simple_content}}</span>

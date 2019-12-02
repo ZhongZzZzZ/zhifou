@@ -29,6 +29,7 @@
                 </div>
                 <div class="side_bar_img" >
                     <img src="../../assets/advantage.png" alt="" class="advan_img">
+
                 </div>
             </div>
         </div>
@@ -37,7 +38,9 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
+
     import api from '../../api/article'
+
     export default {
         name: "index",
         data(){
