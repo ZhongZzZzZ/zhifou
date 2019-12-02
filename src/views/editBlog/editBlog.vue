@@ -67,35 +67,29 @@
                         if (blobInfo.blob().size > this.maxSize) {
                             failure('图片大小不能超过2M') 
                         }
-                        //console.log('未转码');
-                        // console.log(blobInfo.blob());
-                        let formData = new FormData();
+                        let formdata;
+                        formdata = new FormData();
                         formdata.append('photo',blobInfo.blob())
                         formdata.append('token','123456')
                         formdata.append('article_id','10001')
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
-                        //console.log('已转码');
-                        console.log(formData);
-                        
-                        // const img = 'data:image/jpeg;base64,' + blobInfo.base64() // 地址
-                        console.log(img);
-                        success(img)
+                        //success('');
                     },
                     file_picker_types: 'media',
                     file_picker_callback: function(cb, value, meta) {
                         if(meta.filetype == 'media') {
                             // 给input加accept属性来限制上传的文件类型
-                            let input = document.createElement('input');
-                            input.setAttribute('type', 'file');0..
-                            input.click();
-                            let file, formData;
-                            input.onchange = function() {
-                                file = this.files[0];
-                                //假设接口接收参数为file,值为选中的文件
-                                formData = new FormData();
-                                formData.append('file', file);
-                                console.log(file);
-                            }
+                            // let input = document.createElement('input');
+                            // input.setAttribute('type', 'file');0..
+                            // input.click();
+                            // let file, formData;
+                            // input.onchange = function() {
+                            //     file = this.files[0];
+                            //     //假设接口接收参数为file,值为选中的文件
+                            //     formData = new FormData();
+                            //     formData.append('file', file);
+                            //     console.log(file);
+                            // }
                         }
                     }
                 }
