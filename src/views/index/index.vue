@@ -14,7 +14,7 @@
             <div style="display: flex;flex-direction: column;">
                 <div class="side_bar" style="height: 80px">
                    <div class="slide_bar_item" @click="$router.push('/editBlog')"><p class="iconfont iconwenzhang1 icon_draft" ></p>写文章</div>
-                   <div class="slide_bar_item" ><p class="iconfont iconcaogaoxiang icon_draft" ></p>草稿箱</div>
+                   <div class="slide_bar_item" @click="$router.push('/draft')"><p class="iconfont iconcaogaoxiang icon_draft" ></p>草稿箱</div>
                 </div>
                 <div class="side_bar" style="top:172px">
                     <div class="slide_bar_item" @click="goToClass('1001')"><p class="iconfont iconWEBqianduan icon_fontend" ></p><span>前端</span></div>
@@ -38,9 +38,6 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
-
-    import api from '../../api/article'
-
     export default {
         name: "index",
         data(){

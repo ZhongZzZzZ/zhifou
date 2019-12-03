@@ -80,3 +80,10 @@
     background-color: #c6d7fe;
     border-color: #c6d7fe;
 }
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #8DAFFC;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #8DAFFC;
+    color: #fff;
+}

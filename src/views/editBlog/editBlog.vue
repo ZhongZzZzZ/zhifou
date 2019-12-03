@@ -3,7 +3,7 @@
     <div>
         <Nav></Nav>
         <div class="main">
-            <textarea class="title" v-model="title" placeholder="请输入标题"></textarea>
+            <textarea class="title" v-model="title" placeholder="请输入标题（不超过20个字）" maxlength="20"></textarea>
             <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
             <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
             <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft" plain>存入草稿箱</el-button>
@@ -51,17 +51,20 @@
                     height: 600,
                     plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu media ',
                     toolbar:
-                    'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image code media | removeformat',
+                    'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image media code | removeformat',
                     branding: false,
                     menubar: false,
                     resize:false,
                     content_style: ` 
                     * { padding:0; margin:0; }   
-                    img {max-width:90%; height:auto;}
+                    img {max-width:90%; height:auto; display:block;}
                     `,
                     paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传，非常强力的功能
                     image_dimensions: false, // 用户修改尺寸
                     maxSize: 2100000, // 文件大小2M
+                    media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
+                    media_alt_source: false, // 显示隐藏资源备用地址输入框
+                    media_dimensions: false, // 显示隐藏宽高尺寸输入框
                     // 此处为图片上传处理函数
                     images_upload_handler: (blobInfo, success, failure) => {
                         if (blobInfo.blob().size > this.maxSize) {
@@ -75,21 +78,35 @@
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
                         //success('');
                     },
+                    // video_template_callback: function(data) {
+                    //     return '<video width="' + data.width + '" height="' + data.height 
+                    //     + '"' + (data.poster ? ' poster="' + data.poster + '"' : '')
+                    //     + ' controls="controls">\n' + '<source src="' + data.source1 + '"' 
+                    //     + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' 
+                    //     + (data.source2 ? '<source src="' + data.source2 + '"' 
+                    //     + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') 
+                    //     + '</video>';
+                    // },
                     file_picker_types: 'media',
-                    file_picker_callback: function(cb, value, meta) {
+                    file_picker_callback: function(callback, value, meta) {
                         if(meta.filetype == 'media') {
                             // 给input加accept属性来限制上传的文件类型
-                            // let input = document.createElement('input');
-                            // input.setAttribute('type', 'file');0..
-                            // input.click();
-                            // let file, formData;
-                            // input.onchange = function() {
-                            //     file = this.files[0];
-                            //     //假设接口接收参数为file,值为选中的文件
-                            //     formData = new FormData();
-                            //     formData.append('file', file);
-                            //     console.log(file);
-                            // }
+                            let input = document.createElement('input');
+                            input.setAttribute('type', 'file');
+                            input.click();
+                            let file, formData;
+                            input.onchange = function() {
+                                file = this.files[0];
+                                //假设接口接收参数为file,值为选中的文件
+                                formData = new FormData();
+                                formData.append('photo', file);
+                                formData.append('token', '123456');
+                                formData.append('article_id', '10001');
+                                api.uploadPhoto(formData).then(res => {
+                                    callback(res.photo_name)
+                                })
+                                console.log(formData);
+                            }
                         }
                     }
                 }
@@ -101,6 +118,9 @@
             },
             draft() {
 
+            },
+            uploadImg(){
+
             }
         },
         watch: {
@@ -111,7 +131,6 @@
             tinymceHtml (newValue) {
                 if (newValue == '' || this.title == '') this.isNull = true;
                 else this.isNull = false;
-                
                 this.$emit('input', newValue)
             },
             title (newValue) {
@@ -120,16 +139,8 @@
                 this.title = newValue;
             }
         },
-        updated() {
-            $('.showcontent').find('img').css('max-width', '90%');
-        },
         mounted() {
             tinymce.init({})
-        },
-        methods:{
-            uploadImg(){
-
-            }
         },
         components: {Editor,Nav}
     }
@@ -137,8 +148,8 @@
 
 <style lang="scss" scoped>
     .main{
-        width: 70%;
-        height: 1000px;
+        width: 1000px;
+        // height: 1000px;
         margin: 10px auto;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
@@ -179,7 +190,8 @@
         margin-top: 30px;
     }
     .showcontent /deep/ img {
-        max-width:90%; 
-        height:auto;
+        max-width: 90%; 
+        height: auto;
+        display: block;
     }
 </style>

@@ -74,6 +74,11 @@ export const router = new Router({
             component:()=> import('../views/classification/classification')
         },
         {
+            path:'/draft',
+            name:'draft',
+            component:()=> import('../views/editBlog/draft')
+        },
+        {
             path:'*',
             component:()=> import('../views/404page/404page')
         }
