@@ -50,7 +50,7 @@
                 <span class="maintitle">评论</span>
                 <span>共有{{ comment_count }}条评论</span>
             </div>
-            <div class="my-comment" > 
+            <div class="my-comment" >
                 <img :src="user.user_url">
                 <textarea></textarea>
                 <div class="corr">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <el-pagination small layout="prev, pager, next" :total="50"></el-pagination>
-            </div>    
+            </div>
         </div>
     </div>
 </div>
@@ -113,15 +113,15 @@
             return {
                 responseShow: 0,
                 myresponseShow: 0,
-                myreplyShow: 0, 
+                myreplyShow: 0,
                 myresponse:'',
                 user: {
                     // user_avatar: my_url,
                     // user_name: 'isMe'
                 },
-                article: { 
-                    // article_id: 1, 
-                    // title: 'Vue.js新手入门指南', 
+                article: {
+                    // article_id: 1,
+                    // title: 'Vue.js新手入门指南',
                     // type_id: ['其他','前端'],
                     // content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
                     // create_time: '2019年11月21日 15:31:32',
@@ -165,11 +165,12 @@
                 article_id: 10001,
                 token:'123456'}
             ).then(res => {
+                console.log(res)
                 this.article = res.article;
                 this.user = res.user;
                 // console.log(this.article);
-                // console.log(this.user);                
-                console.log(this.$route.query.id);       
+                // console.log(this.user);
+                console.log(this.$route.query.id);
             }),
             api.getCommentInfo(
                 {
@@ -256,7 +257,7 @@
         font-size: 15px;
         line-height: 1.5;
         word-break: break-word;
-        
+
         .article_time {
             margin: 10px;
             color:#909399;
@@ -420,7 +421,7 @@
                     height: 24px;
                     border: 1px solid #99999940;
                     border-radius: 2px;
-                }  
+                }
                 i {
                     font-size: 13px;
                     color: #8590a6;
@@ -477,7 +478,7 @@
                 border-bottom: 0;
                 border-top: 1px solid #f6f6f6;
                 margin-top: 10px;
-                padding-top: 10px; 
+                padding-top: 10px;
             }
             .comment-content {
                 width: 602px;
