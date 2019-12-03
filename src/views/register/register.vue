@@ -115,16 +115,17 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
     .register_page{
         position: relative;
-        background-color: #eee;
+        background-image: url("http://pic.90sjimg.com/design/01/34/58/13/58dcfe0be8011.png") ;
+        background-size:100% 100%;
         width: 100%;
-        height:100%;
+        height: 100vh;
         .register_container{
-            background-color: #fff;
-            width: 600px;
-            height: 400px;
+            width: 500px;
+            background-color: rgba(38,38,38,0.35);
+            height: 350px;
             position: absolute;
             top:150px;
             left: 50%;
@@ -135,8 +136,11 @@
         .register_input{
             width: 350px;
             position: absolute;
-            left: 17%;
+            left: 10%;
             top:10%;
+            .el-form-item__label{
+                color:#fff;
+            }
             .register_verCode{
                 width: 120px;
             }

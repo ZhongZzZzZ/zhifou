@@ -7,23 +7,24 @@
                 <p class="article_time">{{item.create_time}}</p>
             </div>
             <p class="article_title">
-                <span @click="goArticle">{{item.title}}</span>
+                <span @click="goArticle(item.article_id)">{{item.title}}</span>
             </p>
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
-                <div class="article_picture" v-show="item.photo_url != null">
+                <div class="article_picture" @click="goArticle(item.article_id)" v-show="item.photo_url != null">
                     <img :src="item.photo_url" alt="" style="width: 250px" >
                 </div>
-                <p class="article_content" ><span @click="goArticle">{{item.simple_content}}</span>
-                    <span class="readMore" @click="readMore(index)">阅读全文></span>
+                <p class="article_content" ><span @click="goArticle(item.article_id)">{{item.simple_content | articleFilter}}</span>
+                    <span class="readMore" @click="readMore(item.article_id)">阅读全文 <span class="iconfont iconjiantouyou"></span></span>
                 </p>
             </div >
             <!--完整文章-->
             <div v-show="showAticle">
-                <img :src="item.picture" alt="">
-                <p class="article_content">{{item.content}}
-                <span class="readMore" @click="readMore(index)">收起Λ</span>
-                </p>
+                <div class="full_article" >
+                    <p v-html="FullArticle">
+                    </p>
+                    <span class="readMore" @click="hideFullArticle(index)">收起 <span class="iconfont iconjiantoushang"></span></span>
+                </div>
             </div>
             <!--展示评论-->
             <div v-for="comment in item.comment" v-show="showComment">
@@ -39,23 +40,26 @@
 </template>
 
 <script>
+    import api from '../../api/article'
     export default {
         name: "articleList",
         props:["item"],
         data(){
             return{
                 showAticle:false,
-                showComment:false
+                showComment:false,
+                FullArticle:''
             }
         },
         methods:{
-            readMore(index) {
+            readMore(id) {
+                api.getFullArticle({article_id:id,token:'123456'}).then(res => this.FullArticle = res.content)
                 this.showAticle = !this.showAticle
             },
-            goArticle(){
+            goArticle(id){
                 let routeUrl = this.$router.resolve({
                     path:'/articleDetail',
-                    query:{id:123456}
+                    query:{id:id}
                 })
                 window.open(routeUrl.href,"_blank")
             },
@@ -65,23 +69,18 @@
             addLikes(index){
                 this.item.isLike = !this.item.isLike
                 console.log('点赞成功')
+            },
+            hideFullArticle(){
+                this.showAticle = !this.showAticle
             }
         },
         computed:{
 
         },
         filters:{
-            // articleFilter(content){
-            //     if(content.length >=500){
-            //         return content.substring(0,100) + '...'
-            //     }else if(content.length<500 && content.length >=100){
-            //         let length = content.length * 0.3
-            //         return content.substring(0,length) + '...'
-            //     }else{
-            //         let length = content.length * 0.6
-            //         return content.substring(0,length) + '...'
-            //     }
-            // }
+            articleFilter(content){
+                return content + '...'
+            }
         }
     }
 </script>
@@ -128,7 +127,6 @@
         .readMore{
             color:#175199;
             font-weight: 600;
-
         }
     .article_picture{
         width: 190px;
@@ -151,7 +149,7 @@
         margin-bottom: 25px;
         font-size: 15px;
         display: inline-block;
-        margin-top: 10px;
+        margin-top: 0px;
         width: 600px;
         flex: 1;
         >span:hover{
@@ -160,6 +158,19 @@
         }
     }
     }
+     .full_article{
+         padding: 0px 15px 8px 15px;
+         position: relative;
+         .readMore{
+             color:#8590a6;
+             font-size: 16px;
+             font-weight:600;
+             cursor: pointer;
+             position: absolute;
+             right: 27px;
+             bottom: 0px;
+         }
+     }
     .common{
         color:#8590a6;
         margin: 0 15px;
@@ -168,7 +179,7 @@
         user-select: none;
     }
     .islike_active{
-        color: #ffa81c;
+        color: #ff6535;
         margin: 0 15px;
         cursor: pointer;
         font-size: 14px;

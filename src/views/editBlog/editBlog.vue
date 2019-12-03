@@ -55,9 +55,9 @@
                     branding: false,
                     menubar: false,
                     resize:false,
-                    content_style: ` 
-                    * { padding:0; margin:0; }   
-                    img {max-width:90%; height:auto; display:block;}
+                    content_style: `
+                    * { padding:0; margin:0; }
+                    img {max-width:50%; height:auto;margin:auto;display:block;}
                     `,
                     paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传，非常强力的功能
                     image_dimensions: false, // 用户修改尺寸
@@ -68,7 +68,7 @@
                     // 此处为图片上传处理函数
                     images_upload_handler: (blobInfo, success, failure) => {
                         if (blobInfo.blob().size > this.maxSize) {
-                            failure('图片大小不能超过2M') 
+                            failure('图片大小不能超过2M')
                         }
                         let formdata;
                         formdata = new FormData();
@@ -169,7 +169,7 @@
         box-shadow: none;
         resize: none;
         margin-bottom: 10px;
-       
+
     }
     .el-button {
         float: right;
@@ -183,7 +183,7 @@
     .draft_btn:hover {
         color: #8DAFFC !important;
         border-color: #8DAFFC !important;
-        background-color: #f4f7ff !important; 
+        background-color: #f4f7ff !important;
     }
     .showcontent {
         width: 940px;

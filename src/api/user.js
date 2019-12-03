@@ -4,7 +4,7 @@ export default {
   // 登录
   login (data) {
     return request({
-      url: '/login',
+      url: '/users/login',
       method: 'post',
       data
     })

@@ -24,5 +24,21 @@ export default {
             method:'post',
             data
         })
+    },
+    // 阅读文章全文
+    getFullArticle(data){
+        return request({
+            url:'/article/readFullArticle',
+            method:'post',
+            data
+        })
+    },
+    getQueryArticle(data){
+        return request({
+            url:'/article/queryArticleByTypeId',
+            method:'post',
+            data
+        })
+
     }
 }

@@ -1,3 +1,4 @@
+
 <template>
 <div>
     <Nav style="position:sticky;"></Nav>
@@ -135,6 +136,7 @@
         .title {
             font-size: 22px;
             font-weight: 600;
+            width: 75%;
         }
         .tags {
             margin: 10px 0px 20px 0px;
@@ -178,7 +180,7 @@
         font-size: 15px;
         line-height: 1.5;
         word-break: break-word;
-        
+
         .article_time {
             margin: 10px;
             color:#909399;
@@ -257,3 +259,4 @@
         padding: 50px 30px 40px 30px;
     }
 </style>
+>>>>>>> 269671b27c1a4630de789cda52ff649899e5ff38
