@@ -3,9 +3,13 @@
     <div>
         <Nav></Nav>
         <div class="main">
-            <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit"></Editor>
-            <el-button @click="uploadImg">上传</el-button>
-            {{tinymceHtml}}
+            <textarea class="title" v-model="title" placeholder="请输入标题"></textarea>
+            <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
+            <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
+            <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft" plain>存入草稿箱</el-button>
+            <div class="showcontent">{{ tinymceHtml }}</div>
+            <div class="showcontent" v-html="tinymceHtml">
+            </div>
         </div>
     </div>
 
@@ -28,10 +32,18 @@
     import 'tinymce/plugins/media'
     import api from '../../api/user'
     export default {
+        props: {
+            value: {
+                type: String,
+                default:''
+            }
+        },
         name: "editBlog",
         data () {
             return {
-                tinymceHtml:'请输入内容',
+                tinymceHtml: this.value,
+                title:'',
+                isNull: true,
                 editorInit: {
                     language_url: '/tinymce/zh_CN.js',
                     language: 'zh_CN',
@@ -42,37 +54,74 @@
                     'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image code media | removeformat',
                     branding: false,
                     menubar: false,
-                    // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片
+                    resize:false,
+                    content_style: `
+                    * { padding:0; margin:0; }
+                    img {max-width:50%; height:auto;margin:auto;display:block;}
+                    `,
+                    paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传，非常强力的功能
+                    image_dimensions: false, // 用户修改尺寸
+                    maxSize: 2100000, // 文件大小2M
+                    // 此处为图片上传处理函数
                     images_upload_handler: (blobInfo, success, failure) => {
-                        // tinymce.get('tinymce').insertContent('<div style="max-width:250px;display: block;margin:0 auto;overflow: hidden;"></div>');
-                        var formdata = new FormData()
+                        if (blobInfo.blob().size > this.maxSize) {
+                            failure('图片大小不能超过2M')
+                        }
+                        let formdata;
+                        formdata = new FormData();
                         formdata.append('photo',blobInfo.blob())
                         formdata.append('token','123456')
                         formdata.append('article_id','10001')
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
-                        // console.log(formdata.get('photo'))
-                        // tinymce.get('tinymce').insertContent('<img style="max-width:250px;display: block;margin:0 auto;" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3620678974,412273927&fm=26&gp=0.jpg" >');
-
+                        //success('');
                     },
                     file_picker_types: 'media',
                     file_picker_callback: function(cb, value, meta) {
                         if(meta.filetype == 'media') {
                             // 给input加accept属性来限制上传的文件类型
-                            let input = document.createElement('input');
-                            input.setAttribute('type', 'file');0..
-                            input.click();
-                            let file, formData;
-                            input.onchange = function() {
-                                file = this.files[0];
-                                //假设接口接收参数为file,值为选中的文件
-                                formData = new FormData();
-                                formData.append('file', file);
-                                console.log(file);
-                            }
+                            // let input = document.createElement('input');
+                            // input.setAttribute('type', 'file');0..
+                            // input.click();
+                            // let file, formData;
+                            // input.onchange = function() {
+                            //     file = this.files[0];
+                            //     //假设接口接收参数为file,值为选中的文件
+                            //     formData = new FormData();
+                            //     formData.append('file', file);
+                            //     console.log(file);
+                            // }
                         }
                     }
                 }
             }
+        },
+        methods: {
+            send() {
+
+            },
+            draft() {
+
+            }
+        },
+        watch: {
+            value (newValue) {
+                console.log(newValue);
+                this.tinymceHtml = newValue;
+            },
+            tinymceHtml (newValue) {
+                if (newValue == '' || this.title == '') this.isNull = true;
+                else this.isNull = false;
+
+                this.$emit('input', newValue)
+            },
+            title (newValue) {
+                if (newValue == '' || this.title == '') this.isNull = true;
+                else this.isNull = false;
+                this.title = newValue;
+            }
+        },
+        updated() {
+            $('.showcontent').find('img').css('max-width', '90%');
         },
         mounted() {
             tinymce.init({})
@@ -94,5 +143,43 @@
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
         padding: 50px 30px;
+    }
+    .title {
+        height: 44px;
+        display: block;
+        width: 100%;
+        border: 0;
+        font-family: 'Arial';
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1.4;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        resize: none;
+        margin-bottom: 10px;
+
+    }
+    .el-button {
+        float: right;
+        margin-top: 10px;
+    }
+    .draft_btn {
+        margin-right: 10px;
+        color: #8DAFFC;
+        border-color: #8DAFFC;
+    }
+    .draft_btn:hover {
+        color: #8DAFFC !important;
+        border-color: #8DAFFC !important;
+        background-color: #f4f7ff !important;
+    }
+    .showcontent {
+        width: 940px;
+        margin-top: 30px;
+    }
+    .showcontent /deep/ img {
+        max-width:90%;
+        height:auto;
     }
 </style>

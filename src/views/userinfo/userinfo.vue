@@ -122,6 +122,13 @@
                 position: absolute;
                 right: 0px;
                 bottom: 0px;
+                color: #8DAFFC;
+                border-color: #8DAFFC;
+            }
+            .edit_btn:hover {
+                color: #8DAFFC !important;
+                border-color: #8DAFFC !important;
+                background-color: #f4f7ff !important; 
             }
         }
     }

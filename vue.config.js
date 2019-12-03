@@ -30,6 +30,7 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://192.168.195.9:8888/zhifou',
+        // target: 'http://192.168.195.9:8123', // 这是登陆注册测试的接口
         changeOrigin: true,
         pathRewrite: {
           '^/api':''

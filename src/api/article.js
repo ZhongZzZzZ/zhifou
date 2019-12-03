@@ -20,9 +20,25 @@ export default {
     // 获取文章所有评论信息
     getCommentInfo(data) {
         return request({
-            url:'/article/queryComment',
+            url:'/comment/queryComment',
             method:'post',
             data
         })
+    },
+    // 阅读文章全文
+    getFullArticle(data){
+        return request({
+            url:'/article/readFullArticle',
+            method:'post',
+            data
+        })
+    },
+    getQueryArticle(data){
+        return request({
+            url:'/article/queryArticleByTypeId',
+            method:'post',
+            data
+        })
+
     }
 }

@@ -1,3 +1,4 @@
+
 <template>
 <div>
     <Nav style="position:sticky;"></Nav>
@@ -116,27 +117,10 @@
                 myreplyShow: 0,
                 myresponse:'',
                 user: {
-                    // user_avatar: my_url,
-                    // user_name: 'isMe'
+
                 },
                 article: {
-                    // article_id: 1,
-                    // title: 'Vue.js新手入门指南',
-                    // type_id: ['其他','前端'],
-                    // content:'最近在逛各大网站，论坛，以及像SegmentFault等编程问答社区，发现Vue.js异常火爆，重复性的提问和内容也很多，楼主自己也趁着这个大前端的热潮，着手学习了一段时间的Vue.js，目前用它正在做自己的结业项目。',
-                    // create_time: '2019年11月21日 15:31:32',
-                    // comment_num: 1000,
-                    // article_views: 1000000,
-                    // star_accout: 5200,
-                    // like_account: 520,
-                    // user_name: 'author',
-                    // user_avatar: author_url,
-                    // user_article: 5,
-                    // user_collection: 23,
-                    // comments: [
-                    //     { id: 1, user_avatar: '', user_name: 'other', content:'嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。', time:'2016-05-25 11:36:00' },
-                    //     { id: 2, user_avatar: '', user_name: 'other', content:'嗯嗯好好行行对对没错是的有理有据无法反驳会说话你就多说点宁太厉害了简直膜拜真情实感。', time:'2016-05-25 11:36:00' }
-                    // ]
+
                 },
                 comments: [],
                 comment_count:0,
@@ -160,24 +144,22 @@
             }
         },
         created(){
-            api.getDetailInfo(
-                {
-                article_id: 10001,
+            api.getDetailInfo({
+                article_id: this.$route.query.id,
                 token:'123456'}
             ).then(res => {
-                console.log(res)
                 this.article = res.article;
                 this.user = res.user;
                 // console.log(this.article);
                 // console.log(this.user);
-                console.log(this.$route.query.id);
+                // console.log(this.$route.query.id);
             }),
-            api.getCommentInfo(
-                {
-                article_id: 10001,
+            api.getCommentInfo({
+                article_id: this.$route.query.id,
                 token:'123456',
                 page:1}
             ).then(res => {
+                console.log(res);
                 this.comments = res.comment;
                 this.comment_count = res.comment_count;
                 // console.log(this.comments);
@@ -214,6 +196,7 @@
         .title {
             font-size: 22px;
             font-weight: 600;
+            width: 75%;
         }
         .tags {
             margin: 10px 0px 20px 0px;
@@ -493,3 +476,4 @@
         }
     }
 </style>
+>>>>>>> 269671b27c1a4630de789cda52ff649899e5ff38
