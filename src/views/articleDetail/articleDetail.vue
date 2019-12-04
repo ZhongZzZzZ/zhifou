@@ -8,9 +8,9 @@
             <div class="title">{{ article.title }}</div>
             <div class="tags"><el-tag>{{article.type_name}}</el-tag></div>
             <!-- 收藏功能未完成 -->
-            <el-button type="primary" icon="el-icon-star-on" @click="store">收藏</el-button>
+            <el-button type="primary" icon="el-icon-star-on" @click="store">{{ store_name }}</el-button>
             <el-button type="primary" icon="el-icon-edit" @click="jump">写评论</el-button>
-            <i class="el-icon-chat-line-square article_icon">{{ comment_count }}条评论</i>
+            <i class="el-icon-chat-line-square article_icon">{{ article.comment_count }}条评论</i>
             <div class="hot_info">
                 <div class="star_account">
                     <div class="hot_title">被收藏</div>
@@ -28,10 +28,10 @@
             <div class="article_content" v-html="article.content"></div>
             <!-- {{ article.content }} -->
             <div class="article_time">{{ article.create_time }}</div>
-            <i class="el-icon-chat-line-square article_icon">{{ comment_count }}条评论</i>
+            <i class="el-icon-chat-line-square article_icon">{{ article.comment_count }}条评论</i>
              <!-- 收藏点赞功能未完成 -->
-            <el-button type="primary" icon="el-icon-star-on" @click="store">收藏</el-button>
-            <el-button type="primary" class="like_btn" icon="el-icon-thumb" @click="point">点赞 {{article.point_count}}</el-button>
+            <el-button type="primary" icon="el-icon-star-on" @click="store">{{ store_name }}</el-button>
+            <el-button type="primary" class="like_btn" icon="el-icon-thumb" @click="point">{{ point_name }} {{article.point_count}}</el-button>
         </div>
 
         <!-- 作者 -->
@@ -72,7 +72,8 @@
             return {
                 user: {},
                 article: {},
-                comment_count: 0,
+                store_name: '',
+                point_name: ''
             }
         },
         methods: {
@@ -81,10 +82,12 @@
                 ele.scrollIntoView(true); // true 是默认的
             },
             store() { // 收藏
-
+                if(this.article.collect_flag) this.store_name = '取消收藏';
+                else this.store_name = '收藏';
             },
             point() { // 点赞
-
+                if(this.article.point_flag) this.point_name = '取消点赞';
+                else this.point_name = '点赞';
             },
             chat() { // 私信
                 this.$router.push('/message')
@@ -98,10 +101,13 @@
                 article_id: 10001,
                 token:'123456'}
             ).then(res => {
+                // console.log(res);
                 this.article = res.article;
                 this.user = res.user;
-                // console.log(this.article);               
-                // console.log(this.user);       
+                if(this.article.collect_flag) this.store_name = '取消收藏';
+                else this.store_name = '收藏';
+                if(this.article.point_flag) this.point_name = '取消点赞';
+                else this.point_name = '点赞';
             })
         },
         components: {
@@ -259,4 +265,3 @@
         padding: 50px 30px 40px 30px;
     }
 </style>
->>>>>>> 269671b27c1a4630de789cda52ff649899e5ff38

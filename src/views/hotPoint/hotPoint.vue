@@ -13,7 +13,6 @@
 </template>
 
 <script>
-    import avatar from '../../assets/avatar.jpg'
     import api from '../../api/article'
     import articleList from "../../components/articleList/articleList";
     import pagination from '../../components/pagination/pagination'
