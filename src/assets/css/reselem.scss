@@ -48,7 +48,10 @@
 }
 .el-radio__input.is-checked .el-radio__inner {
     border-color: #8DAFFC;
-    background-color: #8DAFFC;
+    background: #8DAFFC;
+}
+.el-radio.is-bordered.is-checked {
+    border-color: #8DAFFC;
 }
 .el-menu-item:focus, .el-menu-item:hover {
     background-color: #f4f7ff;

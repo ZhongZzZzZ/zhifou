@@ -4,6 +4,10 @@
         <Nav></Nav>
         <div class="main">
             <textarea class="title" v-model="title" placeholder="请输入标题（不超过20个字）" maxlength="20"></textarea>
+            <div class="tag_radio">
+                请选择一个分类：
+                <el-radio border v-for="item in tags" :key="item" :label="item.id" v-model="radio">{{ item.name }}</el-radio>
+            </div>
             <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
             <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
             <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft" plain>存入草稿箱</el-button>
@@ -44,6 +48,18 @@
                 tinymceHtml: this.value,
                 title:'',
                 isNull: true,
+                radio: 1009,
+                tags: [
+                    { id: 1001, name: '前端' },
+                    { id: 1002, name: '后端' },
+                    { id: 1003, name: '移动端' },
+                    { id: 1004, name: '服务器端' },
+                    { id: 1005, name: '运营' },
+                    { id: 1006, name: '产品' },
+                    { id: 1007, name: '测试' },
+                    { id: 1008, name: '设计' },
+                    { id: 1009, name: '其他' },
+                ],
                 editorInit: {
                     language_url: '/tinymce/zh_CN.js',
                     language: 'zh_CN',
@@ -147,8 +163,7 @@
 
 <style lang="scss" scoped>
     .main{
-        width: 1000px;
-        // height: 1000px;
+        width: 940px;
         margin: 10px auto;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
@@ -167,8 +182,32 @@
         -webkit-box-shadow: none;
         box-shadow: none;
         resize: none;
-        margin-bottom: 10px;
-
+    }
+    .tag_radio {
+        margin: 20px 0px;
+        font-size: 15px;
+        /deep/ .el-radio__inner {
+            border: 0;
+            width: 0;
+            height: 0;
+        }
+        /deep/ .el-radio__input {
+            height: 0;
+            line-height: unset;
+        }
+        .el-radio {
+            padding: 0px 15px;
+            height: 35px;
+            line-height: 35px;
+            margin-right: 0px;
+        }
+        /deep/ .el-radio__label {
+            padding: 0;
+            font-size: 15px;
+        }
+        .el-radio.is-bordered.is-checked {
+            background: #f4f7ff;
+        }
     }
     .el-button {
         float: right;

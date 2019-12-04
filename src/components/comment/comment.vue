@@ -34,11 +34,11 @@
                 <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
                 
                 <!-- 对评论的回复 -->
-                <i class="el-icon-chat-round" @click="replyComment(item.comment_id)">回复</i>
+                <i class="el-icon-chat-round" @click="myresponseShow = item.comment_id">回复</i>
                 <div class="my_response" v-if="myresponseShow == item.comment_id">
                     <img :src="user.user_url">
                     <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
-                    <el-button class="comment-btn" type="primary">发送</el-button>
+                    <el-button class="comment-btn" type="primary" @click="replyComment(item.comment_id, item.user_id)">发送</el-button>
                     <i class="el-icon-arrow-up" @click="myresponseShow=0">收起</i>
                 </div>
 
@@ -56,8 +56,8 @@
                         <!-- 对回复的回复 -->
                         <div class="my_response" v-if="myreplyShow == res.rely_id">
                             <img :src="user.user_url">
-                            <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
-                            <el-button class="comment-btn" type="primary">发送</el-button>
+                            <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myreplytoreply" maxlength="100" show-word-limit></el-input>
+                            <el-button class="comment-btn" type="primary" @click="replyreply(res.rely_id, res.to_user_id)">发送</el-button>
                             <i class="el-icon-arrow-up" @click="myreplyShow=0">收起</i>
                         </div>
                     </div>
@@ -83,13 +83,14 @@
                 myresponseShow: 0,
                 myreplyShow: 0, 
                 isNull: true,
-                myresponse:'',
+                mycomment:'', // 评论
+                myresponse:'', // 对评论的回复
+                myreplytoreply:'', // 对回复的回复
                 user: {},
                 comments: [],
                 comment_count: 0,
                 reply_count: 0,
                 response: [],
-                mycomment:''
             }
         },
         methods: {
@@ -138,18 +139,31 @@
                     this.reply_count = res.reply_count;
                 })
             },
-            replyComment(id) { // 对评论的回复
-                this.myresponseShow = id;
-                // commentApi.addComment({
-                //     article_id: 10001,
-                //     token:'123456',
-                //     comment_content: this.mycomment
-                // }).then(res => {
-                //     // console.log(res);
-                //     this.comments.unshift(res.comment[0]);
-                //     this.comment_count++;
-                //     this.mycomment = '';
-                // })
+            replyComment(comment_id,user_id) { // 对评论的回复
+                commentApi.addReplyToComment({
+                    comment_id: comment_id,
+                    token:'123456',
+                    reply_content: this.myresponse,
+                    from_user_id: user_id
+                }).then(res => {
+                    console.log(res);
+                    //this.comments.unshift(res.comment[0]);
+                    //this.comment_count++;
+                    this.myresponse = '';
+                })
+            },
+            replyreply(reply_id,user_id) {
+                commentApi.addReplyToReply({
+                    reply_id: reply_id,
+                    token:'123456',
+                    reply_content: this.myreplytoreply,
+                    from_user_id: user_id
+                }).then(res => {
+                    console.log(res);
+                    //this.comments.unshift(res.comment[0]);
+                    //this.comment_count++;
+                    this.myreplytoreply = '';
+                })
             }
         },
         watch: {
@@ -164,7 +178,7 @@
                 token:'123456',
                 page:1
             }).then(res => {
-                console.log(res.comment);
+                console.log(res);
                 this.comments = res.comment;
                 this.comment_count = res.comment_count;
             })
