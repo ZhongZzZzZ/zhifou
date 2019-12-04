@@ -76,15 +76,14 @@
                         formdata.append('token','123456')
                         formdata.append('article_id','10001')
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
-                        //success('');
                     },
                     // video_template_callback: function(data) {
-                    //     return '<video width="' + data.width + '" height="' + data.height 
+                    //     return '<video width="' + data.width + '" height="' + data.height
                     //     + '"' + (data.poster ? ' poster="' + data.poster + '"' : '')
-                    //     + ' controls="controls">\n' + '<source src="' + data.source1 + '"' 
-                    //     + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' 
-                    //     + (data.source2 ? '<source src="' + data.source2 + '"' 
-                    //     + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') 
+                    //     + ' controls="controls">\n' + '<source src="' + data.source1 + '"'
+                    //     + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n'
+                    //     + (data.source2 ? '<source src="' + data.source2 + '"'
+                    //     + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '')
                     //     + '</video>';
                     // },
                     file_picker_types: 'media',
@@ -190,7 +189,7 @@
         margin-top: 30px;
     }
     .showcontent /deep/ img {
-        max-width: 90%; 
+        max-width: 90%;
         height: auto;
         display: block;
     }

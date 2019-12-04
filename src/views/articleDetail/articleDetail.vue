@@ -95,13 +95,13 @@
         },
         created(){
             articleApi.getDetailInfo({
-                article_id: 10001,
+                article_id: this.$route.query.id,
                 token:'123456'}
             ).then(res => {
                 this.article = res.article;
                 this.user = res.user;
-                // console.log(this.article);               
-                // console.log(this.user);       
+                // console.log(this.article);
+                // console.log(this.user);
             })
         },
         components: {

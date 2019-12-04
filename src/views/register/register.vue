@@ -14,10 +14,10 @@
                 <el-form-item label="确认密码" prop="checkPass">
                     <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" prefix-icon="el-icon-link" show-password placeholder="再次输入密码"></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="verCode">
-                    <el-input v-model.trim="verCode" autocomplete="on" class="register_verCode" placeholder="验证码"></el-input>
-                    <el-button class="register_btn" type="primary" @click.native="sendCode" :disabled="sendflag">{{computedTime>0 ? `已发送${computedTime}s` : '发送验证码'}}</el-button>
-                </el-form-item>
+<!--                <el-form-item label="" prop="verCode">-->
+<!--                    <el-input v-model.trim="verCode" autocomplete="on" class="register_verCode" placeholder="验证码"></el-input>-->
+<!--                    <el-button class="register_btn" type="primary" @click.native="sendCode" :disabled="sendflag">{{computedTime>0 ? `已发送${computedTime}s` : '发送验证码'}}</el-button>-->
+<!--                </el-form-item>-->
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import api from '../../api/user'
     export default {
         name: "login",
         data() {
@@ -52,19 +53,20 @@
                     callback();
                 }
             };
-            var validatePass3 = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('请输入验证码'));
-                } else {
-                    callback();
-                }
-            };
+            // var validatePass3 = (rule, value, callback) => {
+            //     if (value === '') {
+            //         callback(new Error('请输入验证码'));
+            //     } else {
+            //         callback();
+            //     }
+            // };
             return {
                 ruleForm: {
                     pass: '',
-                    checkPass: '',
                     email: '',
+                    checkPass:'',
                 },
+
                 verCode:'',
                 sendflag:false,
                 computedTime:0,
@@ -76,9 +78,9 @@
                         { validator: validatePass2, trigger: 'blur' ,required: true}
                     ],
                     email: '',
-                    verCode:[{
-                        validator: validatePass3, trigger: 'blur' ,required: true
-                    }]
+                    // verCode:[{
+                    //     validator: validatePass3, trigger: 'blur' ,required: true
+                    // }]
                 }
             };
         },
@@ -86,7 +88,10 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        var formdata = new FormData();
+                        formdata.append('user_account',this.ruleForm.email)
+                        formdata.append('password',this.ruleForm.pass)
+                        api.register(formdata).then(res => console.log(res))
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -123,21 +128,21 @@
         width: 100%;
         height: 100vh;
         .register_container{
-            width: 500px;
+            width: 370px;
             background-color: rgba(38,38,38,0.35);
-            height: 350px;
+            height: 100vh;
             position: absolute;
-            top:150px;
-            left: 50%;
-            transform: translate(-50%,0);
+            top:0px;
+            left: 100%;
+            transform: translate(-100%,0);
             box-shadow: 0 0 10px 10px #f3f3f3;
-            border-radius: 8px;
+            /*border-radius: 8px;*/
         }
         .register_input{
             width: 350px;
             position: absolute;
-            left: 10%;
-            top:10%;
+            left: 0%;
+            top:35%;
             .el-form-item__label{
                 color:#fff;
             }

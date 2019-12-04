@@ -9,6 +9,13 @@ export default {
       data
     })
   },
+  register(data){
+    return request({
+      url:'/users/reg_demo',
+      method:'post',
+      data
+    })
+  },
   // 获取用户信息
   getUserInfo () {
     return request({

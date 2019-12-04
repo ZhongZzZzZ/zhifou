@@ -2,104 +2,20 @@
     <div>
         <Nav></Nav>
         <div class="class_container">
-
             <el-tabs v-model="activeName" @tab-click="handleClick(activeName)" stretch="true">
-                <el-tab-pane label="前端" name="1001">
+                <el-tab-pane v-for ="(tab,index) in tabItem" :label="tab.name" :name="tab.label" :key="index">
                     <el-radio-group v-model="order" @change="orderType" class="order_type">
                         <el-radio :label="0">按时间</el-radio>
                         <el-radio :label="1">按浏览量</el-radio>
                         <el-radio :label="2">按点赞数</el-radio>
                     </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page" class="pagination"></pagination>
                 </el-tab-pane>
-                <el-tab-pane label="后端" name="1002">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page" ></pagination>
-                </el-tab-pane>
-                <el-tab-pane label="移动端" name="1003">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination>
-                </el-tab-pane>
-                <el-tab-pane label="服务器" name="1004">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination>
-                </el-tab-pane>
-                <el-tab-pane label="运营" name="1005">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination></el-tab-pane>
-                <el-tab-pane label="产品" name="1006">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination></el-tab-pane>
-                <el-tab-pane label="测试" name="1007">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination></el-tab-pane>
-                <el-tab-pane label="设计" name="1008">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination></el-tab-pane>
-                <el-tab-pane label="其他" name="1009">
-                    <el-radio-group v-model="order" @change="orderType" class="order_type">
-                        <el-radio :label="0">按时间</el-radio>
-                        <el-radio :label="1">按浏览量</el-radio>
-                        <el-radio :label="2">按点赞数</el-radio>
-                    </el-radio-group>
-                    <div v-for="(item,index) in data" :key="index">
-                        <articleList :item="item"></articleList>
-                    </div>
-                    <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page"></pagination></el-tab-pane>
+                <div v-for="(item,index) in data" :key="index">
+                    <articleList :item="item"></articleList>
+                </div>
+                <div v-if="data.length ==0">当前分类没有信息哦</div>
+                <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page" class="pagination"></pagination>
             </el-tabs>
-        <div v-if="data.length ==0">当前分类没有信息哦</div>
         </div>
     </div>
 </template>
@@ -114,11 +30,21 @@
         data(){
           return{
               activeName: this.$route.query.id || '1001',
-              message:'',
               data:[],
               total:0,
               order:0,
-              params:{type_id:this.$route.query.id || '1001',page:1,token:'123456',order_type:this.order || 0,}
+              tabItem:[
+                  {label:'1001',name:'前端'},
+                  {label:'1002',name:'后端'},
+                  {label:'1003',name:'移动端'},
+                  {label:'1004',name:'服务器'},
+                  {label:'1005',name:'运营'},
+                  {label:'1006',name:'产品'},
+                  {label:'1007',name:'测试'},
+                  {label:'1008',name:'设计'},
+                  {label:'1009',name:'其他'},
+              ],
+              params:{type_id:this.$route.query.id || '1001',page:1,token:'123456',order_type:this.order || 0}
           }
         },
         created() {
@@ -144,7 +70,8 @@
             handleClick(val){
                 if(val != this.params.typeID){
                     this.params.page = 1
-                    this.message = val
+                    this.order = 0
+                    this.params.order_type = 0
                     this.params.type_id = val
                     this.querryList()
                 }
@@ -169,9 +96,6 @@
         right: 15px;
         padding-bottom: 15px;
         overflow: hidden;
-    }
-    .pagination{
-
     }
 }
 </style>
