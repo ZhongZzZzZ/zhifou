@@ -1,8 +1,7 @@
 <template>
-
     <div>
         <Nav></Nav>
-        <div class="main">
+        <div class="main" id="main">
             <textarea class="title" v-model="title" placeholder="请输入标题（不超过20个字）" maxlength="20"></textarea>
             <div class="tag_radio">
                 请选择一个分类：
@@ -14,9 +13,12 @@
             <div class="showcontent">{{ tinymceHtml }}</div>
             <div class="showcontent" v-html="tinymceHtml">
             </div>
+<!--            <video width="320" height="240" controls id="upvideo"  >-->
+<!--                <source id="source" src="" type="video/mp4">-->
+<!--            </video>-->
+            <img src="" id="img" alt="" crossorigin="anonymous"/>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -35,6 +37,7 @@
     import 'tinymce/plugins/wordcount'
     import 'tinymce/plugins/media'
     import api from '../../api/user'
+    import sp4 from '../../assets/dong77.mp4'
     export default {
         props: {
             value: {
@@ -118,9 +121,31 @@
                                 formData.append('token', '123456');
                                 formData.append('article_id', '10001');
                                 api.uploadPhoto(formData).then(res => {
+                                    var video = document.createElement('video')
+                                    video.src = sp4
+                                    video.width = 400,
+                                    video.height = 400,
+                                    video.crossorigin="anonymous"
+                                    console.log(video)
+                                    video.addEventListener('loadeddata',function () {
+                                        setTimeout(()=>{
+                                            let canvas = document.createElement('canvas')
+                                            var context = canvas.getContext('2d')
+                                            var width = this.width
+                                            var height = this.height
+                                            canvas.width = width
+                                            canvas.height = height
+                                            context.drawImage(video, 0, 0, width, height);
+                                            var image = new Image()
+                                            image.src = canvas.toDataURL('image/jpeg');
+                                            console.log(image)
+                                            document.getElementById('main').appendChild(image)
+                                            document.getElementById('main').appendChild(video)
+                                        },2000)
+                                    })
                                     callback(res.photo_name)
                                 })
-                                console.log(formData);
+
                             }
                         }
                     }
