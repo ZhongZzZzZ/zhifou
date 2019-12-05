@@ -29,11 +29,6 @@ export const router = new Router({
             component: ()=>import('../views/login/login')
         },
         {
-            path:'/interest',
-            name:'interest',
-            component: ()=>import('../views/interest/interest')
-        },
-        {
             path:'/register',
             name:'register',
             component: ()=>import('../views/register/register')

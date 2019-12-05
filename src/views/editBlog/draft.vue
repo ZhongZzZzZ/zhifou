@@ -2,19 +2,20 @@
     <div>
         <Nav style="position:sticky;"></Nav>
         <div class="main">
-            <div class="title">草稿箱</div>
+            <div class="title">草 稿 箱</div>
             <div class="article_box" v-for="item in articles" :key="item">
                 <div class="article_title">
                     {{ item.title }}
                     <span class="article_time">{{ item.create_time }}</span>
-                    <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id)" plain></el-button>
                 </div>
                 <img class="article_img" :src="item.photo_url" v-if="item.photo_url">
                 <div class="article_content">
                     <span>{{ item.simple_content }}</span>
-                </div>     
-                <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">编辑</el-button>
-                <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">删除</el-button>
+                </div>   
+                <div class="btn">
+                    <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
+                    <el-button type="primary" icon="el-icon-delete" @click="del">删除</el-button>
+                </div>  
             </div> 
         </div>
     </div>
@@ -40,7 +41,7 @@
                 },
                 { 
                     article_id: 2, 
-                    title: '草稿',
+                    title: '',
                     create_time:'2020年7月8号 15:20:30', 
                     simple_content: 'eeeehhhh', 
                     photo_url: '',
@@ -68,6 +69,13 @@
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
         padding: 50px 30px;
+    }
+    .title {
+        color: #8DAFFC;
+        font-size: 25px;
+        font-weight: 600;
+        padding-bottom: 10px; 
+        border-bottom: 2px solid #8DAFFC;;
     }
     .article_box {
         height: 185px;
@@ -107,9 +115,8 @@
                 -webkit-box-orient: vertical;
             }
         }
-        .el-button {
-            margin-left: 10px;
-            padding: 10px 10px;
+        .btn {
+            float: right;
         }
     }
     .article_box::after {

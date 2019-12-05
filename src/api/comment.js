@@ -12,7 +12,7 @@ export default {
     // 获取回复列表
     getReplyInfo(data) {
         return request({
-            url:'/comment/queryReply',
+            url:'/reply/queryReply',
             method:'post',
             data
         })
@@ -20,7 +20,7 @@ export default {
     // 对评论的回复
     addReplyToComment(data) {
         return request({
-            url:'/comment/addReplyToComment',
+            url:'/reply/addReplyToComment',
             method:'post',
             data
         })
@@ -28,9 +28,25 @@ export default {
     // 对回复的回复
     addReplyToReply(data) {
         return request({
-            url:'/comment/addReplyToReply',
+            url:'/reply/addReplyToReply',
             method:'post',
             data
         })
-    }
+    },
+    // 删除评论
+    deleteComment(data) {
+        return request({
+            url:'/comment/deleteComment',
+            method:'post',
+            data
+        })
+    },
+    // 删除回复
+    deleteReply(data) {
+        return request({
+            url:'/reply/deleteReply ',
+            method:'post',
+            data
+        })
+    },
 }

@@ -63,10 +63,9 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .main{
         width: 940px;
-        height: 1000px;
         margin: 10px auto;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
@@ -102,7 +101,7 @@
                 color: #8DAFFC;
                 border: 1px solid #8DAFFC;
             }
-            .el-badge__content {
+            /deep/ .el-badge__content {
                 background-color: #8DAFFC;
                 font-size: 6px;
                 height: 12px;
