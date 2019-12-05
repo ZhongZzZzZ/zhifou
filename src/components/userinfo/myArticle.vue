@@ -32,8 +32,7 @@
         },
         methods: {
             del(id) {
-
-                var item = this.articles.find(item => item.id == id);
+                var item = this.articles.find(item => item.article_id == id);
                 this.articles.splice(this.articles.indexOf(item), 1);
             },
             detail(id) {

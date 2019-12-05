@@ -34,14 +34,16 @@
                 <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
                 
                 <!-- 对评论的回复 -->
-                <i class="el-icon-chat-round" @click="myresponseShow = item.comment_id">回复</i>
+                <i class="el-icon-chat-round" @click="myresponseShow = item.comment_id" v-if="myresponseShow != item.comment_id">回复</i>
+                <i class="el-icon-chat-round" @click="myresponseShow=0;myresponse=''" v-else>取消回复</i>
+                <i class="el-icon-delete" @click="delcomment(item.comment_id)" v-if="item.user_id == user.user_id">删除</i>
+
                 <div class="my_response" v-if="myresponseShow == item.comment_id">
                     <img :src="user.user_url">
                     <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
                     <el-button class="comment-btn" type="primary" @click="replyComment(item.comment_id, item.user_id)">发送</el-button>
-                    <i class="el-icon-arrow-up" @click="myresponseShow=0">收起</i>
                 </div>
-
+                
                 <!-- 回复信息列表 -->
                 <div class="response" v-if="responseShow == item.comment_id">
                     <div class="comment-item" v-for="res in response" :key="res">
@@ -51,14 +53,14 @@
                             <span>{{ res.reply_content }}</span>
                         </div>
                         <div class="comment-time">{{ res.create_time }}</div>
-                        <i class="el-icon-chat-round" @click="myreplyShow = res.rely_id">回复</i>
-                        
+                        <i class="el-icon-chat-round" @click="myreplyShow = res.rely_id" v-if="myreplyShow != res.rely_id">回复</i>
+                        <i class="el-icon-chat-round" @click="myreplyShow=0;myreplytoreply=''" v-else>取消回复</i>
+                        <i class="el-icon-delete" @click="delreply(res.rely_id)" v-if="res.to_user_id == user.user_id">删除</i>
                         <!-- 对回复的回复 -->
                         <div class="my_response" v-if="myreplyShow == res.rely_id">
                             <img :src="user.user_url">
                             <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myreplytoreply" maxlength="100" show-word-limit></el-input>
                             <el-button class="comment-btn" type="primary" @click="replyreply(res.rely_id, res.to_user_id)">发送</el-button>
-                            <i class="el-icon-arrow-up" @click="myreplyShow=0">收起</i>
                         </div>
                     </div>
                     <el-pagination small layout="prev, pager, next" page-size="10" :total="reply_count" @current-change="currentChange(id)" > </el-pagination>
@@ -95,7 +97,7 @@
         },
         methods: {
             getNewList(val){ //评论的分页
-                articleApi.getCommentInfo({  // 获取评论列表
+                articleApi.getCommentInfo({  
                     article_id: 10001,
                     token:'123456',
                     page: val
@@ -129,12 +131,13 @@
             },
             reply(id) { // 获取回复列表信息
                 this.responseShow = id;
+                console.log(id);
                 commentApi.getReplyInfo({
                     comment_id: id,
                     token:'123456',
                     page: 1
                 }).then(res => {
-                    // console.log(res);
+                    console.log(res);
                     this.response = res.reply;
                     this.reply_count = res.reply_count;
                 })
@@ -147,12 +150,12 @@
                     from_user_id: user_id
                 }).then(res => {
                     console.log(res);
-                    //this.comments.unshift(res.comment[0]);
+                    this.response.unshift(res.reply_comment[0]);
                     //this.comment_count++;
                     this.myresponse = '';
                 })
             },
-            replyreply(reply_id,user_id) {
+            replyreply(reply_id,user_id) { // 对回复的回复
                 commentApi.addReplyToReply({
                     reply_id: reply_id,
                     token:'123456',
@@ -160,9 +163,29 @@
                     from_user_id: user_id
                 }).then(res => {
                     console.log(res);
-                    //this.comments.unshift(res.comment[0]);
+                    this.response.unshift(res.reply_reply[0]);
                     //this.comment_count++;
                     this.myreplytoreply = '';
+                })
+            },
+            delcomment(id) {
+                commentApi.deleteComment({  // 删除评论
+                    comment_id: id,
+                    token:'123456'
+                }).then(res => {
+                    console.log(res);
+                    let item = this.comments.find(item => item.comment_id == id);
+                    this.comments.splice(this.comments.indexOf(item), 1);
+                })
+            },
+            delreply(id) {
+                commentApi.deleteReply({  // 删除回复
+                    reply_id: id,
+                    token:'123456'
+                }).then(res => {
+                    // console.log(res);
+                    let item = this.response.find(item => item.rely_id == id);
+                    this.response.splice(this.response.indexOf(item), 1);
                 })
             }
         },
@@ -178,7 +201,9 @@
                 token:'123456',
                 page:1
             }).then(res => {
-                console.log(res);
+                // console.log(res);
+                this.user = res.loginuser;
+                this.user.user_id = 1001;
                 this.comments = res.comment;
                 this.comment_count = res.comment_count;
             })

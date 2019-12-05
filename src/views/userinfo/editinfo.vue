@@ -14,22 +14,22 @@
                 </el-upload>
                 <el-form  class="userinfo-form" ref="form" :model="form" label-width="50px">
                     <el-form-item label="昵称">
-                        <el-input v-model="form.username"></el-input>
+                        <el-input v-model="form.user_name"></el-input>
                     </el-form-item>
                     <el-form-item label="性别">
-                        <el-radio-group v-model="form.sex">
+                        <el-radio-group v-model="form.user_gender">
                             <el-radio label="男"></el-radio>
                             <el-radio label="女"></el-radio>
                         </el-radio-group>    
                     </el-form-item>
                     <el-form-item label="电话">
-                        <el-input v-model="form.phone"></el-input>
+                        <el-input v-model="form.user_phone"></el-input>
                     </el-form-item>
                     <el-form-item label="邮箱">
                         <el-input v-model="form.email"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="edit_btn" icon="el-icon-edit" @click="jump" plain>修改密码</el-button>
+                        <el-button class="edit_btn" icon="el-icon-edit" @click="jump">修改密码</el-button>
                         <el-button type="primary" @click="onSubmit">确定</el-button>
                         <el-button @click="back">取消</el-button>
                     </el-form-item>
@@ -47,11 +47,12 @@
         data(){
             return {
                  form: {
-                    id: 'S0000',
-                    username: 'LinhZ',
-                    phone: '158',
+                    user_id: 'S0000',
+                    user_name: 'LinhZ',
+                    user_url: imageUrl,
+                    user_phone: '158',
                     email: 'qq.com',
-                    sex: '女',
+                    user_gender: '女',
                 },
                 imageUrl: imgsrc,
             }
@@ -79,10 +80,16 @@
             },
             back() {
                 this.$router.back();
+            },
+            onSubmit() {
+                let formData = new FormData();
+                for ( let item in this.form) {
+                    formData.append(item, this.form[item]);
+                }
             }
         },
         created(){
-
+            
         },
         components: {
             Nav
@@ -90,10 +97,9 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .main{
         width: 940px;
-        height: 1000px;
         margin: 10px auto;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
@@ -101,7 +107,7 @@
     }
     .avatar-uploader{
         margin-bottom: 10px;
-        .el-upload {
+        /deep/ .el-upload {
             border: 2px solid #fff;
             border-radius: 6px;
             cursor: pointer;
