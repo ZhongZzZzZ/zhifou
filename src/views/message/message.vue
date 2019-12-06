@@ -61,10 +61,10 @@
                     name:'',
                     url:'',
                     message: [
-                        { role: 0, content: '在吗'}, // 0代表对方，1代表自己
-                        { role: 1, content: '在'},
-                        { role: 0, content: '有点事想找你帮忙'},
-                        { role: 1, content: '才怪，不在'},
+                        { role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'}, // 0代表对方，1代表自己
+                        { role: 1, content: '在',create_time: '2019年12月6日 5：22：57'},
+                        { role: 0, content: '有点事想找你帮忙',create_time: '2019年12月6日 5：23：57'},
+                        { role: 1, content: '才怪，不在', create_time: '2019年12月6日 5：24：57'},
                     ]
                 }
             };
@@ -81,10 +81,22 @@
                      role: 1, content: this.mymsg
                 })
                 this.mymsg = '';
+            },
+            scrollToBottom() {   // 滑动条保持在最下方
+                this.$nextTick(() => {
+                    var container = document.getElementsByClassName('chat_content');
+                    container[0].scrollTop = container[0].scrollHeight;
+                })
             }
         },
+        mounted() {
+            // this.scrollToBottom();
+        },
         created(){
-
+            
+        },
+        updated() {
+            this.scrollToBottom();
         },
         components: {
             Nav
@@ -132,7 +144,7 @@
         }
         .chat_content {
             height: 420px;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
         .chat_textbox {
             height: 230px;

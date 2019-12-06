@@ -1,5 +1,4 @@
 <template>
-
     <div>
         <Nav></Nav>
         <div class="main">
@@ -12,11 +11,10 @@
             <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
             <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft" plain>存入草稿箱</el-button>
             <div class="showcontent">{{ tinymceHtml }}</div>
-            <div class="showcontent" v-html="tinymceHtml">
-            </div>
+            <div class="showcontent" v-html="tinymceHtml"></div>
+            <div>{{ text }}</div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -49,6 +47,7 @@
                 title:'',
                 isNull: true,
                 radio: 1009,
+                text:'',
                 tags: [
                     { id: 1001, name: '前端' },
                     { id: 1002, name: '后端' },
@@ -75,7 +74,7 @@
                     * { padding:0; margin:0; }
                     img {max-width:50%; height:auto;margin:auto;display:block;}
                     `,
-                    paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传，非常强力的功能
+                    paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传
                     image_dimensions: false, // 用户修改尺寸
                     maxSize: 2100000, // 文件大小2M
                     media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
@@ -93,15 +92,6 @@
                         formdata.append('article_id','10001')
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
                     },
-                    // video_template_callback: function(data) {
-                    //     return '<video width="' + data.width + '" height="' + data.height
-                    //     + '"' + (data.poster ? ' poster="' + data.poster + '"' : '')
-                    //     + ' controls="controls">\n' + '<source src="' + data.source1 + '"'
-                    //     + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n'
-                    //     + (data.source2 ? '<source src="' + data.source2 + '"'
-                    //     + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '')
-                    //     + '</video>';
-                    // },
                     file_picker_types: 'media',
                     file_picker_callback: function(callback, value, meta) {
                         if(meta.filetype == 'media') {
@@ -120,16 +110,19 @@
                                 api.uploadPhoto(formData).then(res => {
                                     callback(res.photo_name)
                                 })
-                                console.log(formData);
                             }
                         }
-                    }
+                    },
                 }
             }
         },
         methods: {
             send() {
-
+                var activeEditor = tinymce.activeEditor;
+                var editBody = activeEditor.getBody();
+                activeEditor.selection.select(editBody);
+                this.text = activeEditor.selection.getContent( { 'format' : 'text' } );
+                console.log(this.text);
             },
             draft() {
 

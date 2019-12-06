@@ -42,14 +42,16 @@
 <script>
     import imgsrc from '../../assets/avatar.jpg'
     import Nav from '../../components/navBar/nav'
+    import api from '../../api/user'
     export default {
         name: "editinfo",
         data(){
             return {
                  form: {
+                    token: '123456',
                     user_id: 'S0000',
                     user_name: 'LinhZ',
-                    user_url: imageUrl,
+                    user_url: imgsrc,
                     user_phone: '158',
                     email: 'qq.com',
                     user_gender: '女',
@@ -86,6 +88,7 @@
                 for ( let item in this.form) {
                     formData.append(item, this.form[item]);
                 }
+                api.editUserInfo(formData).then(res => console.log(res));
             }
         },
         created(){

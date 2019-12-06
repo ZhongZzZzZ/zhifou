@@ -8,6 +8,7 @@
             </div>
             <p class="article_title">
                 <span @click="goArticle(item.article_id)">{{item.title}}</span>
+                <el-tag>{{item.type_name}}</el-tag>
             </p>
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
@@ -118,7 +119,10 @@
          cursor: pointer;
      }
     }
-
+    .el-tag {
+        margin-left: 5px;
+        font-weight: 400; 
+    }
     }
     .picture_content{
         display: flex;

@@ -3,20 +3,27 @@
         <Nav style="position:sticky;"></Nav>
         <div class="main">
             <div class="title">草 稿 箱</div>
-            <div class="article_box" v-for="item in articles" :key="item">
-                <div class="article_title">
-                    {{ item.title }}
-                    <span class="article_time">{{ item.create_time }}</span>
-                </div>
-                <img class="article_img" :src="item.photo_url" v-if="item.photo_url">
-                <div class="article_content">
-                    <span>{{ item.simple_content }}</span>
-                </div>   
-                <div class="btn">
-                    <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
-                    <el-button type="primary" icon="el-icon-delete" @click="del">删除</el-button>
-                </div>  
-            </div> 
+            <div v-if="articles.length">
+                <div class="article_box" v-for="item in articles" :key="item">
+                    <div class="article_title">
+                        {{ item.title }}
+                        <el-tag>{{item.type_name}}</el-tag>
+                        <span class="article_time">{{ item.create_time }}</span>
+                    </div>
+                    <img class="article_img" :src="item.photo_url" v-if="item.photo_url">
+                    <div class="article_content">
+                        <span>{{ item.simple_content }}</span>
+                    </div>   
+                    <div class="btn">
+                        <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
+                        <el-button type="danger" icon="el-icon-delete" @click="del">删除</el-button>
+                    </div>  
+                </div> 
+            </div>
+            <div class="nulldraft" v-else>
+                很干净！赶紧去发布文章吧！
+                <el-button class="edit_btn" @click="$router.push('/editBlog')" plain>去发布</el-button>
+            </div>
         </div>
     </div>
 </template>
@@ -32,20 +39,23 @@
                 user:{
 
                 },
-                articles: [{ 
-                    article_id: 1, 
-                    title: '草稿',
-                    create_time:'2020年7月8号 15:20:30', 
-                    simple_content: 'eeeehhhh', 
-                    photo_url: '',
-                },
-                { 
-                    article_id: 2, 
-                    title: '',
-                    create_time:'2020年7月8号 15:20:30', 
-                    simple_content: 'eeeehhhh', 
-                    photo_url: '',
-                }]
+                // articles: [{ 
+                //     article_id: 1, 
+                //     title: '草稿',
+                //     create_time:'2020年7月8号 15:20:30', 
+                //     simple_content: '无', 
+                //     photo_url: '',
+                //     type_name: '前端'
+                // },
+                // { 
+                //     article_id: 2, 
+                //     title: '无标题',
+                //     create_time:'2020年7月8号 15:20:30', 
+                //     simple_content: 'eeeehhhh', 
+                //     photo_url: '',
+                //     type_name: '其他'
+                // }]
+                articles: []
             }
         },
         components: {
@@ -78,8 +88,8 @@
         border-bottom: 2px solid #8DAFFC;;
     }
     .article_box {
-        height: 185px;
-        padding: 20px 20px;
+        padding: 20px;
+        padding-bottom: 50px;
         position: relative;
         .article_title {
             height: 30px;
@@ -92,6 +102,10 @@
             font-size: 14px;
             color: #909399;
             vertical-align: bottom;
+            float: right;
+        }
+        .el-tag {
+            font-weight: 400;
         }
         .del_btn {
             float: right;
@@ -103,7 +117,6 @@
             margin-right: 20px;
         }
         .article_content {
-            height: 120px;
             vertical-align: top;
             font-size: 15px;
             line-height: 30px;
@@ -127,5 +140,21 @@
         bottom: 0;
         height: 1px;
         background-color: #f7f8fa;
+    }
+    .nulldraft {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #999;
+        .edit_btn {
+            font-size: 12px;
+            padding: 5px;
+            color: #8DAFFC;
+            border-color: #8DAFFC;
+        }
+        .edit_btn:hover {
+            color: #8DAFFC !important;
+            border-color: #8DAFFC !important;
+            background-color: #f4f7ff !important; 
+        }
     }
 </style>

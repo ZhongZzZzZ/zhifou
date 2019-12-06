@@ -48,6 +48,14 @@ export default {
       data
     })
   },
+  // 修改用户信息
+  editUserInfo(data) {
+    return request({
+      url: '/users/update',
+      method: 'post',
+      data
+    })
+  },
   // getIndexInfo(){
   //   return request({
   //     url:'/article/test',

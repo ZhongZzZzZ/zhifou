@@ -34,8 +34,8 @@
                 <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
                 
                 <!-- 对评论的回复 -->
-                <i class="el-icon-chat-round" @click="myresponseShow = item.comment_id" v-if="myresponseShow != item.comment_id">回复</i>
-                <i class="el-icon-chat-round" @click="myresponseShow=0;myresponse=''" v-else>取消回复</i>
+                <i class="el-icon-chat-round" @click="myresponse='',myresponseShow = item.comment_id" v-if="myresponseShow != item.comment_id">回复</i>
+                <i class="el-icon-chat-round" @click="myresponseShow=0" v-else>取消回复</i>
                 <i class="el-icon-delete" @click="delcomment(item.comment_id)" v-if="item.user_id == user.user_id">删除</i>
 
                 <div class="my_response" v-if="myresponseShow == item.comment_id">
@@ -53,14 +53,14 @@
                             <span>{{ res.reply_content }}</span>
                         </div>
                         <div class="comment-time">{{ res.create_time }}</div>
-                        <i class="el-icon-chat-round" @click="myreplyShow = res.rely_id" v-if="myreplyShow != res.rely_id">回复</i>
-                        <i class="el-icon-chat-round" @click="myreplyShow=0;myreplytoreply=''" v-else>取消回复</i>
-                        <i class="el-icon-delete" @click="delreply(res.rely_id)" v-if="res.to_user_id == user.user_id">删除</i>
+                        <i class="el-icon-chat-round" @click="myreplytoreply='',myreplyShow = res.reply_id" v-if="myreplyShow != res.reply_id">回复</i>
+                        <i class="el-icon-chat-round" @click="myreplyShow=0" v-else>取消回复</i>
+                        <i class="el-icon-delete" @click="delreply(res.reply_id)" v-if="res.to_user_id == user.user_id">删除</i>
                         <!-- 对回复的回复 -->
-                        <div class="my_response" v-if="myreplyShow == res.rely_id">
+                        <div class="my_response" v-if="myreplyShow == res.reply_id">
                             <img :src="user.user_url">
                             <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myreplytoreply" maxlength="100" show-word-limit></el-input>
-                            <el-button class="comment-btn" type="primary" @click="replyreply(res.rely_id, res.to_user_id)">发送</el-button>
+                            <el-button class="comment-btn" type="primary" @click="replyreply(res.reply_id, res.to_user_id)">发送</el-button>
                         </div>
                     </div>
                     <el-pagination small layout="prev, pager, next" page-size="10" :total="reply_count" @current-change="currentChange(id)" > </el-pagination>
@@ -131,13 +131,12 @@
             },
             reply(id) { // 获取回复列表信息
                 this.responseShow = id;
-                console.log(id);
                 commentApi.getReplyInfo({
                     comment_id: id,
                     token:'123456',
                     page: 1
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.response = res.reply;
                     this.reply_count = res.reply_count;
                 })
@@ -149,7 +148,7 @@
                     reply_content: this.myresponse,
                     from_user_id: user_id
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.response.unshift(res.reply_comment[0]);
                     //this.comment_count++;
                     this.myresponse = '';
@@ -164,7 +163,6 @@
                 }).then(res => {
                     console.log(res);
                     this.response.unshift(res.reply_reply[0]);
-                    //this.comment_count++;
                     this.myreplytoreply = '';
                 })
             },
@@ -172,8 +170,7 @@
                 commentApi.deleteComment({  // 删除评论
                     comment_id: id,
                     token:'123456'
-                }).then(res => {
-                    console.log(res);
+                }).then(() => {
                     let item = this.comments.find(item => item.comment_id == id);
                     this.comments.splice(this.comments.indexOf(item), 1);
                 })
@@ -182,9 +179,8 @@
                 commentApi.deleteReply({  // 删除回复
                     reply_id: id,
                     token:'123456'
-                }).then(res => {
-                    // console.log(res);
-                    let item = this.response.find(item => item.rely_id == id);
+                }).then(() => {
+                    let item = this.response.find(item => item.reply_id == id);
                     this.response.splice(this.response.indexOf(item), 1);
                 })
             }

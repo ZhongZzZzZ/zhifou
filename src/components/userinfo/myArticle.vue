@@ -3,6 +3,7 @@
         <div class="article_box" v-for="item in articles" :key="item">
             <div class="article_title">
                 {{ item.title }}
+                <el-tag>{{item.type_name}}</el-tag>
                 <span class="article_time">{{ item.create_time }}</span>
                 <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id)" plain></el-button>
             </div>
@@ -49,7 +50,8 @@
                 token:'123456',
                 page:1
             }).then(res => {
-                //console.log(res);
+                console.log(res);
+
                 this.articles = res.article;                  
             })
         }
@@ -75,6 +77,9 @@
         }
         .del_btn {
             float: right;
+        }
+        .del_btn:hover {
+            color: #fff;
         }
         .article_img {
             width: 200px;
