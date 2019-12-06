@@ -13,9 +13,6 @@
             <div class="showcontent">{{ tinymceHtml }}</div>
             <div class="showcontent" v-html="tinymceHtml">
             </div>
-<!--            <video width="320" height="240" controls id="upvideo"  >-->
-<!--                <source id="source" src="" type="video/mp4">-->
-<!--            </video>-->
             <img src="" id="img" alt="" crossorigin="anonymous"/>
         </div>
     </div>
@@ -37,7 +34,6 @@
     import 'tinymce/plugins/wordcount'
     import 'tinymce/plugins/media'
     import api from '../../api/user'
-    import sp4 from '../../assets/dong77.mp4'
     export default {
         props: {
             value: {
@@ -114,38 +110,25 @@
                             input.click();
                             let file, formData;
                             input.onchange = function() {
-                                file = this.files[0];
-                                //假设接口接收参数为file,值为选中的文件
-                                formData = new FormData();
-                                formData.append('photo', file);
-                                formData.append('token', '123456');
-                                formData.append('article_id', '10001');
-                                api.uploadPhoto(formData).then(res => {
-                                    var video = document.createElement('video')
-                                    video.src = sp4
-                                    video.width = 400,
-                                    video.height = 400,
-                                    video.crossorigin="anonymous"
-                                    console.log(video)
-                                    video.addEventListener('loadeddata',function () {
-                                        setTimeout(()=>{
-                                            let canvas = document.createElement('canvas')
-                                            var context = canvas.getContext('2d')
-                                            var width = this.width
-                                            var height = this.height
-                                            canvas.width = width
-                                            canvas.height = height
-                                            context.drawImage(video, 0, 0, width, height);
-                                            var image = new Image()
-                                            image.src = canvas.toDataURL('image/jpeg');
-                                            console.log(image)
-                                            document.getElementById('main').appendChild(image)
-                                            document.getElementById('main').appendChild(video)
-                                        },2000)
-                                    })
-                                    callback(res.photo_name)
-                                })
-
+                                    file = this.files[0];
+                                var fileSize = (file.size / 1024/1024).toFixed(0)
+                                var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
+                                console.log(fileType)
+                                if(fileType != 'mp4'){
+                                    alert('上传视频格式只能为MP4~')
+                                    return false
+                                }else if(fileSize > 30) {
+                                    alert('上传视频不能超过30M~')
+                                    return false
+                                }else {
+                                    //假设接口接收参数为file,值为选中的文件
+                                    formData = new FormData();
+                                    formData.append('photo', file);
+                                    formData.append('token', '123456');
+                                    formData.append('article_id', '10001');
+                                    api.uploadPhoto(formData).then(res => {
+                                    callback(res.photo_name) })
+                                  }
                             }
                         }
                     }

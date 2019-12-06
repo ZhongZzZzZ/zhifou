@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../config/index' // 路径配置
-
+import Message from "element-ui/packages/message/src/main";
 // 创建axios 实例
 const service = axios.create({
     baseURL: config.baseURL, // api的base_url
@@ -16,7 +16,10 @@ service.interceptors.request.use(
     },
     error => {
         //  这里处理一些请求出错的情况
-
+        Message.error({
+            message:'网络错误',
+            type:'error'
+        })
         Promise.reject(error)
     }
 )
@@ -31,8 +34,12 @@ service.interceptors.response.use(
     },
     error => {
         // 这里处理一些response 出错时的逻辑
-
-        return Promise.reject(error)
+        if(error.response.status === 500){
+           Message.error({
+                message:'服务器错误',
+                type:'error'
+            })
+        }
     }
 )
 
