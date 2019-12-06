@@ -33,12 +33,44 @@ export default {
             data
         })
     },
+    //根据分类查询文章接口
     getQueryArticle(data){
         return request({
             url:'/article/queryArticleByTypeId',
             method:'post',
             data
         })
-
+    },
+    //进入页面生成文章ID
+    createArticleId(data){
+        return request({
+            url:'/article/createArticleId',
+            method:'post',
+            data
+        })
+    },
+    //发布文章或者保存到草稿
+    saveArticle(data){
+        return request({
+            url:'/article/saveArticle',
+            method:'post',
+            data
+        })
+    },
+    //获取草稿箱文章
+    getDraftArticle(data){
+        return request({
+            url:'/article/queryDraftBox',
+            method:'post',
+            data
+        })
+    },
+    //删除文章接口
+    delArticle(data){
+        return request({
+            url:'/article/delArticleOrDraft',
+            method:'post',
+            data
+        })
     }
 }

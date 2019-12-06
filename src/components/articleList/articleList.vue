@@ -8,12 +8,12 @@
             </div>
             <p class="article_title">
                 <span @click="goArticle(item.article_id)">{{item.title}}</span>
-                <el-tag>{{item.type_name}}</el-tag>
+                <el-tag style="float: right" v-if="item.type_name">{{item.type_name}}</el-tag>
             </p>
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
                 <div class="article_picture" @click="goArticle(item.article_id)" v-show="item.photo_url != null">
-<!--                    <span class="iconfont iconjiantouyou" style="font-size: 24px;color:#eee;border-radius:50%;border:3px solid #eee;position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);z-index: 999;"></span>-->
+                    <span class="iconfont iconbofang video_play" v-if="item.photo_flag == 3"></span>
                     <img :src="item.photo_url" alt="" style="width: 250px" >
                 </div>
                 <p class="article_content" ><span @click="goArticle(item.article_id)">{{item.simple_content | articleFilter}}</span>
@@ -29,13 +29,13 @@
                 </div>
             </div>
             <!--展示评论-->
-            <div v-for="comment in item.comment" v-show="showComment">
-                 <p>{{comment}}</p>
-            </div>
-            <span class="iconfont iconpinglun common" @click="openComment">{{item.comment_count}}条评论</span>
+            <span class="iconfont iconpinglun common" @click="openComment(item.article_id)">{{!showComment ? item.comment_count + '条': '收起'}}评论</span>
             <span class="iconfont iconxingxing common">收藏</span>
-            <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes">{{item.point_count}}个点赞</span>
+            <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes()">{{item.point_count}}个点赞</span>
             <span class="common page_view" >{{item.page_view}}阅读数</span>
+            <div v-if="showComment" class="showComment">
+                <comment :article_id="article_id"></comment>
+            </div>
             <el-divider></el-divider>
         </div>
     </div>
@@ -43,6 +43,7 @@
 
 <script>
     import api from '../../api/article'
+    import comment from "../../components/comment/comment";
     export default {
         name: "articleList",
         props:["item"],
@@ -50,7 +51,8 @@
             return{
                 showAticle:false,
                 showComment:false,
-                FullArticle:''
+                FullArticle:'',
+                article_id:''
             }
         },
         methods:{
@@ -65,11 +67,13 @@
                 })
                 window.open(routeUrl.href,"_blank")
             },
-            openComment(){
+            openComment(id){
+                this.article_id = id
+                console.log(this.article_id)
                 this.showComment = ! this.showComment
             },
-            addLikes(index){
-                this.item.isLike = !this.item.isLike
+            addLikes(){
+                this.item.point_flag = !this.item.point_flag
                 console.log('点赞成功')
             },
             hideFullArticle(){
@@ -83,6 +87,9 @@
             articleFilter(content){
                 return content + '...'
             }
+        },
+        components:{
+            comment
         }
     }
 </script>
@@ -122,7 +129,7 @@
     }
     .el-tag {
         margin-left: 5px;
-        font-weight: 400; 
+        font-weight: 400;
     }
     }
     .picture_content{
@@ -148,6 +155,15 @@
             left:50%;
             transform: translate(-50%,-50%);
             user-select: none
+        }
+        .video_play{
+            font-size: 40px;
+            border-radius:50%;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            z-index: 1;
         }
     }
     .article_content{
@@ -195,5 +211,9 @@
         margin-right: 25px;
         cursor: auto;
     }
+     .showComment{
+         padding:15px;
+         margin-bottom: 25px ;
+     }
     }
 </style>

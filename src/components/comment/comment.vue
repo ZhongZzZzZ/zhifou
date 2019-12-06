@@ -8,7 +8,7 @@
         <!-- 发表评论 -->
         <div class="my-comment" >
             <img :src="user.user_url">
-            <textarea v-model="mycomment"></textarea>
+            <textarea v-model="mycomment" maxlength="100" ></textarea>
             <div class="corr">
                 <em class="arrline">◆</em>
                 <span class="arrclr">◆</span>
@@ -95,10 +95,11 @@
                 response: [],
             }
         },
+        props:['article_id'],
         methods: {
             getNewList(val){ //评论的分页
                 articleApi.getCommentInfo({
-                    article_id: 10001,
+                    article_id: this.$route.query.id || this.article_id,
                     token:'123456',
                     page: val
                 }).then(res => {
@@ -119,7 +120,7 @@
             },
             comment() { // 发表评论
                 commentApi.addComment({
-                    article_id: 10001,
+                    article_id: this.$route.query.id || this.article_id,
                     token:'123456',
                     comment_content: this.mycomment
                 }).then(res => {
@@ -193,7 +194,7 @@
         },
         created(){
             articleApi.getCommentInfo({  // 获取评论列表
-                article_id: 10001,
+                article_id: this.$route.query.id || this.article_id,
                 token:'123456',
                 page:1
             }).then(res => {

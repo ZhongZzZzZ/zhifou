@@ -53,7 +53,6 @@
                 <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="chat">私信</el-button>
             </div>
         </div>
-
         <!-- 评论 -->
         <div class="comment_main" id="comment">
             <comment></comment>
@@ -104,10 +103,8 @@
                 // console.log(res);
                 this.article = res.article;
                 this.user = res.user;
-
                 // console.log(this.article);
                 // console.log(this.user);
-
                 if(this.article.collect_flag) this.store_name = '取消收藏';
                 else this.store_name = '收藏';
                 if(this.article.point_flag) this.point_name = '取消点赞';

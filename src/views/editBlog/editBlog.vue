@@ -8,12 +8,11 @@
                 <el-radio border v-for="item in tags" :key="item" :label="item.id" v-model="radio">{{ item.name }}</el-radio>
             </div>
             <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
-            <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
-            <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft" plain>存入草稿箱</el-button>
-            <div class="showcontent">{{ tinymceHtml }}</div>
+            <el-button type="primary" icon="el-icon-s-promotion" @click="send(1)" :disabled="isNull">发布</el-button>
+            <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft(0)" plain>存入草稿箱</el-button>
+            <h1 style="text-align: center">预览页面</h1>
             <div class="showcontent" v-html="tinymceHtml">
             </div>
-            <img src="" id="img" alt="" crossorigin="anonymous"/>
         </div>
     </div>
 </template>
@@ -34,6 +33,8 @@
     import 'tinymce/plugins/wordcount'
     import 'tinymce/plugins/media'
     import api from '../../api/user'
+    import articleApi from '../../api/article'
+    import Message from "element-ui/packages/message/src/main";
     export default {
         props: {
             value: {
@@ -49,6 +50,7 @@
                 isNull: true,
                 radio: 1009,
                 text:'',
+                article_id:'',
                 tags: [
                     { id: 1001, name: '前端' },
                     { id: 1002, name: '后端' },
@@ -90,7 +92,7 @@
                         formdata = new FormData();
                         formdata.append('photo',blobInfo.blob())
                         formdata.append('token','123456')
-                        formdata.append('article_id','10001')
+                        formdata.append('article_id',this.article_id)
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
                     },
                     file_picker_types: 'media',
@@ -107,17 +109,19 @@
                                 var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
                                 console.log(fileType)
                                 if(fileType != 'mp4'){
-                                    alert('上传视频格式只能为MP4~')
+                                    Message.error('上传视频格式只能为MP4~')
+                                    // alert('上传视频格式只能为MP4~')
                                     return false
                                 }else if(fileSize > 30) {
-                                    alert('上传视频不能超过30M~')
+                                    Message.error('上传视频不能超过30M~')
+                                    // alert('上传视频不能超过30M~')
                                     return false
                                 }else {
                                     //假设接口接收参数为file,值为选中的文件
                                     formData = new FormData();
                                     formData.append('photo', file);
                                     formData.append('token', '123456');
-                                    formData.append('article_id', '10001');
+                                    formData.append('article_id', '10016');
                                     api.uploadPhoto(formData).then(res => {
                                     callback(res.photo_name) })
                                   }
@@ -128,15 +132,32 @@
             }
         },
         methods: {
-            send() {
-                var activeEditor = tinymce.activeEditor;
-                var editBody = activeEditor.getBody();
-                activeEditor.selection.select(editBody);
-                this.text = activeEditor.selection.getContent( { 'format' : 'text' } );
-                console.log(this.text);
+            saveArticle(val){
+                articleApi.saveArticle({
+                    token:'123456',
+                    article_id:this.article_id,
+                    title:this.title,
+                    content:this.tinymceHtml,
+                    type_id: this.radio,
+                    flag:val
+                }).then(Message.success('发布成功'),
+                    this.$router.push({path:'/hotPoint'})
+                ).catch(
+                    Message.error('发送失败')
+                )
             },
-            draft() {
+            send(val) {
+                var flag;
+                // var activeEditor = tinymce.activeEditor;
+                // var editBody = activeEditor.getBody();
+                // activeEditor.selection.select(editBody);
+                // this.text = activeEditor.selection.getContent( { 'format' : 'text' } );
+                // console.log(this.text);
+                this.saveArticle(val)
 
+            },
+            draft(val) {
+                this.saveArticle(val)
             },
             uploadImg(){
 
@@ -157,6 +178,9 @@
                 else this.isNull = false;
                 this.title = newValue;
             }
+        },
+        created(){
+            articleApi.createArticleId({token:'123456',type_id:'1009'}).then(res => {this.article_id = res.article_id,console.log(res)})
         },
         mounted() {
             tinymce.init({})

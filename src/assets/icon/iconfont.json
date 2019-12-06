@@ -144,6 +144,13 @@
       "font_class": "apphoutaiguanli",
       "unicode": "e66e",
       "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "9974783",
+      "name": "播放",
+      "font_class": "bofang",
+      "unicode": "e717",
+      "unicode_decimal": 59159
     }
   ]
 }

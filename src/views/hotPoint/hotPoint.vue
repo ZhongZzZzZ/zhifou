@@ -8,7 +8,7 @@
         <div v-for="(item,index) in result" :key="index">
             <articleList :item="item"></articleList>
         </div>
-        <pagination :total="result.length" @getNewList="getNewList"></pagination>
+        <pagination :total="total" @getNewList="getNewList"></pagination>
     </div>
 </template>
 
@@ -22,7 +22,8 @@
             return{
              order_type:0,
              result:[],
-                total:0
+             total:0,
+             page:1
             }
         },
         created(){
@@ -31,13 +32,14 @@
         methods:{
             getIndexInfo(){
                 api.getIndexInfo(
-                    {   page:1,
+                    {   page:this.page,
                         token:'123456',
-                        order_type:this.order_type}
+                        order_type:this.order_type
+                    }
                 ).then(res => {
                     this.result = res.data
                     this.total = res.article_count
-                    console.log(this.result)
+                    console.log(res)
                 })
             },
             goArticle(){
@@ -45,6 +47,8 @@
             },
             getNewList(val){
                 console.log(val)
+                this.page = val
+                this.getIndexInfo()
             },
             orderType(val){
                 this.order_type = val

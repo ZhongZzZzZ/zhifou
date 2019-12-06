@@ -4,7 +4,7 @@
         <div class="main">
             <div class="title">草 稿 箱</div>
             <div v-if="articles.length">
-                <div class="article_box" v-for="item in articles" :key="item">
+                <div class="article_box" v-for="(item,index) in articles" :key="index">
                     <div class="article_title">
                         {{ item.title }}
                         <el-tag>{{item.type_name}}</el-tag>
@@ -13,12 +13,13 @@
                     <img class="article_img" :src="item.photo_url" v-if="item.photo_url">
                     <div class="article_content">
                         <span>{{ item.simple_content }}</span>
-                    </div>   
+                    </div>
                     <div class="btn">
                         <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
-                        <el-button type="danger" icon="el-icon-delete" @click="del">删除</el-button>
-                    </div>  
-                </div> 
+                        <el-button type="danger" icon="el-icon-delete" @click="delArticle(item.article_id,index)">删除</el-button>
+                    </div>
+                </div>
+                <pagination :total="total" @getNewList="getNewList"></pagination>
             </div>
             <div class="nulldraft" v-else>
                 很干净！赶紧去发布文章吧！
@@ -30,45 +31,62 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
+    import api from '../../api/article'
+    import pagination from '../../components/pagination/pagination'
+    import articleDetail from "../articleDetail/articleDetail";
     export default {
         name: "userinfo",
         data(){
             return {
                 sex: 1,
                 activeName: 'myarticle',
+                page:1,
                 user:{
-
                 },
-                // articles: [{ 
-                //     article_id: 1, 
+                // articles: [{
+                //     article_id: 1,
                 //     title: '草稿',
-                //     create_time:'2020年7月8号 15:20:30', 
-                //     simple_content: '无', 
+                //     create_time:'2020年7月8号 15:20:30',
+                //     simple_content: '无',
                 //     photo_url: '',
                 //     type_name: '前端'
                 // },
-                // { 
-                //     article_id: 2, 
+                // {
+                //     article_id: 2,
                 //     title: '无标题',
-                //     create_time:'2020年7月8号 15:20:30', 
-                //     simple_content: 'eeeehhhh', 
+                //     create_time:'2020年7月8号 15:20:30',
+                //     simple_content: 'eeeehhhh',
                 //     photo_url: '',
                 //     type_name: '其他'
                 // }]
-                articles: []
+                articles: [],
+                total:''
             }
         },
         components: {
-            Nav
+            Nav,
+            pagination
         },
         methods: {
             goEditInfo() {
                 this.$router.push('/editinfo')
             },
+            delArticle(id,index){
+                api.delArticle({token:'123456',article_id:id}).then(res => {console.log(res),this.articles.splice(index,1)})
+            },
+            getNewList(val){
+                this.page = val;
+                this.getDraft()
+            },
+            getDraft(){
+                api.getDraftArticle({token:'123456',page:this.page}).then(res =>
+                {this.articles = res.article;
+                console.log(res)})
+            }
         },
         created(){
-
-        },
+           this.getDraft()
+            },
     }
 </script>
 
@@ -84,7 +102,7 @@
         color: #8DAFFC;
         font-size: 25px;
         font-weight: 600;
-        padding-bottom: 10px; 
+        padding-bottom: 10px;
         border-bottom: 2px solid #8DAFFC;;
     }
     .article_box {
@@ -154,7 +172,7 @@
         .edit_btn:hover {
             color: #8DAFFC !important;
             border-color: #8DAFFC !important;
-            background-color: #f4f7ff !important; 
+            background-color: #f4f7ff !important;
         }
     }
 </style>
