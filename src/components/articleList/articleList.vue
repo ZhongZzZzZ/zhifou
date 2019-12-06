@@ -13,6 +13,7 @@
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
                 <div class="article_picture" @click="goArticle(item.article_id)" v-show="item.photo_url != null">
+<!--                    <span class="iconfont iconjiantouyou" style="font-size: 24px;color:#eee;border-radius:50%;border:3px solid #eee;position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);z-index: 999;"></span>-->
                     <img :src="item.photo_url" alt="" style="width: 250px" >
                 </div>
                 <p class="article_content" ><span @click="goArticle(item.article_id)">{{item.simple_content | articleFilter}}</span>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <video src="../../assets/sp.mp4" controls="controls" ></video>
+       关注
     </div>
 </template>
 

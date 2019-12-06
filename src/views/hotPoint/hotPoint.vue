@@ -21,7 +21,8 @@
         data(){
             return{
              order_type:0,
-             result:[]
+             result:[],
+                total:0
             }
         },
         created(){
@@ -30,12 +31,12 @@
         methods:{
             getIndexInfo(){
                 api.getIndexInfo(
-                    {
-                        page:1,
+                    {   page:1,
                         token:'123456',
                         order_type:this.order_type}
                 ).then(res => {
                     this.result = res.data
+                    this.total = res.article_count
                     console.log(this.result)
                 })
             },

@@ -38,6 +38,7 @@ export default {
       data
     })
   },
+  // 上传图片或者视频接口
   uploadPhoto(data){
     return request({
       url:'/article/uploadPhoto',

@@ -1,4 +1,4 @@
-<template>        
+<template>
     <div>
         <div class="comment-title">
             <span class="maintitle">评论</span>
@@ -6,7 +6,7 @@
         </div>
 
         <!-- 发表评论 -->
-        <div class="my-comment" > 
+        <div class="my-comment" >
             <img :src="user.user_url">
             <textarea v-model="mycomment"></textarea>
             <div class="corr">
@@ -32,7 +32,7 @@
                 <!-- 查看回复icon -->
                 <i class="el-icon-s-comment" @click="reply(item.comment_id)" v-if="responseShow != item.comment_id">查看回复</i>
                 <i class="el-icon-s-comment" @click="responseShow=0" v-else>收起回复</i>
-                
+
                 <!-- 对评论的回复 -->
                 <i class="el-icon-chat-round" @click="myresponse='',myresponseShow = item.comment_id" v-if="myresponseShow != item.comment_id">回复</i>
                 <i class="el-icon-chat-round" @click="myresponseShow=0" v-else>取消回复</i>
@@ -43,7 +43,7 @@
                     <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myresponse" maxlength="100" show-word-limit></el-input>
                     <el-button class="comment-btn" type="primary" @click="replyComment(item.comment_id, item.user_id)">发送</el-button>
                 </div>
-                
+
                 <!-- 回复信息列表 -->
                 <div class="response" v-if="responseShow == item.comment_id">
                     <div class="comment-item" v-for="res in response" :key="res">
@@ -68,7 +68,7 @@
             </div>
             <pagination :total="comment_count" @getNewList="getNewList"></pagination>
             <!-- <el-pagination small layout="prev, pager, next" :total="50"></el-pagination> -->
-        </div>    
+        </div>
     </div>
 
 </template>
@@ -83,7 +83,7 @@
             return {
                 responseShow: 0,
                 myresponseShow: 0,
-                myreplyShow: 0, 
+                myreplyShow: 0,
                 isNull: true,
                 mycomment:'', // 评论
                 myresponse:'', // 对评论的回复
@@ -97,7 +97,7 @@
         },
         methods: {
             getNewList(val){ //评论的分页
-                articleApi.getCommentInfo({  
+                articleApi.getCommentInfo({
                     article_id: 10001,
                     token:'123456',
                     page: val
@@ -300,7 +300,7 @@
                 height: 24px;
                 border: 1px solid #99999940;
                 border-radius: 2px;
-            }  
+            }
             i {
                 font-size: 13px;
                 color: #8590a6;
@@ -364,7 +364,7 @@
             border-bottom: 0;
             border-top: 1px solid #f6f6f6;
             margin-top: 10px;
-            padding-top: 10px; 
+            padding-top: 10px;
         }
         .comment-content {
             width: 602px;
@@ -377,5 +377,5 @@
             float: right;
         }
     }
-    
+
 </style>

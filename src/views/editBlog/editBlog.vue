@@ -1,7 +1,7 @@
 <template>
     <div>
         <Nav></Nav>
-        <div class="main">
+        <div class="main" id="main">
             <textarea class="title" v-model="title" placeholder="请输入标题（不超过20个字）" maxlength="20"></textarea>
             <div class="tag_radio">
                 请选择一个分类：
@@ -11,8 +11,9 @@
             <el-button type="primary" icon="el-icon-s-promotion" @click="send" :disabled="isNull">发布</el-button>
             <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft" plain>存入草稿箱</el-button>
             <div class="showcontent">{{ tinymceHtml }}</div>
-            <div class="showcontent" v-html="tinymceHtml"></div>
-            <div>{{ text }}</div>
+            <div class="showcontent" v-html="tinymceHtml">
+            </div>
+            <img src="" id="img" alt="" crossorigin="anonymous"/>
         </div>
     </div>
 </template>
@@ -101,15 +102,25 @@
                             input.click();
                             let file, formData;
                             input.onchange = function() {
-                                file = this.files[0];
-                                //假设接口接收参数为file,值为选中的文件
-                                formData = new FormData();
-                                formData.append('photo', file);
-                                formData.append('token', '123456');
-                                formData.append('article_id', '10001');
-                                api.uploadPhoto(formData).then(res => {
-                                    callback(res.photo_name)
-                                })
+                                    file = this.files[0];
+                                var fileSize = (file.size / 1024/1024).toFixed(0)
+                                var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
+                                console.log(fileType)
+                                if(fileType != 'mp4'){
+                                    alert('上传视频格式只能为MP4~')
+                                    return false
+                                }else if(fileSize > 30) {
+                                    alert('上传视频不能超过30M~')
+                                    return false
+                                }else {
+                                    //假设接口接收参数为file,值为选中的文件
+                                    formData = new FormData();
+                                    formData.append('photo', file);
+                                    formData.append('token', '123456');
+                                    formData.append('article_id', '10001');
+                                    api.uploadPhoto(formData).then(res => {
+                                    callback(res.photo_name) })
+                                  }
                             }
                         }
                     },
