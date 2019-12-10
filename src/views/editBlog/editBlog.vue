@@ -2,12 +2,12 @@
     <div>
         <Nav></Nav>
         <div class="main" id="main">
-            <textarea class="title" v-model="title" placeholder="请输入标题（不超过50个字）" maxlength="50"></textarea>
+            <textarea class="title" v-model="title" placeholder="请输入标题（不超过20个字）" maxlength="20"></textarea>
             <div class="tag_radio">
                 请选择一个分类：
                 <el-radio border v-for="item in tags" :key="item" :label="item.id" v-model="radio">{{ item.name }}</el-radio>
             </div>
-            <textarea id="tinymce1" v-model="tinymceHtml"  placeholder="请输入正文"></textarea>
+            <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
             <el-button type="primary" icon="el-icon-s-promotion" @click="send(1)" :disabled="isNull">发布</el-button>
             <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft(0)" plain>存入草稿箱</el-button>
             <h1 style="text-align: center">预览页面</h1>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+    var articleId = ''
     import Nav from '../../components/navBar/nav'
     import 'tinymce/skins/ui/oxide/skin.min.css'; //富文本样式
     import tinymce from 'tinymce/tinymce'; //配置富文本
@@ -35,7 +36,6 @@
     import api from '../../api/user'
     import articleApi from '../../api/article'
     import Message from "element-ui/packages/message/src/main";
-
     export default {
         props: {
             value: {
@@ -51,7 +51,6 @@
                 isNull: true,
                 radio: 1009,
                 text:'',
-                gogogo:'123',
                 article_id:'',
                 tags: [
                     { id: 1001, name: '前端' },
@@ -64,91 +63,88 @@
                     { id: 1008, name: '设计' },
                     { id: 1009, name: '其他' },
                 ],
-                // editorInit: {
-                //     language_url: '/tinymce/zh_CN.js',
-                //     language: 'zh_CN',
-                //     skin_url: '/tinymce/skins/lightgray',
-                //     height: 600,
-                //     plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu media ',
-                //     toolbar:
-                //     'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image media code | removeformat',
-                //     branding: false,
-                //     menubar: false,
-                //     resize:false,
-                //     content_style: `
-                //     * { padding:0; margin:0; }
-                //     img {max-width:50%; height:auto;margin:auto;display:block;}
-                //     `,
-                //     paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传
-                //     image_dimensions: false, // 用户修改尺寸
-                //     maxSize: 2100000, // 文件大小2M
-                //     media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
-                //     media_alt_source: false, // 显示隐藏资源备用地址输入框
-                //     media_dimensions: false, // 显示隐藏宽高尺寸输入框
-                //     // 此处为图片上传处理函数
-                //     file_picker_types: 'media',
-                //
-                //     file_picker_callback: function(callback, value, meta) {
-                //         if(meta.filetype == 'media') {
-                //             // 给input加accept属性来限制上传的文件类型
-                //             let input = document.createElement('input');
-                //             input.setAttribute('type', 'file');
-                //             input.click();
-                //             let file, formData;
-                //             formData = new FormData();
-                //             input.onchange = function() {
-                //                 file = this.files[0];
-                //                 var fileSize = (file.size / 1024/1024).toFixed(0)
-                //                 var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
-                //                 console.log(fileType)
-                //                 if(fileType != 'mp4'){
-                //                     Message.error('上传视频格式只能为MP4~')
-                //                     // alert('上传视频格式只能为MP4~')
-                //                     return false
-                //                 }else if(fileSize > 30) {
-                //                     Message.error('上传视频不能超过30M~')
-                //                     // alert('上传视频不能超过30M~')
-                //                     return false
-                //                 }else {
-                //                     //假设接口接收参数为file,值为选中的文件
-                //                     formData.append('photo', file);
-                //                     formData.append('token', '123456');
-                //                     formData.append('article_id','10041');
-                //                     api.uploadPhoto(formData).then(res => {
-                //                         callback(res.photo_name) })
-                //                 }
-                //             }
-                //         }
-                //     },
-                //     images_upload_handler: (blobInfo, success, failure) => {
-                //         if (blobInfo.blob().size > this.maxSize) {
-                //             failure('图片大小不能超过2M')
-                //         }
-                //         let formdata;
-                //         formdata = new FormData();
-                //         formdata.append('photo',blobInfo.blob())
-                //         formdata.append('token','123456')
-                //         formdata.append('article_id',this.article_id)
-                //         api.uploadPhoto(formdata).then(res => success(res.photo_name))
-                //     },
-                //
-                // }
+                editorInit: {
+                    language_url: '/tinymce/zh_CN.js',
+                    language: 'zh_CN',
+                    skin_url: '/tinymce/skins/lightgray',
+                    height: 600,
+                    plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu media ',
+                    toolbar:
+                        'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image media code | removeformat',
+                    branding: false,
+                    menubar: false,
+                    resize:false,
+                    content_style: `
+                    * { padding:0; margin:0; }
+                    img {max-width:50%; height:auto;margin:auto;display:block;}
+                    `,
+                    paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传
+                    image_dimensions: false, // 用户修改尺寸
+                    maxSize: 2100000, // 文件大小2M
+                    media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
+                    media_alt_source: false, // 显示隐藏资源备用地址输入框
+                    media_dimensions: false, // 显示隐藏宽高尺寸输入框
+                    // 此处为图片上传处理函数
+                    images_upload_handler: (blobInfo, success, failure) => {
+                        if (blobInfo.blob().size > this.maxSize) {
+                            failure('图片大小不能超过2M')
+                        }
+                        let formdata;
+                        formdata = new FormData();
+                        formdata.append('photo',blobInfo.blob())
+                        formdata.append('token','123456')
+                        formdata.append('article_id',articleId)
+                        api.uploadPhoto(formdata).then(res => success(res.photo_name))
+                    },
+                    file_picker_types: 'media',
+                    file_picker_callback: function(callback, value, meta) {
+                        if(meta.filetype == 'media') {
+                            // 给input加accept属性来限制上传的文件类型
+                            let input = document.createElement('input');
+                            input.setAttribute('type', 'file');
+                            input.click();
+                            let file, formData;
+                            input.onchange = function() {
+                                file = this.files[0];
+                                var fileSize = (file.size / 1024/1024).toFixed(0)
+                                var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
+                                console.log(fileType)
+                                if(fileType != 'mp4'){
+                                    Message.error('上传视频格式只能为MP4~')
+                                    // alert('上传视频格式只能为MP4~')
+                                    return false
+                                }else if(fileSize > 30) {
+                                    Message.error('上传视频不能超过30M~')
+                                    // alert('上传视频不能超过30M~')
+                                    return false
+                                }else {
+                                    //假设接口接收参数为file,值为选中的文件
+                                    formData = new FormData();
+                                    formData.append('photo', file);
+                                    formData.append('token', '123456');
+                                    formData.append('article_id', articleId);
+                                    api.uploadPhoto(formData).then(res => {
+                                        callback(res.photo_name) })
+                                }
+                            }
+                        }
+                    },
+                }
             }
         },
         methods: {
             saveArticle(val){
                 articleApi.saveArticle({
                     token:'123456',
-                    article_id:this.article_id,
+                    article_id:articleId,
                     title:this.title,
-                    content:tinymce.activeEditor.getContent(),
+                    content:this.tinymceHtml,
                     type_id: this.radio,
                     flag:val
-                }).then(() => {
-                    Message.success('发布成功');
+                }).then(Message.success('发布成功'),
                     this.$router.push({path:'/hotPoint'})
-                    }
-                ).catch(err => Message.error('发送失败')
+                ).catch(
+                    Message.error('发送失败')
                 )
             },
             send(val) {
@@ -164,81 +160,8 @@
             draft(val) {
                 this.saveArticle(val)
             },
-            init(){
-                var that = this
-                this.$nextTick(()=>{
-                    window.tinymce.init({
-                        selector:'#tinymce1',
-                        language_url: '/tinymce/zh_CN.js',
-                        language: 'zh_CN',
-                        skin_url: '/tinymce/skins/lightgray',
-                        height: 600,
-                        plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu media ',
-                        toolbar:
-                            'bold italic | fontsizeselect | bullist numlist | undo redo | link unlink image media code | removeformat',
-                        branding: false,
-                        menubar: false,
-                        resize:false,
-                        content_style: `
-                    * { padding:0; margin:0; }
-                    img {max-width:50%; height:auto;margin:auto;display:block;}
-                    `,
-                        paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传
-                        image_dimensions: false, // 用户修改尺寸
-                        maxSize: 2100000, // 文件大小2M
-                        media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
-                        media_alt_source: false, // 显示隐藏资源备用地址输入框
-                        media_dimensions: false, // 显示隐藏宽高尺寸输入框
+            uploadImg(){
 
-                        // 此处为图片上传处理函数
-                        file_picker_types: 'media',
-
-                        file_picker_callback: function(callback, value, meta) {
-                            if(meta.filetype == 'media') {
-                                // 给input加accept属性来限制上传的文件类型
-                                let input = document.createElement('input');
-                                input.setAttribute('type', 'file');
-                                input.click();
-                                let file, formData;
-                                formData = new FormData();
-                                input.onchange = function() {
-                                    file = this.files[0];
-                                    var fileSize = (file.size / 1024/1024).toFixed(0)
-                                    var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
-                                    console.log(fileType)
-                                    if(fileType != 'mp4'){
-                                        Message.error('上传视频格式只能为MP4~')
-                                        // alert('上传视频格式只能为MP4~')
-                                        return false
-                                    }else if(fileSize > 30) {
-                                        Message.error('上传视频不能超过30M~')
-                                        // alert('上传视频不能超过30M~')
-                                        return false
-                                    }else {
-                                        //假设接口接收参数为file,值为选中的文件
-                                        formData.append('photo', file);
-                                        formData.append('token', '123456');
-                                        formData.append('article_id',that.article_id);
-                                        api.uploadPhoto(formData).then(res => {
-                                            callback(res.photo_name) })
-                                    }
-                                }
-                            }
-                        },
-                        images_upload_handler: (blobInfo, success, failure) => {
-                            if (blobInfo.blob().size > this.maxSize) {
-                                failure('图片大小不能超过2M')
-                            }
-                            let formdata;
-                            formdata = new FormData();
-                            formdata.append('photo',blobInfo.blob())
-                            formdata.append('token','123456')
-                            formdata.append('article_id',this.article_id)
-                            api.uploadPhoto(formdata).then(res => success(res.photo_name))
-                        },
-
-                    })
-                })
             }
         },
         watch: {
@@ -263,7 +186,7 @@
                     .then(res => {
                         console.log(res)
                         let data = res.comment
-                        this.article_id = data[0].article_id
+                        articleId = data[0].article_id
                         this.title = data[0].title
                         this.tinymceHtml = data[0].content
                         this.radio = data[0].type_id
@@ -271,13 +194,14 @@
             }else{
                 articleApi.createArticleId({token:'123456',type_id:'1009'})
                     .then(res => {
-                    this.article_id = res.article_id
-                    console.log(res)
-                })
+                        articleId = res.article_id
+                        console.log(res)
+                    })
             }
+
         },
         mounted() {
-           this.init()
+            tinymce.init({})
         },
         components: {Editor,Nav}
     }
