@@ -1,7 +1,7 @@
 <template>
     <div class="nav">
         <div class="com">
-            <div class="nav_logo"><img src="../../assets/logo2.jpg" class="nav_logo_pic"></div>
+            <div class="nav_logo" @click="$router.push('/')"><img src="../../assets/logo2.jpg" class="nav_logo_pic"></div>
             <div class="nav_menu">
                 <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item index="/" >首页</el-menu-item>

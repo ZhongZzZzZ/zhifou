@@ -99,6 +99,12 @@
                 font-size:15px;
                 font-weight: 600;
             }
+            .el-menu-item {
+                border: 0;
+            }
+            .el-divider {
+                margin-top: 0px;
+            }
         }
         .side_bar{
             min-width: 250px;

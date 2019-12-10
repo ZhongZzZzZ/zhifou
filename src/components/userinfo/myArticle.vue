@@ -50,12 +50,11 @@
         },
         created(){
             api.getLauchedArticleInfo({
-                user_id: 1002,
+                user_id: 1001,
                 token:'123456',
                 page:1
             }).then(res => {
                 console.log(res);
-
                 this.articles = res.article;
             })
         }
@@ -78,6 +77,7 @@
             font-size: 14px;
             color: #909399;
             vertical-align: bottom;
+            margin-left: 5px;
         }
         .del_btn {
             float: right;

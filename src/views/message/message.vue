@@ -49,6 +49,8 @@
         name: "message",
         data() {
             return {
+                path: 'ws://192.168.195.9:/ws/chat/from_id-to_id/',
+                socket: "",
                 chatShow: false,
                 myimg: myimg,
                 mymsg:'',
@@ -75,6 +77,33 @@
                 this.current.name = cur.name;
                 this.current.url = cur.url;
                 console.log(this.current.url);
+                if(typeof(WebSocket) === "undefined") {
+                    alert("您的浏览器不支持socket")
+                } else {
+                    // 实例化socket
+                    this.socket = new WebSocket(this.path)
+                    // 监听socket连接
+                    this.socket.onopen = this.open
+                    // 监听socket错误信息
+                    this.socket.onerror = this.error
+                    // 监听socket消息
+                    this.socket.onmessage = this.getMessage
+                }
+            },
+            open: function () {
+                console.log("socket连接成功")
+            },
+            error: function () {
+                console.log("连接错误")
+            },
+            getMessage: function (msg) {
+                console.log(msg.data)
+            },
+            send: function () {
+                this.socket.send(params)
+            },
+            close: function () {
+                console.log("socket已经关闭")
             },
             onSubmit() {
                 this.current.message.push({
@@ -97,6 +126,10 @@
         },
         updated() {
             this.scrollToBottom();
+        },
+        destroyed () {
+            // 销毁监听
+            this.socket.onclose = this.close
         },
         components: {
             Nav
