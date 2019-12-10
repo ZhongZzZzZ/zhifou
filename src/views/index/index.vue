@@ -29,7 +29,6 @@
                 </div>
                 <div class="side_bar_img" >
                     <img src="../../assets/advantage.png" alt="" class="advan_img">
-
                 </div>
             </div>
         </div>
@@ -87,6 +86,7 @@
         .main1{
             position: relative;
             width: 750px;
+            min-height: 950px;
             margin: 15px;
             background-color: #ffffff;
             box-shadow: 0 0px 15px rgba(26,26,26,.1);

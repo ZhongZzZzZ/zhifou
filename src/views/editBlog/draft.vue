@@ -15,7 +15,7 @@
                         <span>{{ item.simple_content }}</span>
                     </div>
                     <div class="btn">
-                        <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
+                        <el-button type="primary" icon="el-icon-edit-outline" @click="editArticle(item.article_id)">编辑</el-button>
                         <el-button type="danger" icon="el-icon-delete" @click="delArticle(item.article_id,index)">删除</el-button>
                     </div>
                 </div>
@@ -43,22 +43,6 @@
                 page:1,
                 user:{
                 },
-                // articles: [{
-                //     article_id: 1,
-                //     title: '草稿',
-                //     create_time:'2020年7月8号 15:20:30',
-                //     simple_content: '无',
-                //     photo_url: '',
-                //     type_name: '前端'
-                // },
-                // {
-                //     article_id: 2,
-                //     title: '无标题',
-                //     create_time:'2020年7月8号 15:20:30',
-                //     simple_content: 'eeeehhhh',
-                //     photo_url: '',
-                //     type_name: '其他'
-                // }]
                 articles: [],
                 total:''
             }
@@ -80,8 +64,16 @@
             },
             getDraft(){
                 api.getDraftArticle({token:'123456',page:this.page}).then(res =>
-                {this.articles = res.article;
-                console.log(res)})
+                {
+                this.total = res.article_count
+                this.articles = res.article;
+                })
+            },
+            editArticle(articleId){
+                this.$router.push({
+                    path:'/editBlog',
+                    query:{articleId:articleId,ifEdit:true}
+                })
             }
         },
         created(){
@@ -109,6 +101,7 @@
         padding: 20px;
         padding-bottom: 50px;
         position: relative;
+        overflow: hidden;
         .article_title {
             height: 30px;
             font-weight: 600;

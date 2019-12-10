@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="article_box" v-for="item in articles" :key="item">
+        <div class="article_box" v-for="(item,index) in articles" :key="index">
             <div class="article_title">
                 {{ item.title }}
                 <el-tag>{{item.type_name}}</el-tag>
                 <span class="article_time">{{ item.create_time }}</span>
-                <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id)" plain></el-button>
+                <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id,index)" plain></el-button>
             </div>
             <img class="article_img" :src="item.photo_url" v-if="item.photo_url">
             <div class="article_content">
@@ -17,12 +17,13 @@
                 <i class="el-icon-thumb article_icon">点赞{{ item.point_count }}</i>
                 <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">查看全文</el-button>
             </div>
-        </div> 
-    </div>  
+        </div>
+    </div>
 </template>
 
 <script>
     import api from '../../api/user'
+    import articleApi from '../../api/article'
     export default {
         name: "myarticle",
         data(){
@@ -32,9 +33,12 @@
             }
         },
         methods: {
-            del(id) {
-                var item = this.articles.find(item => item.article_id == id);
-                this.articles.splice(this.articles.indexOf(item), 1);
+            del(id,index) {
+                articleApi.delArticle({token:'123456',article_id:id}).then(res => {
+                    console.log(res)
+                    this.articles.splice(index, 1);
+                })
+
             },
             detail(id) {
                 let routeUrl = this.$router.resolve({
@@ -52,7 +56,7 @@
             }).then(res => {
                 console.log(res);
 
-                this.articles = res.article;                  
+                this.articles = res.article;
             })
         }
     }

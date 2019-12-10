@@ -21,7 +21,7 @@
                 </p>
             </div >
             <!--完整文章-->
-            <div v-show="showAticle">
+            <div v-if="showAticle">
                 <div class="full_article" >
                     <p v-html="FullArticle">
                     </p>

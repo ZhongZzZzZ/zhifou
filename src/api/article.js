@@ -72,5 +72,13 @@ export default {
             method:'post',
             data
         })
+    },
+    //编辑文章接口
+    editArticle(data){
+        return request({
+            url:'/article/editorDraftBox',
+            method:'post',
+            data
+        })
     }
 }

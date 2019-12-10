@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="article_container">
        关注
     </div>
 </template>
@@ -10,6 +10,8 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    .article_container{
+        position: relative;
+    }
 </style>
