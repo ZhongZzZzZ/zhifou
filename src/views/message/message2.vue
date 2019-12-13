@@ -1,4 +1,5 @@
 <template>
+    <!-- 私信测试专用 -->
     <div>
         <Nav style="position:sticky;"></Nav>
         <div class="content">  
@@ -57,16 +58,16 @@
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
     export default {
-        name: "message",
+        name: "message2",
         data() {
             return {
                 socket: "",
                 chatShow: false,
                 myimg: myimg,
                 mymsg: '',
-                user : {id: 2},
+                user : {id: 3},
                 users: [
-                    {id: 3, name:'linhZ', url: imgsrc},
+                    {id: 2, name:'linhZ', url: imgsrc},
                     {id: 4, name:'hhhhh', url: imgsrc},
                     {id: 5, name:'wwwww', url: imgsrc}
                 ],
@@ -130,7 +131,7 @@
                     from_id: this.user.id,
                     to_id: to_id
                 }
-                console.log(curmsg);
+                // console.log(curmsg);
                 this.socket.send(JSON.stringify(curmsg));
                 this.current.readymsg.push(curmsg)
                 this.mymsg = '';

@@ -85,9 +85,10 @@
                     paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传
                     image_dimensions: false, // 用户修改尺寸
                     maxSize: 2100000, // 文件大小2M
-                    media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
-                    media_alt_source: false, // 显示隐藏资源备用地址输入框
+                    // media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
+                    // media_alt_source: false, // 显示隐藏资源备用地址输入框
                     media_dimensions: false, // 显示隐藏宽高尺寸输入框
+                    // media_poster: true,
                     // 此处为图片上传处理函数
                     images_upload_handler: (blobInfo, success, failure) => {
                         if (blobInfo.blob().size > this.maxSize) {
@@ -112,7 +113,7 @@
                                 file = this.files[0];
                                 var fileSize = (file.size / 1024/1024).toFixed(0)
                                 var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
-                                console.log(fileType)
+                                // console.log(fileType)
                                 if(fileType != 'mp4'){
                                     Message.error('上传视频格式只能为MP4~')
                                     // alert('上传视频格式只能为MP4~')
@@ -128,9 +129,10 @@
                                     formData.append('token', '123456');
                                     formData.append('article_id', articleId);
                                     api.uploadPhoto(formData).then(res => {
-                                        callback(res.photo_name) })
-                                }
+                                        console.log(res);callback(res.photo_name, {poster: res.shot_name})})
+                               }
                             }
+                            // let poster = document.getElementsByClassName()
                         }
                     },
                 }
@@ -166,10 +168,11 @@
 
             },
             draft(val) {
-                this.saveArticle(val)
+                // let poster = document.getElementsByClassName("")
+                // this.saveArticle(val)
             },
             uploadImg(){
-
+                
             }
         },
         watch: {
@@ -303,4 +306,11 @@
         height: auto;
         display: block;
     }
+    .showcontent /deep/ video {
+        max-width:90%; 
+        height:auto;
+        margin:auto;
+        display:block;
+    }
+
 </style>
