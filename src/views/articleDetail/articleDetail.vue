@@ -65,6 +65,8 @@
     import Nav from '../../components/navBar/nav'
     import comment from '../../components/comment/comment'
     import articleApi from '../../api/article'
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "articleDetail",
         data(){
@@ -98,7 +100,7 @@
         created(){
             articleApi.getDetailInfo({
                 article_id: this.$route.query.id,
-                token:'123456'}
+                token:getLocalStorage('token')}
             ).then(res => {
                 // console.log(res);
                 this.article = res.article;

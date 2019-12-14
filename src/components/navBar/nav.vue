@@ -15,6 +15,7 @@
                         <router-link to="/login"> <el-dropdown-item >登录</el-dropdown-item></router-link>
                         <router-link to="/register"><el-dropdown-item>注册</el-dropdown-item></router-link>
                         <router-link to="/userinfo"><el-dropdown-item>个人主页</el-dropdown-item></router-link>
+                        <router-link to="/login" @click.native="clearStorage"><el-dropdown-item>退出</el-dropdown-item></router-link>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-dropdown v-else>
@@ -46,7 +47,9 @@
 
         },
         methods:{
-
+            clearStorage(){
+                localStorage.clear()
+            }
         }
     }
 </script>

@@ -17,12 +17,14 @@
                 <i class="el-icon-thumb article_icon">点赞{{ item.point_count }}</i>
                 <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">查看全文</el-button>
             </div>
-        </div> 
-    </div>  
+        </div>
+    </div>
 </template>
 
 <script>
     import api from '../../api/user'
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "followarticle",
         data(){
@@ -42,15 +44,15 @@
         created(){
             api.getCollectionArticleInfo({
                 user_id: 1002,
-                token:'123456',
+                token:getLocalStorage('token'),
                 page:1
             }).then(res => {
                 //console.log(res);
                 this.articles = res.article;
-                console.log(this.articles)                
+                console.log(this.articles)
             })
         },
-        
+
     }
 </script>
 

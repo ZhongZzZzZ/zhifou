@@ -24,6 +24,8 @@
 <script>
     import api from '../../api/user'
     import articleApi from '../../api/article'
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "myarticle",
         data(){
@@ -34,7 +36,7 @@
         },
         methods: {
             del(id,index) {
-                articleApi.delArticle({token:'123456',article_id:id}).then(res => {
+                articleApi.delArticle({token:getLocalStorage('token'),article_id:id}).then(res => {
                     console.log(res)
                     this.articles.splice(index, 1);
                 })
@@ -51,11 +53,10 @@
         created(){
             api.getLauchedArticleInfo({
                 user_id: 1002,
-                token:'123456',
+                token:getLocalStorage('token'),
                 page:1
             }).then(res => {
                 console.log(res);
-
                 this.articles = res.article;
             })
         }

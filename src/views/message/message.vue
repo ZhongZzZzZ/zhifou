@@ -1,7 +1,7 @@
 <template>
     <div>
         <Nav style="position:sticky;"></Nav>
-        <div class="content">  
+        <div class="content">
             <el-col :span="6">
                 <el-menu default-active="1" class="el-menu-vertical-demo">
                     <el-menu-item  v-for="item in users" :key="item.id" @click="chat(item)" :index="item.id">
@@ -80,6 +80,7 @@
                 this.current.message.push({
                      role: 1, content: this.mymsg
                 })
+                console.log(this.current.message)
                 this.mymsg = '';
             },
             scrollToBottom() {   // 滑动条保持在最下方
@@ -93,7 +94,7 @@
             // this.scrollToBottom();
         },
         created(){
-            
+
         },
         updated() {
             this.scrollToBottom();

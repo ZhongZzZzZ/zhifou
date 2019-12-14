@@ -29,7 +29,8 @@ module.exports = {
     port: 8080,
     proxy: {
       '/api': {
-        target: 'http://192.168.195.9:8888/zhifou',
+        // target: 'http://192.168.195.9:8888/zhifou',
+        target:'http://192.168.195.9:8123/zhifou',
         // target: 'http://192.168.195.9:8234', // 这是登陆注册测试的接口
         changeOrigin: true,
         pathRewrite: {

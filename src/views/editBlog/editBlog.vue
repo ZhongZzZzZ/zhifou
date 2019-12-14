@@ -36,6 +36,8 @@
     import api from '../../api/user'
     import articleApi from '../../api/article'
     import Message from "element-ui/packages/message/src/main";
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         props: {
             value: {
@@ -92,7 +94,7 @@
                         let formdata;
                         formdata = new FormData();
                         formdata.append('photo',blobInfo.blob())
-                        formdata.append('token','123456')
+                        formdata.append('token',getLocalStorage('token'))
                         formdata.append('article_id',articleId)
                         api.uploadPhoto(formdata).then(res => success(res.photo_name))
                     },
@@ -121,7 +123,7 @@
                                     //假设接口接收参数为file,值为选中的文件
                                     formData = new FormData();
                                     formData.append('photo', file);
-                                    formData.append('token', '123456');
+                                    formData.append('token', getLocalStorage('token'));
                                     formData.append('article_id', articleId);
                                     api.uploadPhoto(formData).then(res => {
                                         callback(res.photo_name) })
@@ -135,7 +137,7 @@
         methods: {
             saveArticle(val){
                 articleApi.saveArticle({
-                    token:'123456',
+                    token:getLocalStorage('token'),
                     article_id:articleId,
                     title:this.title,
                     content:this.tinymceHtml,
@@ -144,7 +146,7 @@
                 }).then(Message.success('发布成功'),
                     this.$router.push({path:'/hotPoint'})
                 ).catch(
-                    Message.error('发送失败')
+                    Message.error(err => '发送失败')
                 )
             },
             send(val) {
@@ -182,7 +184,7 @@
         },
         created(){
             if (this.$route.query.ifEdit == true){
-                articleApi.editArticle({token:'123456',article_id:this.$route.query.articleId})
+                articleApi.editArticle({token:getLocalStorage('token'),article_id:this.$route.query.articleId})
                     .then(res => {
                         console.log(res)
                         let data = res.comment
@@ -192,7 +194,7 @@
                         this.radio = data[0].type_id
                     })
             }else{
-                articleApi.createArticleId({token:'123456',type_id:'1009'})
+                articleApi.createArticleId({token:getLocalStorage('token'),type_id:'1009'})
                     .then(res => {
                         articleId = res.article_id
                         console.log(res)

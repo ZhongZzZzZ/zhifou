@@ -2,6 +2,12 @@
     <div class="register_page">
         <div class="register_container">
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm register_input">
+                <el-form-item label="昵称" prop="name">
+                    <el-input v-model="ruleForm.name" placeholder="你的昵称"></el-input>
+                </el-form-item>
+                <el-form-item label="工号" prop="account">
+                    <el-input v-model="ruleForm.account" placeholder="你的工号"></el-input>
+                </el-form-item>
                 <el-form-item label="邮箱" prop="email"  :rules="[
                   { required: true, message: '请输入邮箱地址', trigger: 'blur' },
                   { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
@@ -13,6 +19,7 @@
                 </el-form-item>
                 <el-form-item label="确认密码" prop="checkPass">
                     <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" prefix-icon="el-icon-link" show-password placeholder="再次输入密码"></el-input>
+                    <span class="register" @click="$router.push({path:'/login'})">返回登陆</span>
                 </el-form-item>
 <!--                <el-form-item label="" prop="verCode">-->
 <!--                    <el-input v-model.trim="verCode" autocomplete="on" class="register_verCode" placeholder="验证码"></el-input>-->
@@ -65,6 +72,8 @@
                     pass: '',
                     email: '',
                     checkPass:'',
+                    name:'',
+                    account:''
                 },
 
                 verCode:'',
@@ -78,6 +87,14 @@
                         { validator: validatePass2, trigger: 'blur' ,required: true}
                     ],
                     email: '',
+                    name: [
+                        { required: true, message: '请输入昵称', trigger: 'blur' },
+                        { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+                    ],
+                    account: [
+                        { required: true, message: '请输入工号', trigger: 'blur' },
+                        { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+                    ]
                     // verCode:[{
                     //     validator: validatePass3, trigger: 'blur' ,required: true
                     // }]
@@ -88,10 +105,26 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var formdata = new FormData();
-                        formdata.append('user_account',this.ruleForm.email)
-                        formdata.append('password',this.ruleForm.pass)
-                        api.register(formdata).then(res => console.log(res))
+                        // var formdata = new FormData();
+                        // formdata.append('user_account',this.ruleForm.email)
+                        // formdata.append('password',this.ruleForm.pass)
+                        // formdata.append('user_name',this.ruleForm.name)
+                        api.register({
+                            email:this.ruleForm.email,
+                            password:this.ruleForm.pass,
+                            user_name:this.ruleForm.name,
+                            user_account:this.ruleForm.account
+                        }).then(res =>{
+                        if(res.code == 200 ){
+                            this.$message.success('注册成功');
+                            this.$router.push({path:'/login'})
+                        }else if(res.code == 401){
+                            this.$message.error('该账号已存在')
+                        }else{
+                            this.$message.error('注册失败')
+                        }
+                        }
+                        )
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -126,11 +159,11 @@
         background-image: url("http://pic.90sjimg.com/design/01/34/58/13/58dcfe0be8011.png") ;
         background-size:100% 100%;
         width: 100%;
-        height: 100vh;
+        height: 884px;
         .register_container{
             width: 370px;
             background-color: rgba(38,38,38,0.35);
-            height: 100vh;
+            height: 883px;
             position: absolute;
             top:0px;
             left: 100%;
@@ -142,7 +175,12 @@
             width: 350px;
             position: absolute;
             left: 0%;
-            top:35%;
+            top:25%;
+            .register{
+                color:#fff;
+                font-weight: bold;
+                cursor:pointer;
+            }
             .el-form-item__label{
                 color:#fff;
             }

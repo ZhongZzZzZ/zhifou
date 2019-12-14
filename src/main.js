@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import { router } from './router/index'
+import  router  from './router/index'
 import store from './store/index'
 import "amfe-flexible" // 引入flexible
 import './assets/icon/iconfont.css'
@@ -8,6 +8,7 @@ import './assets/icon/iconfont.css'
 
 // console.log(`run in ${process.env.NODE_ENV}`)
 //设置为 false 以阻止 vue 在启动时生成生产提示
+Vue.config.devtools = true;
 Vue.config.productionTip = false
 new Vue({
   router,

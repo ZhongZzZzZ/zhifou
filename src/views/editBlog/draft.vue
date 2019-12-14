@@ -34,6 +34,8 @@
     import api from '../../api/article'
     import pagination from '../../components/pagination/pagination'
     import articleDetail from "../articleDetail/articleDetail";
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "userinfo",
         data(){
@@ -56,14 +58,14 @@
                 this.$router.push('/editinfo')
             },
             delArticle(id,index){
-                api.delArticle({token:'123456',article_id:id}).then(res => {console.log(res),this.articles.splice(index,1)})
+                api.delArticle({token:getLocalStorage('token'),article_id:id}).then(res => {console.log(res),this.articles.splice(index,1)})
             },
             getNewList(val){
                 this.page = val;
                 this.getDraft()
             },
             getDraft(){
-                api.getDraftArticle({token:'123456',page:this.page}).then(res =>
+                api.getDraftArticle({token:getLocalStorage('token'),page:this.page}).then(res =>
                 {
                 this.total = res.article_count
                 this.articles = res.article;

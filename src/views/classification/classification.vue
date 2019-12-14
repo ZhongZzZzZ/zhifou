@@ -25,6 +25,8 @@
     import pagination from '../../components/pagination/pagination'
     import api from '../../../src/api/article'
     import articleList from "../../components/articleList/articleList";
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "classification",
         data(){
@@ -44,7 +46,7 @@
                   {label:'1008',name:'设计'},
                   {label:'1009',name:'其他'},
               ],
-              params:{type_id:this.$route.query.id || '1001',page:1,token:'123456',order_type:this.order || 0}
+              params:{type_id:this.$route.query.id || '1001',page:1,token:getLocalStorage('token'),order_type:this.order || 0}
           }
         },
         created() {
