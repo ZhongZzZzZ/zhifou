@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import {getLocalStorage} from "../utils/auth";
+const whiteList = ['/login','/register','/resetPassword','/sentPassword']
 Vue.use(Router)
 
-export const router = new Router({
+ const router = new Router({
     routes: [
         {
             path: '/',
@@ -79,8 +80,30 @@ export const router = new Router({
             component:()=> import('../views/editBlog/draft')
         },
         {
+            path:'/resetPassword',
+            name:'resetPassword',
+            component:()=>import('../views/resetPassword/resetPassword')
+        },
+        {
+            path:'/sentPassword',
+            name:'sentPassword',
+            component:()=>import('../views/sentPassword/sentPassword')
+        },
+        {
             path:'*',
             component:()=> import('../views/404page/404page')
         }
     ]
 })
+
+router.beforeEach((to,from,next)=>{
+    if (getLocalStorage('token')){
+        next()
+    }else if(whiteList.indexOf(to.path)!== -1){
+            next()
+    }else{
+        next('/login')
+    }
+})
+export default router
+

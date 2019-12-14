@@ -11,16 +11,17 @@ export default {
   },
   register(data){
     return request({
-      url:'/users/reg_demo',
+      url:'/users/reg',
       method:'post',
       data
     })
   },
-  // 获取用户信息
-  getUserInfo () {
+  //未登陆状态下修改密码
+  resetPassword(data){
     return request({
-      url: '/userinfo',
-      method: 'get'
+      url:'/users/forgetpasswd',
+      method:'post',
+      data
     })
   },
   // 获取用户已发文章列表
@@ -57,10 +58,33 @@ export default {
       data
     })
   },
+  // 发送密码和token接口(未登陆状态下修改密码)
+  changepasswd(data) {
+    return request({
+      url: '/users/changepasswd/token',
+      method: 'post',
+      data
+    })
+  },
+  resetpasswd(data){
+    return request({
+      url:'/users/resetpasswd',
+      method:'post',
+      data
+    })
+  }
+
   // getIndexInfo(){
   //   return request({
   //     url:'/article/test',
   //     method:'get'
   //   })
   // }
+  // // 获取用户信息
+  // getUserInfo () {
+  //   return request({
+  //     url: '/userinfo',
+  //     method: 'get'
+  //   })
+  // },
 }

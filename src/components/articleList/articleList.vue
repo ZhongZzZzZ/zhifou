@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!--展示评论-->
-            <span class="iconfont iconpinglun common" @click="openComment(item.article_id)">{{!showComment ? item.comment_count + '条': '收起'}}评论</span>
+            <span class="iconfont iconpinglun common" @click="openComment(item.article_id)">{{!showComment ? (item.comment_count > 0 ?item.comment_count: 0 )  + '条': '收起'}}评论</span>
             <span class="iconfont iconxingxing common">收藏</span>
             <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes()">{{item.point_count}}个点赞</span>
             <span class="common page_view" >{{item.page_view}}阅读数</span>
@@ -44,6 +44,8 @@
 <script>
     import api from '../../api/article'
     import comment from "../../components/comment/comment";
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "articleList",
         props:["item"],
@@ -57,7 +59,7 @@
         },
         methods:{
             readMore(id) {
-                api.getFullArticle({article_id:id,token:'123456'}).then(res => this.FullArticle = res.content)
+                api.getFullArticle({article_id:id,token:getLocalStorage('token')}).then(res => this.FullArticle = res.content)
                 this.showAticle = !this.showAticle
             },
             goArticle(id){
@@ -163,6 +165,7 @@
             font-size: 40px;
             border-radius:50%;
             position:absolute;
+            color: #c7c7c7;
             top:50%;
             left:50%;
             transform: translate(-50%,-50%);

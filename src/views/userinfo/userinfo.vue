@@ -3,20 +3,20 @@
         <Nav style="position:sticky;"></Nav>
         <div class="main">
             <div class="info_show">
-                <div class="pic_box"><img class="pic" src="../../assets/avatar.jpg"></div>
+                <div class="pic_box"><img class="pic" :src="avatar"></div>
                 <div class="info">
                     <div class="info_title">
-                        <span>LinhZ</span>
-                        <i v-if="sex == 1" class="icon-sex el-icon-female"></i>
+                        <span>{{name}}</span>
+                        <i v-if="sex == 0" class="icon-sex el-icon-female"></i>
                         <i v-else class="icon-sex el-icon-male"></i>
                         <el-badge value="hot" class="item">
                             <el-tag>1000</el-tag>
                         </el-badge>
                     </div>
                     <div class="info_detail">
-                        <div>工号：S0000</div>
-                        <div>电话：158</div>
-                        <div>邮箱：qq.com</div>
+                        <div>工号：{{account}}</div>
+                        <div>电话：{{phone}}</div>
+                        <div>邮箱：{{email}}</div>
                         <el-button class="edit_btn" icon="el-icon-edit" @click="goEditInfo" plain>编辑个人信息</el-button>
                     </div>
                 </div>
@@ -39,6 +39,10 @@
     import myarticle from '@/components/userinfo/myArticle'
     import followarticle from '@/components/userinfo/followArticle'
     import Nav from '../../components/navBar/nav'
+    import {getLocalStorage} from "../../utils/auth";
+    import defaultAvatar from '../../assets/avatar.jpg'
+
+    // import { mapState } from 'vuex'
     export default {
         name: "userinfo",
         data(){
@@ -58,8 +62,23 @@
             },
         },
         created(){
-
+            this.name = getLocalStorage('user_name')
+            this.avatar = getLocalStorage('user_url') || defaultAvatar
+            this.phone = getLocalStorage('user_phone') || '未填写...'
+            this.account = getLocalStorage('user_account')
+            this.email = getLocalStorage('email')
+            this.sex = getLocalStorage('user_gender')
         },
+        // computed:{
+        //     ...mapState({
+        //        "name":state =>state.user.name,
+        //         "sex":state =>state.user.gender,
+        //         "phone":state => state.user.phone,
+        //         "avatar":state => state.user.avatar,
+        //         "account":state =>state.user.account,
+        //         "id":state =>state.user.avatar
+        //     })
+        // }
     }
 </script>
 
@@ -127,7 +146,7 @@
             .edit_btn:hover {
                 color: #8DAFFC !important;
                 border-color: #8DAFFC !important;
-                background-color: #f4f7ff !important; 
+                background-color: #f4f7ff !important;
             }
         }
     }

@@ -77,6 +77,8 @@
     import articleApi from '../../api/article'
     import pagination from '../../components/pagination/pagination'
     import commentApi from '../../api/comment'
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "comment",
         data(){
@@ -100,7 +102,7 @@
             getNewList(val){ //评论的分页
                 articleApi.getCommentInfo({
                     article_id: this.$route.query.id || this.article_id,
-                    token:'123456',
+                    token:this.token,
                     page: val
                 }).then(res => {
                     this.comments = res.comment;
@@ -110,7 +112,7 @@
             currentChange(val,id) { // 回复的分页
                 commentApi.getReplyInfo({
                     comment_id: id,
-                    token:'123456',
+                    token:this.token,
                     page: val
                 }).then(res => {
                     // console.log(res);
@@ -121,7 +123,7 @@
             comment() { // 发表评论
                 commentApi.addComment({
                     article_id: this.$route.query.id || this.article_id,
-                    token:'123456',
+                    token:this.token,
                     comment_content: this.mycomment
                 }).then(res => {
                     // console.log(res);
@@ -134,7 +136,7 @@
                 this.responseShow = id;
                 commentApi.getReplyInfo({
                     comment_id: id,
-                    token:'123456',
+                    token:this.token,
                     page: 1
                 }).then(res => {
                     // console.log(res);
@@ -145,7 +147,7 @@
             replyComment(comment_id,user_id) { // 对评论的回复
                 commentApi.addReplyToComment({
                     comment_id: comment_id,
-                    token:'123456',
+                    token:this.token,
                     reply_content: this.myresponse,
                     from_user_id: user_id
                 }).then(res => {
@@ -158,7 +160,7 @@
             replyreply(reply_id,user_id) { // 对回复的回复
                 commentApi.addReplyToReply({
                     reply_id: reply_id,
-                    token:'123456',
+                    token:this.token,
                     reply_content: this.myreplytoreply,
                     from_user_id: user_id
                 }).then(res => {
@@ -170,7 +172,7 @@
             delcomment(id) {
                 commentApi.deleteComment({  // 删除评论
                     comment_id: id,
-                    token:'123456'
+                    token:this.token
                 }).then(() => {
                     let item = this.comments.find(item => item.comment_id == id);
                     this.comments.splice(this.comments.indexOf(item), 1);
@@ -179,7 +181,7 @@
             delreply(id) {
                 commentApi.deleteReply({  // 删除回复
                     reply_id: id,
-                    token:'123456'
+                    token:this.token
                 }).then(() => {
                     let item = this.response.find(item => item.reply_id == id);
                     this.response.splice(this.response.indexOf(item), 1);
@@ -193,9 +195,10 @@
             }
         },
         created(){
+           var token =  getLocalStorage('token')
             articleApi.getCommentInfo({  // 获取评论列表
                 article_id: this.$route.query.id || this.article_id,
-                token:'123456',
+                token:this.token,
                 page:1
             }).then(res => {
                 // console.log(res);

@@ -2,7 +2,6 @@
     <div>
         <Nav style="position:sticky;"></Nav>
         <div class="content">
-
             <el-col :span="6">
                 <el-menu default-active="1" class="el-menu-vertical-demo">
                     <el-menu-item class="search_item">
@@ -80,7 +79,7 @@
                     name:'',
                     url:'',
                     message: [ // 0代表对方，1代表自己
-                        // { sequence_id: '1', from_id:'3', to_id:'2', role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'}, 
+                        // { sequence_id: '1', from_id:'3', to_id:'2', role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'},
                         // { sequence_id: '2', from_id:'2', to_id:'3', role: 1, content: '在',create_time: '2019年12月6日 5：22：57'},
                     ],
                     readymsg: [ // 未送达的消息
@@ -105,7 +104,7 @@
                 this.noMore = false;
                 console.log(this.current.url);
                 var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.id + '/';
-                if(typeof(WebSocket) === "undefined") {
+                if (typeof (WebSocket) === "undefined") {
                     alert("您的浏览器不支持socket")
                 } else {
                     this.socket = new WebSocket(path) // 实例化socket

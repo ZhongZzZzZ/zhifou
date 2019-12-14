@@ -16,6 +16,8 @@
     import api from '../../api/article'
     import articleList from "../../components/articleList/articleList";
     import pagination from '../../components/pagination/pagination'
+    import {getLocalStorage} from "../../utils/auth";
+
     export default {
         name: "hotPoint",
         data(){
@@ -33,7 +35,7 @@
             getIndexInfo(){
                 api.getIndexInfo(
                     {   page:this.page,
-                        token:'123456',
+                        token:getLocalStorage('token'),
                         order_type:this.order_type
                     }
                 ).then(res => {
