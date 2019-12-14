@@ -1,7 +1,8 @@
 <template>
+    <!-- 私信测试专用 -->
     <div>
         <Nav style="position:sticky;"></Nav>
-        <div class="content">
+        <div class="content">  
             <el-col :span="6">
                 <el-menu default-active="1" class="el-menu-vertical-demo">
                     <el-menu-item  v-for="item in users" :key="item.id" @click="chat(item)" :index="item.id">
@@ -57,16 +58,16 @@
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
     export default {
-        name: "message",
+        name: "message2",
         data() {
             return {
                 socket: "",
                 chatShow: false,
                 myimg: myimg,
                 mymsg: '',
-                user : {id: 2},
+                user : {id: 3},
                 users: [
-                    {id: 3, name:'linhZ', url: imgsrc},
+                    {id: 2, name:'linhZ', url: imgsrc},
                     {id: 4, name:'hhhhh', url: imgsrc},
                     {id: 5, name:'wwwww', url: imgsrc}
                 ],
@@ -75,7 +76,7 @@
                     name:'',
                     url:'',
                     message: [ // 0代表对方，1代表自己
-                        // { sequence_id: '1', from_id:'3', to_id:'2', role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'},
+                        // { sequence_id: '1', from_id:'3', to_id:'2', role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'}, 
                         // { sequence_id: '2', from_id:'2', to_id:'3', role: 1, content: '在',create_time: '2019年12月6日 5：22：57'},
                     ],
                     readymsg: [
@@ -93,7 +94,7 @@
                 this.current.url = cur.url;
                 console.log(this.current.url);
                 var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.id + '/';
-                if (typeof (WebSocket) === "undefined") {
+                if(typeof(WebSocket) === "undefined") {
                     alert("您的浏览器不支持socket")
                 } else {
                     this.socket = new WebSocket(path) // 实例化socket
@@ -103,55 +104,47 @@
                     this.socket.onmessage = this.getMessage // 监听socket错误信息
                 }
             },
-
-            onSubmit() {
-                this.current.message.push({
-                    role: 1, content: this.mymsg
-                })
-              },
-                    open:function () {
-                    console.log("socket连接成功")
-                },
-                error: function () {
-                    console.log("连接错误")
-                },
-                getMessage:function(msg) { // 接收信息
-                    let data = JSON.parse(msg.data);
-                    console.log("all:")
-                    console.log(data)
-                    for (let i in data) {
-                        //console.log(i + ":")
-                        //console.log(data[0])
-                        if (data[i].role && this.current.readymsg.length) this.current.readymsg.shift();
-                        // console.log(this.current.readymsg)
-                        this.current.message.push(data[i]);
-                    }
-                },
-                close: function () {
-                    console.log("socket已经关闭")
-                },
-                onSubmit(to_id){
-                    let curmsg = {
-                        content: this.mymsg,
-                        from_id: this.user.id,
-                        to_id: to_id
-                    }
-                    console.log(curmsg);
-                    this.socket.send(JSON.stringify(curmsg));
-                    this.current.readymsg.push(curmsg)
-                    this.mymsg = '';
-                },
-                scrollToBottom()
-                {   // 滑动条保持在最下方
-                    this.$nextTick(() => {
-                        var container = document.getElementsByClassName('chat_content');
-                        container[0].scrollTop = container[0].scrollHeight;
-                    })
-
+            open: function () {
+                console.log("socket连接成功")
             },
+            error: function () {
+                console.log("连接错误")
+            },
+            getMessage: function (msg) { // 接收信息
+                let data = JSON.parse(msg.data);
+                console.log("all:")
+                console.log(data)
+                for(let i in data) {
+                    //console.log(i + ":") 
+                    //console.log(data[0])
+                    if(data[i].role && this.current.readymsg.length) this.current.readymsg.shift();
+                    // console.log(this.current.readymsg)
+                    this.current.message.push(data[i]);
+                } 
+            },
+            close: function () {
+                console.log("socket已经关闭")
+            },
+            onSubmit(to_id) {
+                let curmsg = {
+                    content: this.mymsg,
+                    from_id: this.user.id,
+                    to_id: to_id
+                }
+                // console.log(curmsg);
+                this.socket.send(JSON.stringify(curmsg));
+                this.current.readymsg.push(curmsg)
+                this.mymsg = '';
+            },
+            scrollToBottom() {   // 滑动条保持在最下方
+                this.$nextTick(() => {
+                    var container = document.getElementsByClassName('chat_content');
+                    container[0].scrollTop = container[0].scrollHeight;
+                })
+            }
         },
         created(){
-
+            
         },
         updated() {
             this.scrollToBottom();

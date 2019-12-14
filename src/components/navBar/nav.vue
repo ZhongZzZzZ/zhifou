@@ -1,7 +1,7 @@
 <template>
     <div class="nav">
         <div class="com">
-            <div class="nav_logo"><img src="../../assets/logo2.jpg" class="nav_logo_pic"></div>
+            <div class="nav_logo" @click="$router.push('/')"><img src="../../assets/logo2.jpg" class="nav_logo_pic"></div>
             <div class="nav_menu">
                 <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item index="/" >首页</el-menu-item>
@@ -12,8 +12,6 @@
                 <el-dropdown v-if="userData == null">
                     <img class="user_avatar" src="../../assets/unlogin.png">
                     <el-dropdown-menu slot="dropdown">
-                        <router-link to="/login"> <el-dropdown-item >登录</el-dropdown-item></router-link>
-                        <router-link to="/register"><el-dropdown-item>注册</el-dropdown-item></router-link>
                         <router-link to="/userinfo"><el-dropdown-item>个人主页</el-dropdown-item></router-link>
                         <router-link to="/login" @click.native="clearStorage"><el-dropdown-item>退出</el-dropdown-item></router-link>
                     </el-dropdown-menu>

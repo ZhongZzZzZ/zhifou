@@ -72,6 +72,7 @@
             font-size: 14px;
             color: #909399;
             vertical-align: bottom;
+            margin-left: 5px;
         }
         .del_btn {
             float: right;

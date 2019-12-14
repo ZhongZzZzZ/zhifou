@@ -17,7 +17,7 @@
                     <img :src="item.photo_url" alt="" style="width: 250px" >
                 </div>
                 <p class="article_content" ><span @click="goArticle(item.article_id)">{{item.simple_content | articleFilter}}</span>
-                    <span class="readMore" @click="readMore(item.article_id)">阅读全文 <span class="iconfont iconjiantouyou"></span></span>
+                    <span class="readMore" @click="readMore(item.article_id)">阅读全文 <span class="iconfont iconjiantouyou control"></span></span>
                 </p>
             </div >
             <!--完整文章-->
@@ -25,7 +25,7 @@
                 <div class="full_article" >
                     <p v-html="FullArticle">
                     </p>
-                    <span class="readMore" @click="hideFullArticle(index)">收起 <span class="iconfont iconjiantoushang"></span></span>
+                    <span class="readMore" @click="hideFullArticle(index)">收起 <span class="iconfont iconjiantoushang control"></span></span>
                 </div>
             </div>
             <!--展示评论-->
@@ -132,6 +132,7 @@
     .el-tag {
         margin-left: 5px;
         font-weight: 400;
+        margin-right: 10px;
     }
     }
     .picture_content{
@@ -141,6 +142,8 @@
         .readMore{
             color:#175199;
             font-weight: 600;
+            font-size: 14px;
+            margin-left: 5px;
         }
     .article_picture{
         width: 190px;
@@ -187,7 +190,7 @@
          position: relative;
          .readMore{
              color:#8590a6;
-             font-size: 16px;
+             font-size: 14px;
              font-weight:600;
              cursor: pointer;
              position: absolute;
@@ -195,6 +198,9 @@
              bottom: 0px;
          }
      }
+    .control {
+        font-size: 14px;
+    }
     .common{
         color:#8590a6;
         margin: 0 15px;

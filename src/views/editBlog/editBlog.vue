@@ -10,9 +10,11 @@
             <Editor id="tinymce" v-model="tinymceHtml" :init="editorInit" placeholder="请输入正文"></Editor>
             <el-button type="primary" icon="el-icon-s-promotion" @click="send(1)" :disabled="isNull">发布</el-button>
             <el-button class="draft_btn" icon="el-icon-takeaway-box" @click="draft(0)" plain>存入草稿箱</el-button>
-            <h1 style="text-align: center">预览页面</h1>
-            <div class="showcontent" v-html="tinymceHtml">
-            </div>
+            <el-button class="preview_btn" icon="el-icon-data-board" @click="open" plain>预览页面</el-button>
+            <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false" size="60%">
+                <div class="showtitle">{{title}}</div>
+                <div class="showcontent" v-html="tinymceHtml"></div>
+            </el-drawer>
         </div>
     </div>
 </template>
@@ -48,6 +50,8 @@
         name: "editBlog",
         data () {
             return {
+                drawer: false,
+                direction: 'rtl',
                 tinymceHtml: this.value,
                 title:'',
                 isNull: true,
@@ -83,9 +87,10 @@
                     paste_data_images: true, // 粘贴的同时能把内容里的图片自动上传
                     image_dimensions: false, // 用户修改尺寸
                     maxSize: 2100000, // 文件大小2M
-                    media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
-                    media_alt_source: false, // 显示隐藏资源备用地址输入框
+                    // media_live_embeds: true, // 用户可看到编辑区内嵌入视频的实时预览，而不是占位图
+                    // media_alt_source: false, // 显示隐藏资源备用地址输入框
                     media_dimensions: false, // 显示隐藏宽高尺寸输入框
+                    // media_poster: true,
                     // 此处为图片上传处理函数
                     images_upload_handler: (blobInfo, success, failure) => {
                         if (blobInfo.blob().size > this.maxSize) {
@@ -110,7 +115,7 @@
                                 file = this.files[0];
                                 var fileSize = (file.size / 1024/1024).toFixed(0)
                                 var fileType = file.name.substring(file.name.lastIndexOf(".")+1)
-                                console.log(fileType)
+                                // console.log(fileType)
                                 if(fileType != 'mp4'){
                                     Message.error('上传视频格式只能为MP4~')
                                     // alert('上传视频格式只能为MP4~')
@@ -126,15 +131,20 @@
                                     formData.append('token', getLocalStorage('token'));
                                     formData.append('article_id', articleId);
                                     api.uploadPhoto(formData).then(res => {
-                                        callback(res.photo_name) })
-                                }
+                                        console.log(res);callback(res.photo_name, {poster: res.shot_name})})
+                               }
                             }
+                            // let poster = document.getElementsByClassName()
                         }
                     },
                 }
             }
         },
         methods: {
+            open() {
+                this.drawer = true;
+                console.log(this.drawer)
+            },
             saveArticle(val){
                 articleApi.saveArticle({
                     token:getLocalStorage('token'),
@@ -160,10 +170,11 @@
 
             },
             draft(val) {
-                this.saveArticle(val)
+                // let poster = document.getElementsByClassName("")
+                // this.saveArticle(val)
             },
             uploadImg(){
-
+                
             }
         },
         watch: {
@@ -216,6 +227,7 @@
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
         padding: 50px 30px;
+        padding-bottom: 70px;
     }
     .title {
         height: 44px;
@@ -261,6 +273,16 @@
         float: right;
         margin-top: 10px;
     }
+    .preview_btn:hover {
+        color: #8DAFFC;
+        border-color: #8DAFFC;
+        background: #fff;
+    }
+    .preview_btn:focus {
+        color: #8DAFFC;
+        border-color: #8DAFFC;
+        background: #fff;
+    }
     .draft_btn {
         margin-right: 10px;
         color: #8DAFFC;
@@ -271,13 +293,26 @@
         border-color: #8DAFFC !important;
         background-color: #f4f7ff !important;
     }
+    .showtitle {
+        margin: 20px 0 0 20px;
+        font-family: 'Arial';
+        font-size: 32px;
+        font-weight: 600;
+    }
     .showcontent {
-        width: 940px;
-        margin-top: 30px;
+        margin: 20px;
+        font-size: 14px;
     }
     .showcontent /deep/ img {
         max-width: 90%;
         height: auto;
         display: block;
     }
+    .showcontent /deep/ video {
+        max-width:90%; 
+        height:auto;
+        margin:auto;
+        display:block;
+    }
+
 </style>

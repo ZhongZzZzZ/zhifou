@@ -23,10 +23,10 @@
             </div>
             <div class="article_list">
                 <el-tabs type="border-card" v-model="activeName">
-                    <el-tab-pane label="已发帖子" name="myarticle">
+                    <el-tab-pane label="已发文章" name="myarticle">
                         <myarticle></myarticle>
                     </el-tab-pane>
-                    <el-tab-pane label="收藏帖子" name="followarticle">
+                    <el-tab-pane label="收藏文章" name="followarticle">
                         <followarticle></followarticle>
                     </el-tab-pane>
                 </el-tabs>
