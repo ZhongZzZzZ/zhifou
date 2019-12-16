@@ -83,7 +83,7 @@
                 },
                 tip:'发送中…',
                 more_msg: '查看更多',
-                noMore: false, 
+                noMore: false,
                 search:''
             };
         },
@@ -151,7 +151,6 @@
                 }
                 this.scrollToBottom();
             },
-
             onSubmit(to_id) { // 发送新消息
                 let curmsg = {
                     content: this.mymsg,
