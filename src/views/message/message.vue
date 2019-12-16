@@ -78,13 +78,8 @@
                     id: 0,
                     name:'',
                     url:'',
-                    message: [ // 0代表对方，1代表自己
-                        // { sequence_id: '1', from_id:'3', to_id:'2', role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'},
-                        // { sequence_id: '2', from_id:'2', to_id:'3', role: 1, content: '在',create_time: '2019年12月6日 5：22：57'},
-                    ],
-                    readymsg: [ // 未送达的消息
-                        // { content: '发给你你却收不到', from_id: 2, to_id: 3 }
-                    ], 
+                    message: [],// 0代表对方，1代表自己
+                    readymsg: [], // 未送达的消息 
                 },
                 tip:'发送中…',
                 more_msg: '查看更多',
@@ -102,7 +97,6 @@
                 this.current.readymsg = [];
                 this.more_msg = '查看更多';
                 this.noMore = false;
-                console.log(this.current.url);
                 var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.id + '/';
                 if (typeof (WebSocket) === "undefined") {
                     alert("您的浏览器不支持socket")
@@ -112,18 +106,6 @@
                     this.socket.onerror = this.error // 监听socket错误信息
                     this.socket.onmessage = this.getMessage // 监听socket信息
                 }
-                // let time = new Date()
-                // let chatrecord= { // 第一次请求聊天记录
-                //     from_id: this.user.id,
-                //     to_id: cur.id,
-                //     send_type: 0,
-                //     offset: 1,
-                //     early_time: time.getDate()
-                // }
-                // let ws = this.socket;
-                // ws.addEventListener('open', function () { // 监听websocket open事件
-                //     ws.send(JSON.stringify(chatrecord));
-                // });
             },
 
             open: function () {
@@ -138,7 +120,6 @@
             getMessage: function (msg) { // 接收信息
                 let data = JSON.parse(msg.data);
                 console.log(data)
-                this.hist_pages = data[0].hist_pages;
                 if(data[0].send_type) this.addmessage(data);
                 else this.addrecord(data);
             },
@@ -148,11 +129,18 @@
                     this.noMore = true;
                     this.more_msg = '没有更多了'
                 } else {
-                    if(record[0].is_frist_hist) {
+                    if(record[0].is_first_hist) {
                         this.current.message = record.concat(this.current.message);
-                        this.scrollToBottom();
+                        this.$nextTick(() => {
+                            this.scrollToBottom();
+                        });
                     } else {
+                        let container = document.getElementsByClassName('chat_content');
+                        let height = container[0].scrollHeight;
                         this.current.message = record.concat(this.current.message);
+                        this.$nextTick(() => {
+                            container[0].scrollTop = container[0].scrollHeight - height;
+                        });
                     }
                 }
             },
@@ -171,16 +159,13 @@
                     to_id: to_id,
                     send_type: 1
                 }
-                console.log(curmsg);
                 this.socket.send(JSON.stringify(curmsg));
                 this.current.readymsg.push(curmsg)
                 this.mymsg = '';
-                this.scrollToBottom();
             },
             onScroll(to_id) { // 上拉加载
                 let container = document.getElementsByClassName('chat_content');
                 let scrollTop = container[0].scrollTop;
-                //console.log('scrollTop:' + scrollTop)
                 if(scrollTop == 0 && !this.noMore) {
                     let loadmore = {
                         from_id: this.user.id,
@@ -192,10 +177,8 @@
                 }
             },
             scrollToBottom() {   // 滑动条在最下方
-                this.$nextTick(() => {
-                    let container = document.getElementsByClassName('chat_content');
-                    container[0].scrollTop = container[0].scrollHeight;
-                })
+                let container = document.getElementsByClassName('chat_content');
+                container[0].scrollTop = container[0].scrollHeight;
             },
         },
         created(){

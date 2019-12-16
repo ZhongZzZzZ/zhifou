@@ -32,6 +32,7 @@ Vue.use(Router)
         {
             path:'/register',
             name:'register',
+            meta:{keepAlive:false},
             component: ()=>import('../views/register/register')
         },
         {

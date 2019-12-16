@@ -156,26 +156,42 @@
 <style lang="scss" >
     .register_page{
         position: relative;
-        background-image: url("http://pic.90sjimg.com/design/01/34/58/13/58dcfe0be8011.png") ;
+        background-image: url("../../assets/注册.png") ;
         background-size:100% 100%;
         width: 100%;
         height: 884px;
         .register_container{
-            width: 370px;
             background-color: rgba(38,38,38,0.35);
-            height: 883px;
+            width: 600px;
+            height: 420px;
             position: absolute;
-            top:0px;
-            left: 100%;
-            transform: translate(-100%,0);
-            box-shadow: 0 0 10px 10px #f3f3f3;
-            /*border-radius: 8px;*/
+            top:200px;
+            left: 50%;
+            padding: 42px 0px 20px 0px;
+            transform: translate(-50%,0);
+            box-shadow: 0 0 5px 5px #e6e6e6;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
+        // .register_container{
+        //     width: 370px;
+        //     background-color: rgba(38,38,38,0.35);
+        //     height: 883px;
+        //     position: absolute;
+        //     top:0px;
+        //     left: 100%;
+        //     transform: translate(-100%,0);
+        //     box-shadow: 0 0 10px 10px #f3f3f3;
+        //     /*border-radius: 8px;*/
+        // }
         .register_input{
             width: 350px;
-            position: absolute;
-            left: 0%;
-            top:25%;
+            // position: absolute;
+            // left: 0%;
+            // top:25%;
             .register{
                 color:#fff;
                 font-weight: bold;

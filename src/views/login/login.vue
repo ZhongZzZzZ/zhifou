@@ -1,22 +1,22 @@
 <template>
     <div class="login_page">
         <div class="login_container">
-                <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm login_input">
-                    <el-form-item label="工号" prop="user_account" >
-                        <el-input v-model="ruleForm.user_account" prefix-icon="el-icon-message" placeholder="请输入工号..."></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码" prop="password" >
-                        <el-input type="password" v-model.trim="ruleForm.password" autocomplete="on"  prefix-icon="el-icon-link" show-password placeholder="请输入密码...">
-                        </el-input>
-                        <span class="resetPsw" @click="$router.push({path:'resetPassword'})">忘记密码？</span>
-                        <span class="register" @click="$router.push({path:'/register'})">注册</span>
-                    </el-form-item>
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm login_input">
+                <el-form-item label="工号" prop="user_account" >
+                    <el-input v-model="ruleForm.user_account" prefix-icon="el-icon-message" placeholder="请输入工号..."></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password" >
+                    <el-input type="password" v-model.trim="ruleForm.password" autocomplete="on"  prefix-icon="el-icon-link" show-password placeholder="请输入密码...">
+                    </el-input>
+                    <span class="resetPsw" @click="$router.push({path:'resetPassword'})">忘记密码？</span>
+                    <span class="register" @click="$router.push({path:'/register'})">注册</span>
+                </el-form-item>
 <!--                    <el-form-item label="" prop="verCode">-->
 <!--                        <el-input v-model.trim="ruleForm.verCode" autocomplete="on" class="login_verCode" placeholder="验证码"></el-input>-->
 <!--                        <img class="login_verPic" @click="changeVerPic" :src="imgsrc" alt="验证码">-->
 <!--                    </el-form-item>-->
-                </el-form>
-                <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')" class="login_btn">提交</el-button>
+            </el-form>
+            <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')" class="login_btn">提交</el-button>
         </div>
     </div>
 </template>
@@ -139,7 +139,7 @@
 .login_page{
     position: relative;
     background-color: #eee;
-    background-image: url("https://img.zcool.cn/community/0154d25d5c96d7a8012187f4f9aa4c.jpg@1280w_1l_0o_100sh.jpg")  ;
+    background-image: url("../../assets/登录.png")  ;
     background-size:100% 100%;
     background-repeat:no-repeat;
     width: 100%;

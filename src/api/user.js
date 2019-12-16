@@ -42,10 +42,10 @@ export default {
   // 上传图片或者视频接口
   uploadPhoto(data){
     return request({
-      url:'/article/uploadPhoto',
-      headers: {
-        'Content-Type': 'multipart/form-data' //设置post文件的请求头
-      },
+      url:'/users/uploadfiles',
+      // headers: {
+      //   'Content-Type': 'multipart/form-data' //设置post文件的请求头
+      // },
       method:'post',
       data
     })
@@ -72,7 +72,8 @@ export default {
       method:'post',
       data
     })
-  }
+  },
+  
 
   // getIndexInfo(){
   //   return request({

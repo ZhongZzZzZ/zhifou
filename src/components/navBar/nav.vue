@@ -9,18 +9,18 @@
                 </el-menu>
             </div>
             <div class="nav_user">
-                <el-dropdown v-if="userData == null">
+                <!-- <el-dropdown v-if="userData == null">
                     <img class="user_avatar" src="../../assets/unlogin.png">
                     <el-dropdown-menu slot="dropdown">
                         <router-link to="/userinfo"><el-dropdown-item>个人主页</el-dropdown-item></router-link>
                         <router-link to="/login" @click.native="clearStorage"><el-dropdown-item>退出</el-dropdown-item></router-link>
                     </el-dropdown-menu>
-                </el-dropdown>
-                <el-dropdown v-else>
-                    <img class="user_avatar" src="../../assets/avatar.jpg">
+                </el-dropdown> -->
+                <el-dropdown>
+                    <img class="user_avatar" :src="user_url">
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item><router-link to="/userinfo">个人主页</router-link></el-dropdown-item>
-                        <el-dropdown-item><a class="user_link" @click="exit">退出</a></el-dropdown-item>
+                        <router-link to="/userinfo"><el-dropdown-item>个人主页</el-dropdown-item></router-link>
+                        <router-link to="/login" @click.native="clearStorage"><el-dropdown-item>退出</el-dropdown-item></router-link>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -32,13 +32,15 @@
 </template>
 
 <script>
+    import {getLocalStorage} from "../../utils/auth";
     export default {
         name: "nav",
         data(){
             return{
                 activeIndex: '/',
-                userData: null,
-                isActived:true
+                // userData: null,
+                isActived:true,
+                user_url: getLocalStorage('user_url')
             }
         },
         created(){

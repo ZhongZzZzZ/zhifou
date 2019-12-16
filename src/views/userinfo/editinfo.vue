@@ -3,12 +3,14 @@
         <Nav style="position:sticky;"></Nav>
         <div class="main">
             <div class="info_edit">
+                <!-- action="http://192.168.195.9:8123/zhifou/users/uploadfiles" -->
                 <el-upload
                     class="avatar-uploader"
-                    action="#"
+                    action="string"
+                    :auto-upload="false"
                     :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
+                    :on-change="imgchange"
+                    >
                     <img :src="form.user_url" class="avatar">
                     <i class="el-icon-camera-solid avatar-uploader-icon"><span>修改头像</span></i>
                 </el-upload>
@@ -40,16 +42,17 @@
 </template>
 
 <script>
-    import imgsrc from '../../assets/avatar.jpg'
+    // import imgsrc from '../../assets/avatar.jpg'
     import Nav from '../../components/navBar/nav'
     import api from '../../api/user'
     import {getLocalStorage} from "../../utils/auth";
+    import {setLocalStorage} from "../../utils/auth";
 
     export default {
         name: "editinfo",
         data(){
             return {
-                 form: {
+                form: {
                     token: getLocalStorage('token'),
                     user_id: getLocalStorage('user_id'),
                     user_name: getLocalStorage('user_name'),
@@ -61,22 +64,26 @@
             }
         },
         methods: {
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = file.url;
-                // this.imageUrl = URL.createObjectURL(file.raw);
-            },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-                this.imageUrl = file.url;
-
+            imgchange(file) {
+                const isJPG = file.raw.type === 'image/jpeg';
+                const isLt2M = file.raw.size / 1024 / 1024 < 2;
                 if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                    return 
                 }
                 if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                    return 
                 }
-                return isJPG && isLt2M;
+                let formData = new FormData();
+                formData.append('profile_photo', file.raw);
+                formData.append('token', getLocalStorage('token'));
+                formData.append('user_id', getLocalStorage('user_id'));
+                console.log(formData.getAll('profile_photo'))
+                api.uploadPhoto(formData).then(res => {
+                    this.form.user_url = res.url;
+                    console.log(this.form.user_url);
+                    });
             },
             resetPsw() {
                 this.$router.push('/editpsw');
@@ -89,7 +96,15 @@
                 for ( let item in this.form) {
                     formData.append(item, this.form[item]);
                 }
-                api.editUserInfo(formData).then(res => console.log(res));
+                api.editUserInfo(formData).then(res => {
+                    console.log(res);
+                    setLocalStorage('user_name', this.form.user_name),
+                    setLocalStorage('user_phone', this.form.user_phone),
+                    setLocalStorage('email', this.form.email),
+                    setLocalStorage('user_gender', this.form.user_gender),
+                    setLocalStorage('user_url', this.form.user_url)
+                });
+                this.$router.push('/userinfo');
             }
         },
         created(){

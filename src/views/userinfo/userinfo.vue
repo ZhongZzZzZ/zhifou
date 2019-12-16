@@ -9,9 +9,9 @@
                         <span>{{name}}</span>
                         <i v-if="sex == 0" class="icon-sex el-icon-female"></i>
                         <i v-else class="icon-sex el-icon-male"></i>
-                        <el-badge value="hot" class="item">
+                        <!-- <el-badge value="hot" class="item">
                             <el-tag>1000</el-tag>
-                        </el-badge>
+                        </el-badge> -->
                     </div>
                     <div class="info_detail">
                         <div>工号：{{account}}</div>
@@ -40,15 +40,20 @@
     import followarticle from '@/components/userinfo/followArticle'
     import Nav from '../../components/navBar/nav'
     import {getLocalStorage} from "../../utils/auth";
-    import defaultAvatar from '../../assets/avatar.jpg'
+    import defaultAvatar from '../../assets/unlogin.png'
 
     // import { mapState } from 'vuex'
     export default {
         name: "userinfo",
         data(){
             return {
-                sex: 1,
                 activeName: 'myarticle',
+                name: getLocalStorage('user_name'),
+                avatar: getLocalStorage('user_url') || defaultAvatar,
+                phone: getLocalStorage('user_phone') || '未填写...',
+                account: getLocalStorage('user_account'),
+                email: getLocalStorage('email'),
+                sex: getLocalStorage('user_gender'),
             }
         },
         components: {
@@ -62,12 +67,12 @@
             },
         },
         created(){
-            this.name = getLocalStorage('user_name')
-            this.avatar = getLocalStorage('user_url') || defaultAvatar
-            this.phone = getLocalStorage('user_phone') || '未填写...'
-            this.account = getLocalStorage('user_account')
-            this.email = getLocalStorage('email')
-            this.sex = getLocalStorage('user_gender')
+            // this.name = getLocalStorage('user_name')
+            // this.avatar = getLocalStorage('user_url') || defaultAvatar
+            // this.phone = getLocalStorage('user_phone') || '未填写...'
+            // this.account = getLocalStorage('user_account')
+            // this.email = getLocalStorage('email')
+            // this.sex = getLocalStorage('user_gender')
         },
         // computed:{
         //     ...mapState({
@@ -94,13 +99,13 @@
         width: 200px;
         height: 200px;
         border: 1px solid #e6e6e6;
-        border-radius: 5%;
+        border-radius: 8%;
         float: left;
     }
     .pic {
         width: 200px;
         height: 200px;
-        border-radius: 5%;
+        border-radius: 8%;
     }
     .info {
         margin-left: 240px;

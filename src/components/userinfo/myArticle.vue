@@ -52,7 +52,7 @@
         },
         created(){
             api.getLauchedArticleInfo({
-                user_id: 1002,
+                user_id: getLocalStorage('user_id'),
                 token:getLocalStorage('token'),
                 page:1
             }).then(res => {
