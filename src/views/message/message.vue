@@ -84,11 +84,11 @@
                     ],
                     readymsg: [ // 未送达的消息
                         // { content: '发给你你却收不到', from_id: 2, to_id: 3 }
-                    ], 
+                    ],
                 },
                 tip:'发送中…',
                 more_msg: '查看更多',
-                noMore: false, 
+                noMore: false,
                 search:''
             };
         },
@@ -163,7 +163,6 @@
                 }
                 this.scrollToBottom();
             },
-
             onSubmit(to_id) { // 发送新消息
                 let curmsg = {
                     content: this.mymsg,
