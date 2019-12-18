@@ -4,7 +4,7 @@ export default {
   // 登录
   login (data) {
     return request({
-      url: '/users/login',
+      url: '/users/logindemo',
       method: 'post',
       data
     })
@@ -73,8 +73,20 @@ export default {
       data
     })
   },
-  
-
+  // 登录生成验证码
+  getVercode() {
+    return request({
+      url:'/users/getcaptcha',
+      method:'get'
+    })
+  },
+  // 搜索私信对象
+  getUsers(data) {
+    return request({
+      url:'/users/search?q=' + data,
+      method:'get'
+    })
+  }
   // getIndexInfo(){
   //   return request({
   //     url:'/article/test',

@@ -1,7 +1,7 @@
 <template>
     <div class="article_container">
         {{msg}}
-        <el-button type="primary" @click="sentMqtt(6,`文章xxx${userId}`)">点击发送信息</el-button>
+        <el-button type="primary" @click="sentMqtt(7,`文章xxx${userId}`)">点击发送信息</el-button>
     </div>
 </template>
 
@@ -26,6 +26,7 @@
             sentMqtt(val,title){
                 var message = new Paho.Message('一代游戏传奇退役');
                 // var message = new Paho.Message(`{article:${title}}`);
+                console.log(message);
                 message.destinationName = `like/${val}`;
                 this.mqtt.send(message);
             },
@@ -69,7 +70,7 @@
             onConnect() {
                 //连接成功，订阅主题
                 this.mqtt.subscribe(`like/${this.userId}`, {
-                    qos: 1
+                    qos: 2
                     //QoS0，最多一次送达。也就是发出去就fire掉，没有后面的事情了。
                     // QoS1，至少一次送达。发出去之后必须等待ack，没有ack，就要找时机重发
                     // QoS2，准确一次送达。消息id将拥有一个简单的生命周期。
@@ -87,6 +88,7 @@
             },
             //接收到消息，处理
             onMessageArrived(message) {
+                console.log(message)
                 var topics = message.destinationName;
                 var msg = message.payloadString;
                 this.$notify({

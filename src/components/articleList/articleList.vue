@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="article_list" >
-            <img :src="item.user_url" alt="" class="article_avatar">
+            <img :src="item.user.user_url" class="article_avatar">
             <div class="article_time_name">
-                <span class="article_name">{{item.user_name}}</span>
+                <span class="article_name">{{item.user.user_name}}</span>
                 <p class="article_time">{{item.create_time}}</p>
             </div>
             <p class="article_title">
@@ -12,9 +12,9 @@
             </p>
             <!--缩略文章-->
             <div class="picture_content" v-show="!showAticle">
-                <div class="article_picture" @click="goArticle(item.article_id)" v-show="item.photo_url != null">
-                    <span class="iconfont iconbofang video_play" v-if="item.photo_flag == 3"></span>
-                    <img :src="item.photo_url" alt="" style="width: 250px" >
+                <div class="article_picture" @click="goArticle(item.article_id)" v-show="item.photo.photo_url != null">
+                    <span class="iconfont iconbofang video_play" v-if="item.photo.photo_flag == 3"></span>
+                    <img :src="item.photo.photo_url" style="width: 250px" >
                 </div>
                 <p class="article_content" ><span @click="goArticle(item.article_id)">{{item.simple_content | articleFilter}}</span>
                     <span class="readMore" @click="readMore(item.article_id)">阅读全文 <span class="iconfont iconjiantouyou control"></span></span>
@@ -99,10 +99,11 @@
 <style lang="scss" scoped>
     .article_list{
         width:100%;
+        margin: 0px auto;
     .article_avatar{
         width: 60px;
         height: 60px;
-        margin-left: 15px;
+        margin-left: 20px;
     }
     .article_time_name{
         display: inline-block;
@@ -121,7 +122,7 @@
     .article_title{
         font-size: 18px;
         font-weight: 600;
-        margin: 15px;
+        margin: 20px;
         cursor: pointer;
     span{
     &:hover{
@@ -132,13 +133,13 @@
     .el-tag {
         margin-left: 5px;
         font-weight: 400;
-        margin-right: 10px;
+        //margin-right: 10px;
     }
     }
     .picture_content{
         display: flex;
         justify-content: center;
-        padding: 0 15px;
+        padding: 0 20px;
         .readMore{
             color:#175199;
             font-weight: 600;
@@ -186,7 +187,7 @@
     }
     }
      .full_article{
-         padding: 0px 15px 8px 15px;
+         padding: 0px 20px 8px 20px;
          position: relative;
          .readMore{
              color:#8590a6;
@@ -203,7 +204,7 @@
     }
     .common{
         color:#8590a6;
-        margin: 0 15px;
+        margin: 0 20px;
         cursor: pointer;
         font-size: 14px;
         user-select: none;
@@ -220,9 +221,13 @@
         margin-right: 25px;
         cursor: auto;
     }
-     .showComment{
-         padding:15px;
-         margin-bottom: 25px ;
+    .showComment{
+        width: 90%;
+        box-shadow: 0 0px 15px rgba(26, 26, 26, 0.1);
+        border-radius: 5px;
+        margin: 10px auto;
+        padding: 10px 15px 25px 15px;
+        margin-bottom: 25px ;
      }
     }
 </style>

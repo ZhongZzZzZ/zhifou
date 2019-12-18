@@ -29,6 +29,9 @@
                     <el-tab-pane label="收藏文章" name="followarticle">
                         <followarticle></followarticle>
                     </el-tab-pane>
+                    <el-tab-pane label="已发评论" name="commentarticle">
+                        <commentarticle></commentarticle>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </div>
@@ -38,6 +41,7 @@
 <script>
     import myarticle from '@/components/userinfo/myArticle'
     import followarticle from '@/components/userinfo/followArticle'
+    import commentarticle from '@/components/userinfo/commentarticle'
     import Nav from '../../components/navBar/nav'
     import {getLocalStorage} from "../../utils/auth";
     import defaultAvatar from '../../assets/unlogin.png'
@@ -48,17 +52,12 @@
         data(){
             return {
                 activeName: 'myarticle',
-                name: getLocalStorage('user_name'),
-                avatar: getLocalStorage('user_url') || defaultAvatar,
-                phone: getLocalStorage('user_phone') || '未填写...',
-                account: getLocalStorage('user_account'),
-                email: getLocalStorage('email'),
-                sex: getLocalStorage('user_gender'),
             }
         },
         components: {
             'myarticle' : myarticle,
             'followarticle' : followarticle,
+            'commentarticle': commentarticle,
             Nav
         },
         methods: {
@@ -67,12 +66,12 @@
             },
         },
         created(){
-            // this.name = getLocalStorage('user_name')
-            // this.avatar = getLocalStorage('user_url') || defaultAvatar
-            // this.phone = getLocalStorage('user_phone') || '未填写...'
-            // this.account = getLocalStorage('user_account')
-            // this.email = getLocalStorage('email')
-            // this.sex = getLocalStorage('user_gender')
+            this.name = getLocalStorage('user_name')
+            this.avatar = getLocalStorage('user_url') || defaultAvatar
+            this.phone = getLocalStorage('user_phone') || '未填写...'
+            this.account = getLocalStorage('user_account')
+            this.email = getLocalStorage('email')
+            this.sex = getLocalStorage('user_gender')
         },
         // computed:{
         //     ...mapState({

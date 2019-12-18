@@ -8,15 +8,17 @@
                 <el-form-item label="密码" prop="password" >
                     <el-input type="password" v-model.trim="ruleForm.password" autocomplete="on"  prefix-icon="el-icon-link" show-password placeholder="请输入密码...">
                     </el-input>
-                    <span class="resetPsw" @click="$router.push({path:'resetPassword'})">忘记密码？</span>
-                    <span class="register" @click="$router.push({path:'/register'})">注册</span>
                 </el-form-item>
-<!--                    <el-form-item label="" prop="verCode">-->
-<!--                        <el-input v-model.trim="ruleForm.verCode" autocomplete="on" class="login_verCode" placeholder="验证码"></el-input>-->
-<!--                        <img class="login_verPic" @click="changeVerPic" :src="imgsrc" alt="验证码">-->
-<!--                    </el-form-item>-->
+                <el-form-item label="" prop="verCode">
+                    <el-input v-model.trim="ruleForm.captcha_1" autocomplete="on" class="login_verCode" placeholder="验证码" @focus="getVercodeImg"></el-input>
+                    <img class="login_verPic" @click="changeVerPic" :src="imgsrc" alt="验证码" v-if=" imgsrc!== ''">
+                </el-form-item>
             </el-form>
-            <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')" class="login_btn">提交</el-button>
+            <div class="tip">
+                <span class="resetPsw" @click="$router.push({path:'resetPassword'})">忘记密码？</span>
+                <span class="register" @click="$router.push({path:'/register'})">注册</span>  
+                <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')" class="login_btn">提交</el-button>
+            </div>
         </div>
     </div>
 </template>
@@ -51,11 +53,12 @@
                 ruleForm: {
                     user_account: '',
                     password: '',
-                    // verCode:'',
-
+                    captcha_1:'',
+                    hashkey: '',
                 },
-                loading:false,
-                //imgsrc:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574228585126&di=246bf36c52977463b101e7ff3856a08d&imgtype=0&src=http%3A%2F%2Fimg11.360buyimg.com%2Fwanxiang%2Fs340x340_jfs%2Ft17110%2F34%2F144592244%2F13762%2Fe86d2dfe%2F5a5f6cffN1a8b9b01.jpg',
+                isFirst: true,
+                loading: false,
+                imgsrc: '',
                 rules: {
                     user_account: [
                         { validator: validatePass1, trigger: 'blur' ,required: true}
@@ -63,9 +66,9 @@
                     password: [
                         { validator: validatePass, trigger: 'blur' ,required: true}
                     ],
-                    // verCode:[
-                    //     { validator: validatePass1, trigger: 'blur' ,required: true}
-                    // ]
+                    captcha_1:[
+                        { validator: validatePass1, trigger: 'blur' ,required: true}
+                    ]
                 },
             };
         },
@@ -97,6 +100,9 @@
                             }else if(res.code == '404'){
                                 this.$message.error('登陆失败')
                                 return false
+                            }else if(res.code == '403'){
+                                this.$message.error('验证码错误')
+                                return false
                             }else{
                                 this.$message.error('服务器错误')
                                 return false
@@ -124,6 +130,16 @@
                         return false;
                     }
                 });
+            },
+            getVercodeImg() {
+                if(this.isFirst) {
+                    api.getVercode().then(res => {
+                        console.log(res);
+                        this.imgsrc = res.image_url;
+                        this.ruleForm.hashkey = res.hashkey;
+                    })
+                    this.isFirst = false;
+                }
             },
             changeVerPic(){
                 console.log("changeWaiting...")
@@ -158,9 +174,6 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        .login_btn{
-            width: 300px;
-        }
         .login_input{
             width: 350px;
             margin-left: -50px;
@@ -168,24 +181,34 @@
             .el-form-item__label{
                 color:#fff;
             }
-            .resetPsw{
-                cursor:pointer;
-            }
-            .register{
-                float: right;
-                font-weight: bold;
-                cursor:pointer;
-            }
             .login_verCode{
                 width: 140px;
             }
             .login_verPic{
-                width:110px;
-                height:60px;
+                width: 85px;
+                height: 40px;
+                margin-left: 24px;
                 cursor: pointer;
             }
             .iconPos{
                 float: right;
+            }
+        }
+        .tip {
+            width: 300px;
+            .resetPsw{
+                cursor:pointer;
+                color: #fff;
+            }
+            .register{
+                color: #fff;
+                float: right;
+                font-weight: bold;
+                cursor:pointer;
+            }
+            .login_btn{
+                margin-top:5px;
+                width: 300px;
             }
         }
     }

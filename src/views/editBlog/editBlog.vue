@@ -2,7 +2,7 @@
     <div>
         <Nav></Nav>
         <div class="main" id="main">
-            <textarea class="title" v-model="title" placeholder="请输入标题（不超过20个字）" maxlength="20"></textarea>
+            <textarea class="title" v-model="title" placeholder="请输入标题（不超过25个字）" maxlength="25"></textarea>
             <div class="tag_radio">
                 请选择一个分类：
                 <el-radio border v-for="item in tags" :key="item" :label="item.id" v-model="radio">{{ item.name }}</el-radio>
@@ -101,7 +101,10 @@
                         formdata.append('photo',blobInfo.blob())
                         formdata.append('token',getLocalStorage('token'))
                         formdata.append('article_id',articleId)
-                        api.uploadPhoto(formdata).then(res => success(res.photo_name))
+                        api.uploadPhoto(formdata).then(res => {
+                            console.log(res);
+                            success(res.photo_name)
+                        })
                     },
                     file_picker_types: 'media',
                     file_picker_callback: function(callback, value, meta) {
