@@ -69,11 +69,11 @@
                 const isLt2M = file.raw.size / 1024 / 1024 < 2;
                 if (!isJPG) {
                     this.$message.error('上传头像图片只能是 JPG 格式!');
-                    return 
+                    return
                 }
                 if (!isLt2M) {
                     this.$message.error('上传头像图片大小不能超过 2MB!');
-                    return 
+                    return
                 }
                 let formData = new FormData();
                 formData.append('profile_photo', file.raw);
@@ -103,6 +103,7 @@
                     setLocalStorage('email', this.form.email),
                     setLocalStorage('user_gender', this.form.user_gender),
                     setLocalStorage('user_url', this.form.user_url)
+
                 });
                 this.$router.push('/userinfo');
             }

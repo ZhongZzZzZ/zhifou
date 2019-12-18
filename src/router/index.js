@@ -91,6 +91,11 @@ Vue.use(Router)
             component:()=>import('../views/sentPassword/sentPassword')
         },
         {
+            path:'/searchResult',
+            name:'searchResult',
+            component:()=>import('../views/searchResult/searchResult')
+        },
+        {
             path:'*',
             component:()=> import('../views/404page/404page')
         }

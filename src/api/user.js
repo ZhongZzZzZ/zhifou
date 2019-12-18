@@ -61,7 +61,7 @@ export default {
   // 发送密码和token接口(未登陆状态下修改密码)
   changepasswd(data) {
     return request({
-      url: '/users/changepasswd/token',
+      url: '/users/changepasswd',
       method: 'post',
       data
     })
@@ -73,7 +73,7 @@ export default {
       data
     })
   },
-  
+
 
   // getIndexInfo(){
   //   return request({

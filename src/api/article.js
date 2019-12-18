@@ -80,5 +80,13 @@ export default {
             method:'post',
             data
         })
+    },
+    //搜索文章接口
+    searchArticle(q,page){
+        return request({
+            url:'/article/search',
+            method:'get',
+            params:{q:q,page:page}
+        })
     }
 }

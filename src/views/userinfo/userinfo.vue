@@ -59,7 +59,7 @@
         components: {
             'myarticle' : myarticle,
             'followarticle' : followarticle,
-            Nav
+             Nav
         },
         methods: {
             goEditInfo() {
@@ -67,12 +67,12 @@
             },
         },
         created(){
-            // this.name = getLocalStorage('user_name')
-            // this.avatar = getLocalStorage('user_url') || defaultAvatar
-            // this.phone = getLocalStorage('user_phone') || '未填写...'
-            // this.account = getLocalStorage('user_account')
-            // this.email = getLocalStorage('email')
-            // this.sex = getLocalStorage('user_gender')
+            this.name = getLocalStorage('user_name')
+            this.avatar = getLocalStorage('user_url') || defaultAvatar
+            this.phone = getLocalStorage('user_phone') || '未填写...'
+            this.account = getLocalStorage('user_account')
+            this.email = getLocalStorage('email')
+            this.sex = getLocalStorage('user_gender')
         },
         // computed:{
         //     ...mapState({

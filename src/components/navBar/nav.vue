@@ -6,6 +6,16 @@
                 <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item index="/" >首页</el-menu-item>
                     <el-menu-item index="/classification" >兴趣</el-menu-item>
+                        <el-autocomplete
+                                class="search"
+                                v-model="state"
+                                :fetch-suggestions="querySearchAsync"
+                                prefix-icon="el-icon-search"
+                                placeholder="请输入内容"
+                                @select="handleSelect"
+                                @focus="focus"
+                                @keyup.enter.native="search"
+                        ></el-autocomplete>
                 </el-menu>
             </div>
             <div class="nav_user">
@@ -40,7 +50,8 @@
                 activeIndex: '/',
                 // userData: null,
                 isActived:true,
-                user_url: getLocalStorage('user_url')
+                user_url: getLocalStorage('user_url'),
+                state: ''
             }
         },
         created(){
@@ -49,6 +60,25 @@
         methods:{
             clearStorage(){
                 localStorage.clear()
+            },
+            handleSelect(item) {
+                console.log(item);
+            },
+            querySearchAsync(queryString, cb) {
+
+            },
+            focus(){
+
+            },
+            search(){
+              var route = this.$router.resolve({
+                  path:'/searchResult',
+                  query:{
+                      q:this.state
+                  }
+              })
+                window.open(route.href,'_blank')
+              // this.$router.push({path:'/searchResult',query:{q:this.state}})
             }
         }
     }
@@ -82,6 +112,10 @@
             display: inline-block;
             font-size:15px;
             font-weight: 600;
+            .search{
+                margin: 10px 0 0 10px;
+
+            }
         }
         .nav_message {
             float: right;
