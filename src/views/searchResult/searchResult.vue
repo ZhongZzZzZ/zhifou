@@ -55,6 +55,6 @@
     width: 850px;
     min-height: 980px;
     background-color: #fff;
-    padding: 15px;
+
 }
 </style>

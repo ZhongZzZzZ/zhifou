@@ -1,7 +1,7 @@
 <template>
     <div class="article_container">
         {{msg}}
-        <el-button type="primary" @click="sentMqtt(6,`文章xxx${userId}`)">点击发送信息</el-button>
+        <el-button type="primary" @click="sentMqtt(7,`文章xxx${userId}`)">点击发送信息</el-button>
     </div>
 </template>
 
@@ -28,7 +28,7 @@
                 // // // var message = new Paho.Message(`{article:${title}}`);
                 // message.destinationName = `like/19`;
                 // this.mqtt.send(message)
-                this.mqtt.publish('like/6','一带带带',2,true);
+                this.mqtt.publish('like/19','一带带带',2,true);
             },
             addtopic(msg) {
                 this.msg = msg;
@@ -37,7 +37,7 @@
                 this.mqtt = new Paho.Client(  //实例化一个对象
                     '192.168.193.30',
                      9001,
-                     "mqttjs" + this.userId //防止多个浏览器打开，导致的问题，保证唯一性
+                     "mqttjs" + this.getuuid() //防止多个浏览器打开，导致的问题，保证唯一性
                 );
                 var options = {
                     timeout: 10000,
@@ -71,14 +71,19 @@
             onconnect() {
                 //连接成功，订阅主题
                 this.mqtt.subscribe(`like/${this.userId}`,{qos:2})
+                //发布一个消息，再连接成功后，发送一个响应，确保连接没有问题；
+                // var message = new Paho.Message("Hello");
+                // message.destinationName = `like/${this.userId}`;
+                // this.mqtt.send(message);
             },
             //连接丢失
             onConnectionLost(response) {
                 //console.log("异常掉线，掉线信息为:" + response.errorMessage);
-                window.alert("网络异常，连接已断开")
+                this.$message.error('连接失败')
             },
             //接收到消息，处理
             onMessageArrived(message) {
+                console.log(message)
                 var topics = message.destinationName;
                 var msg = message.payloadString;
                 console.log(message)

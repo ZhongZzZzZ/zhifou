@@ -17,7 +17,7 @@
     import articleList from "../../components/articleList/articleList";
     import pagination from '../../components/pagination/pagination'
     import {getLocalStorage} from "../../utils/auth";
-
+    import Paho from 'paho-mqtt'
     export default {
         name: "hotPoint",
         data(){
@@ -33,13 +33,14 @@
         },
         methods:{
             getIndexInfo(){
-                api.getIndexInfo(
-                    {   page:this.page,
+                api.getIndexInfo({
+                        page:this.page,
                         token:getLocalStorage('token'),
-                        order_type:this.order_type
+                        order_type:this.order_type,
+                        user_id:getLocalStorage('user_id'),
                     }
                 ).then(res => {
-                    this.result = res.data
+                    this.result = res.article
                     this.total = res.article_count
                     console.log(res)
                 })

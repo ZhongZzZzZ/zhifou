@@ -65,8 +65,9 @@
                 this.getDraft()
             },
             getDraft(){
-                api.getDraftArticle({token:getLocalStorage('token'),page:this.page}).then(res =>
+                api.getDraftArticle({token:getLocalStorage('token'),page:this.page,user_id:getLocalStorage('user_id')}).then(res =>
                 {
+                    console.log(res)
                 this.total = res.article_count
                 this.articles = res.article;
                 })

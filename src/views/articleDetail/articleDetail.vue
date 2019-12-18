@@ -38,8 +38,8 @@
         <div class="user_main">
             <div class="user_title">关于作者</div>
             <div class="user_info">
-                <img :src="article.user_url" class="user_avatar" @click="userinfo">
-                <div class="user_name" @click="userinfo">{{ article.user_name }}</div>
+                <img :src="article.user.user_url" class="user_avatar" @click="userinfo">
+                <div class="user_name" @click="userinfo">{{ article.user.user_name }}</div>
                 <div class="user_like">
                     <div class="article">
                         <div class="hot_title">文章</div>
@@ -100,9 +100,9 @@
         created(){
             articleApi.getDetailInfo({
                 article_id: this.$route.query.id,
-                token:getLocalStorage('token')}
+                token: getLocalStorage('token')}
             ).then(res => {
-                // console.log(res);
+                console.log(res);
                 this.article = res.article;
                 this.user = res.user;
                 // console.log(this.article);
@@ -190,13 +190,13 @@
         font-size: 15px;
         line-height: 1.5;
         word-break: break-word;
-
         .article_time {
-            margin: 10px;
+            margin: 10px 0px;
             color:#909399;
         }
         .article_icon {
             margin-right: 10px;
+            margin-left: 0px;
         }
         .like_btn {
             float: right;

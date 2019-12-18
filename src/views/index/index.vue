@@ -16,7 +16,7 @@
                    <div class="slide_bar_item" @click="$router.push('/editBlog')"><p class="iconfont iconwenzhang1 icon_draft" ></p>写文章</div>
                    <div class="slide_bar_item" @click="$router.push('/draft')"><p class="iconfont iconcaogaoxiang icon_draft" ></p>草稿箱</div>
                 </div>
-                <div class="side_bar" style="top:172px">
+                <div class="side_bar" style="top:170px">
                     <div class="slide_bar_item" @click="goToClass('1001')"><p class="iconfont iconWEBqianduan icon_fontend" ></p><span>前端</span></div>
                     <div class="slide_bar_item" @click="goToClass('1002')"><p class="iconfont iconapphoutaiguanli icon_backend"></p>后端</div>
                     <div class="slide_bar_item" @click="goToClass('1003')"><p class="iconfont iconshouji icon_mobile" ></p>移动端</div>
@@ -37,6 +37,7 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
+
     export default {
         name: "index",
         data(){
@@ -80,14 +81,15 @@
 <style lang="scss" scoped>
     .index_container {
         display: flex;
-        width: 100%;
+        width: 1000px;
         justify-content: center;
         position: relative;
+        margin: 10px auto;
         .main1{
             position: relative;
-            width: 750px;
+            width: 730px;
             min-height: 950px;
-            margin: 15px;
+            margin-right: 20px;
             background-color: #ffffff;
             box-shadow: 0 0px 15px rgba(26,26,26,.1);
             border-radius: 5px;
@@ -111,11 +113,11 @@
             max-width: 250px;
             background-color: #ffffff;
             height: 250px;
-            margin-top: 15px;
+            // margin-top: 15px;
             box-shadow: 0 0px 15px rgba(26,26,26,.1);
             border-radius: 5px;
             position: sticky;
-            top: 76px;
+            top: 71px;
             padding: 15px;
             box-sizing: border-box;
             display: flex;
@@ -130,7 +132,7 @@
                 box-shadow: 0 0px 15px rgba(26,26,26,.1);
                 border-radius: 5px;
                 position: sticky;
-                top: 450px;
+                top: 440px;
                 padding: 0px;
                 box-sizing: border-box;
                 display: flex;

@@ -2,24 +2,26 @@
     <div>
         <Nav style="position:sticky;"></Nav>
         <div class="content">
-            <el-col :span="6">
+            <el-col :span="7">
                 <el-menu default-active="1" class="el-menu-vertical-demo">
                     <el-menu-item class="search_item">
-                        <el-input placeholder="查找工号" prefix-icon="el-icon-search" v-model="search"></el-input>
+                        <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @input="debouce">
+                            <el-button slot="append" icon="el-icon-search" @click="debouce(searchUser)"></el-button>
+                        </el-input>
                     </el-menu-item>
-                    <el-menu-item  v-for="item in users" :key="item.id" @click="chat(item)" :index="item.id">
-                        <img class="user_avatar" :src="item.url">
-                        <span slot="title">{{ item.name }}</span>
+                    <el-menu-item  v-for="item in users" :key="item.user_id" @click="chat(item)" :index="item.user_id">
+                        <img class="user_avatar" :src="item.user_url">
+                        <span slot="title">{{ item.user_name }}</span>
                     </el-menu-item>
                 </el-menu>
             </el-col>
             <div class="chat_window" v-if="chatShow">
-                <div class="chat_name">{{ current.name }}</div>
-                <div class="chat_content" @scroll="onScroll(current.id)">
+                <div class="chat_name">{{ current.user_name }}</div>
+                <div class="chat_content" @scroll="onScroll(current.user_id)">
                     <div class="loadmore"><i class="el-icon-loading" v-if="!noMore"></i> {{ more_msg }}</div>
                     <div class="chat_message" v-for="item in current.message" :key="item">
                         <div class="other_side" v-if="!item.role">
-                            <img :src="current.url" class="message_avatar">
+                            <img :src="current.user_url" class="message_avatar">
                             <div class="message_content"> {{ item.content }}</div>
                             <div class="corr">
                                 <em class="arrline">◆</em>
@@ -48,8 +50,8 @@
                     </div>
                 </div>
                 <div class="chat_textbox">
-                    <textarea v-model="mymsg" @keyup.enter="onSubmit(current.id)"></textarea>
-                    <el-button type="primary" @click="onSubmit(current.id)">发送</el-button>
+                    <textarea v-model="mymsg" @keyup.enter="onSubmit(current.user_id)"></textarea>
+                    <el-button type="primary" @click="onSubmit(current.user_id)">发送</el-button>
                 </div>
             </div>
         </div>
@@ -57,9 +59,10 @@
 </template>
 
 <script>
-    import imgsrc from "../../assets/avatar.jpg"
+    import imgsrc from "../../assets/logo.jpg"
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
+    import api from '../../api/user'
     export default {
         name: "message",
         data() {
@@ -70,9 +73,9 @@
                 mymsg: '',
                 user : {id: '2'},
                 users: [
-                    {id: '3', name:'linhZ', url: imgsrc},
-                    {id: '4', name:'hhhhh', url: imgsrc},
-                    {id: '5', name:'wwwww', url: imgsrc}
+                    // {id: '3', name:'linhZ', url: imgsrc},
+                    // {id: '4', name:'hhhhh', url: imgsrc},
+                    // {id: '5', name:'wwwww', url: imgsrc}
                 ],
                 current:{
                     id: 0,
@@ -88,16 +91,33 @@
             };
         },
         methods: {
+            searchUser() {
+                console.log('bbbb')
+                api.getUsers(this.search).then(res => {
+                    console.log(res);
+                    this.users = res.user
+                })
+            },
+            debouce(handle) {
+                console.log("aaaa")
+                var timer = null;
+                return function() {
+                    var _this = this, // setTimeout形成闭包
+                        _arg = arguments; // 事件对象
+                    if(timer) clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        handle.apply(_this, _arg);
+                    }, 1000)
+                }
+            },
             chat(cur) { // 建立对话
                 this.chatShow = true;
-                this.current.id = cur.id;
-                this.current.name = cur.name;
-                this.current.url = cur.url;
+                this.current = cur;
                 this.current.message = [];
                 this.current.readymsg = [];
                 this.more_msg = '查看更多';
                 this.noMore = false;
-                var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.id + '/';
+                var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
                 if (typeof (WebSocket) === "undefined") {
                     alert("您的浏览器不支持socket")
                 } else {
@@ -214,11 +234,23 @@
     .el-menu-item::after {
         content: "";
         position: absolute;
-        right: 36px;
+        right: 20px;
         left: 20px;
         bottom: 0;
         height: 1px;
         background-color: #f7f8fa;
+    }
+    .search_item {
+        padding: 0px 20px !important;
+        // .el-button {
+        //     padding: 12px 5px;
+        // }
+        .el-select {
+            width: 67px;
+        }
+        /deep/ .el-input__inner {
+            padding: 0px 5px;
+        }
     }
     .search_item:hover {
         background-color: #fff;

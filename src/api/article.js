@@ -88,5 +88,13 @@ export default {
             method:'get',
             params:{q:q,page:page}
         })
+    },
+    //返回热词搜索接口
+    popularSearch(data){
+        return request({
+            url:'/article/rankSearch',
+            method:'post',
+            data
+        })
     }
 }

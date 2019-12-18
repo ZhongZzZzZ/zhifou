@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import imgsrc from "../../assets/avatar.jpg"
+    import imgsrc from "../../assets/logo.jpg"
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
     export default {

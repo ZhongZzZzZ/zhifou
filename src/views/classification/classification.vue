@@ -61,7 +61,7 @@
             querryList(){
                 api.getQueryArticle(this.params).then(res => {
                     this.total = res.article_count;
-                    this.data = res.data;
+                    this.data = res.article;
                     console.log(res)
                 })
             },
@@ -91,7 +91,7 @@
     width: 900px;
     background-color: #fff;
     margin: 8px auto;
-    padding: 20px 50px;
+    padding: 8px;
     position: relative;
     .order_type{
         position: absolute;

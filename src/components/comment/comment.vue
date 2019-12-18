@@ -249,7 +249,7 @@
         }
         textarea {
             height: 75px;
-            width: 566px;
+            width: 84.2%;
             display: block;
             margin-left: 90px;
             padding: 5px 6px 6px;

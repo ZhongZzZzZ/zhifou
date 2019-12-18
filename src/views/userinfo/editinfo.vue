@@ -104,9 +104,10 @@
                     setLocalStorage('user_gender', this.form.user_gender),
                     setLocalStorage('user_url', this.form.user_url)
 
+                    this.$router.push('/userinfo');
+
                 });
-                this.$router.push('/userinfo');
-            }
+            },
         },
         created(){
 
