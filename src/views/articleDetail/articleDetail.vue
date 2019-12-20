@@ -38,8 +38,8 @@
         <div class="user_main">
             <div class="user_title">关于作者</div>
             <div class="user_info">
-                <img :src="article.user.user_url" class="user_avatar" @click="userinfo">
-                <div class="user_name" @click="userinfo">{{ article.user.user_name }}</div>
+                <img :src="article.user.user_url" class="user_avatar" @click="userinfo(article.user.user_id)">
+                <div class="user_name" @click="userinfo(article.user.user_id)">{{ article.user.user_name }}</div>
                 <div class="user_like">
                     <div class="article">
                         <div class="hot_title">文章</div>
@@ -50,7 +50,7 @@
                         <strong>{{ article.star_count }}</strong>
                     </div>
                 </div>
-                <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="chat">私信</el-button>
+                <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="chat(article.user.user_id)">私信</el-button>
             </div>
         </div>
         <!-- 评论 -->
@@ -90,11 +90,15 @@
                 if(this.article.point_flag) this.point_name = '取消点赞';
                 else this.point_name = '点赞';
             },
-            chat() { // 私信
-                this.$router.push('/message')
+            chat(id) { // 私信
+                let routeUrl = this.$router.resolve({
+                    path:'/message',
+                    query:{id:id}
+                })
+                window.open(routeUrl.href,"_blank")
             },
-            userinfo() {
-                this.$router.push('/userinfo')
+            userinfo(id) {
+                this.$router.push({path:'/userinfo', query: {id:id}})
             },
         },
         created(){

@@ -142,7 +142,9 @@
                 }
             },
             changeVerPic(){
-                console.log("changeWaiting...")
+                // console.log("changeWaiting...");
+                this.isFirst = true;
+                this.getVercodeImg();
             }
         }
     }

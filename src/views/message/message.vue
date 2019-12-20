@@ -3,12 +3,18 @@
         <Nav style="position:sticky;"></Nav>
         <div class="content">
             <el-col :span="7">
-                <el-menu default-active="1" class="el-menu-vertical-demo">
-                    <el-menu-item class="search_item">
-                        <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @input="debouce">
-                            <el-button slot="append" icon="el-icon-search" @click="debouce(searchUser)"></el-button>
-                        </el-input>
+                <div class="search_item">
+                    <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @input="debounce(searchUser)()">
+                    </el-input>
+                </div>
+                <el-menu default-active="1" class="el-menu-vertical-demo" v-if="showResult">
+                    <el-menu-item v-if="noUser">查无此人……</el-menu-item>
+                    <el-menu-item  v-for="item in serchUsers" :key="item.user_id" @click="addList(item)" :index="item.user_id">
+                        <img class="user_avatar" :src="item.user_url">
+                        <span slot="title">{{ item.user_name }}</span>
                     </el-menu-item>
+                </el-menu>
+                <el-menu default-active="1" class="el-menu-vertical-demo" v-else>
                     <el-menu-item  v-for="item in users" :key="item.user_id" @click="chat(item)" :index="item.user_id">
                         <img class="user_avatar" :src="item.user_url">
                         <span slot="title">{{ item.user_name }}</span>
@@ -30,7 +36,7 @@
                         </div>
                         <div class="my_side" v-else>
                             <div class="message_content"> {{ item.content }}</div>
-                            <img :src="myimg" class="message_avatar">
+                            <img :src="user.user_url" class="message_avatar">
                             <div class="corr">
                                 <em class="arrline">◆</em>
                                 <span class="arrclr">◆</span>
@@ -41,7 +47,7 @@
                         <div class="my_side">
                             <div class="tip">{{tip}}</div>
                             <div class="message_content"> {{ item.content }}</div>
-                            <img :src="myimg" class="message_avatar">
+                            <img :src="user.user_url" class="message_avatar">
                             <div class="corr">
                                 <em class="arrline">◆</em>
                                 <span class="arrclr">◆</span>
@@ -50,8 +56,17 @@
                     </div>
                 </div>
                 <div class="chat_textbox">
-                    <textarea v-model="mymsg" @keyup.enter="onSubmit(current.user_id)"></textarea>
+                    <textarea v-model="mymsg" @keyup.enter="onSubmit(current.user_id)" @input="submittip=false"></textarea>
                     <el-button type="primary" @click="onSubmit(current.user_id)">发送</el-button>
+                    <div v-if="submittip">
+                        <div class="submit_tip">
+                            <div>不能发送空白信息</div>
+                        </div>
+                        <div class="tip_corr">
+                            <em class="tip_arrline">◆</em>
+                            <span class="tip_arrclr">◆</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,10 +74,12 @@
 </template>
 
 <script>
-    import imgsrc from "../../assets/logo.jpg"
+    // import imgsrc from "../../assets/logo.jpg"
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
     import api from '../../api/user'
+    import {getLocalStorage} from "../../utils/auth";
+    // import { log } from 'util';
     export default {
         name: "message",
         data() {
@@ -70,47 +87,64 @@
                 socket: "",
                 chatShow: false,
                 myimg: myimg,
-                mymsg: '',
-                user : {id: '2'},
-                users: [
-                    // {id: '3', name:'linhZ', url: imgsrc},
-                    // {id: '4', name:'hhhhh', url: imgsrc},
-                    // {id: '5', name:'wwwww', url: imgsrc}
-                ],
-                current:{
-                    id: 0,
-                    name:'',
-                    url:'',
+                mymsg: '', // 输入框
+                user : { // 登录用户
+                    id: getLocalStorage('user_id'),
+                    user_name: getLocalStorage('user_name'),
+                    user_url: getLocalStorage('user_url'),
+                },
+                users: [], // 对话用户列表
+                serchUsers: [], // 搜索用户列表
+                current:{ // 当前对话用户
+                    user_id: '0',
+                    user_name:'',
+                    user_url:'',
                     message: [],// 0代表对方，1代表自己
                     readymsg: [], // 未送达的消息 
                 },
                 tip:'发送中…',
                 more_msg: '查看更多',
                 noMore: false,
-                search:''
+                search:'', // 搜索关键字
+                showResult: false,
+                noUser: false,
+                submittip: false,
             };
         },
         methods: {
             searchUser() {
-                console.log('bbbb')
-                api.getUsers(this.search).then(res => {
-                    console.log(res);
-                    this.users = res.user
-                })
+                if(this.search == '') {this.showResult = false; return}
+                else {
+                    this.showResult = true;
+                    api.getUsers(this.search).then(res => {
+                        console.log(res)
+                        this.noUser = false
+                        this.serchUsers = res.user
+                        if(res.user.length == 0) {this.noUser = true}
+                        // console.log(res)
+                    })
+                }
             },
-            debouce(handle) {
-                console.log("aaaa")
-                var timer = null;
+            debounce(handle) { //防抖
+                let timer;
                 return function() {
                     var _this = this, // setTimeout形成闭包
                         _arg = arguments; // 事件对象
-                    if(timer) clearTimeout(timer);
+                    clearTimeout(timer);
                     timer = setTimeout(() => {
                         handle.apply(_this, _arg);
-                    }, 1000)
+                    }, 800)
                 }
             },
+            addList(cur) {
+                this.users.unshift(cur);
+                this.showResult = false;
+                this.noUser = false
+                this.search = ''
+                this.chat(cur)
+            },
             chat(cur) { // 建立对话
+                console.log(cur)
                 this.chatShow = true;
                 this.current = cur;
                 this.current.message = [];
@@ -150,7 +184,9 @@
                     this.more_msg = '没有更多了'
                 } else {
                     if(record[0].is_first_hist) {
+                        if(record.length < 10) this.noMore = true;
                         this.current.message = record.concat(this.current.message);
+                        this.$forceUpdate();
                         this.$nextTick(() => {
                             this.scrollToBottom();
                         });
@@ -158,6 +194,7 @@
                         let container = document.getElementsByClassName('chat_content');
                         let height = container[0].scrollHeight;
                         this.current.message = record.concat(this.current.message);
+                        this.$forceUpdate();
                         this.$nextTick(() => {
                             container[0].scrollTop = container[0].scrollHeight - height;
                         });
@@ -166,12 +203,20 @@
             },
             addmessage(msg) { // 添加新信息
                 for(let i in msg) {
-                    if(msg[i].role && this.current.readymsg.length) this.current.readymsg.shift();
+                    console.log(this.current.readymsg);
+                    if(msg[i].role && this.current.readymsg.length){
+                        console.log(this.current.readymsg);
+                        this.current.readymsg.shift();
+                        console.log(this.current.readymsg)
+                    }
                     this.current.message.push(msg[i]);
+                    this.$forceUpdate(); // 强制渲染
                 }
                 this.scrollToBottom();
             },
             onSubmit(to_id) { // 发送新消息
+                let trim = this.mymsg.replace( /^\s*/, '');
+                if(trim === '') { this.submittip = true; return }
                 let curmsg = {
                     content: this.mymsg,
                     from_id: this.user.id,
@@ -180,7 +225,9 @@
                 }
                 this.socket.send(JSON.stringify(curmsg));
                 this.current.readymsg.push(curmsg)
+                console.log(this.current.readymsg)
                 this.mymsg = '';
+                this.scrollToBottom();
             },
             onScroll(to_id) { // 上拉加载
                 let container = document.getElementsByClassName('chat_content');
@@ -201,7 +248,19 @@
             },
         },
         created(){
-
+            if(this.$route.query.id){
+                api.getUserInfo({
+                    user_id: this.$route.query.id,
+                    token: getLocalStorage('token')
+                }).then(res => {
+                    // onsole.log(res)
+                    this.users = [{
+                        user_id: res.user.user_id,
+                        user_name: res.user.user_name,
+                        user_url: res.user.user_url,
+                    }]
+                })
+            }
         },
         destroyed() {
             // 销毁监听
@@ -220,13 +279,18 @@
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
     }
+    .el-col {
+        border-right: solid 1px #e6e6e6;
+    }
     .user_avatar{
         width: 35px;
         height: 35px;
         margin-right: 5px;
     }
     .el-menu {
-        min-height: 700px;
+        height: 619px;
+        border: 0px;
+        overflow-y: auto;
     }
     .el-menu-item.is-active {
         background-color: #f4f7ff;
@@ -241,25 +305,11 @@
         background-color: #f7f8fa;
     }
     .search_item {
-        padding: 0px 20px !important;
-        // .el-button {
-        //     padding: 12px 5px;
-        // }
-        .el-select {
-            width: 67px;
-        }
-        /deep/ .el-input__inner {
-            padding: 0px 5px;
-        }
-    }
-    .search_item:hover {
-        background-color: #fff;
-    }
-    .search_item::after {
-        height: 0;
+        padding: 20px 20px !important;
+        border-bottom: solid 1px #e6e6e6;
     }
     .chat_window {
-        padding-left: 27%;
+        padding-left: 30%;
         padding-right: 2%;
         .chat_name {
             font-size: 20px;
@@ -361,6 +411,7 @@
             }
         }
         .chat_textbox {
+            position: relative;
             padding-top: 10px;
             textarea {
                 height: 150px;
@@ -377,6 +428,52 @@
             }
             .el-button {
                 float: right;
+            }
+            .submit_tip {
+                position: absolute;
+                right:0px;
+                top: 110px;
+                background: #fff;
+                width: 115px;
+                border-radius: 4px;
+                border: 1px solid #ebeef5;
+                padding: 12px;
+                color: #606266;
+                line-height: 1.4;
+                text-align: justify;
+                font-size: 14px;
+                box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+                word-break: break-all;
+            }
+            .tip_corr {
+                position: absolute;
+                top: 145px;
+                right: 0px;
+                width: 30px;
+                height: 14px;
+                overflow: hidden;
+            }
+            .tip_arrline {
+                color: #fff;
+                display: block;
+                font-family: "SimSun";
+                font-size: 15px;
+                font-style: normal;
+                font-weight: normal;
+                height: 10px;
+                line-height: normal;
+                text-align: left;
+            }
+            .tip_arrclr {
+                color: #fff;
+                display: block;
+                font-family: "SimSun";
+                font-size: 15px;
+                font-style: normal;
+                font-weight: normal;
+                height: 10px;
+                line-height: normal;
+                border: 1px solid #ebeef5;
             }
         }
     }

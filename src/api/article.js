@@ -49,6 +49,17 @@ export default {
             data
         })
     },
+    // 上传文章和视频
+    uploadPhoto(data){
+        return request({
+            url:'/article/uploadPhoto',
+            headers: {
+            'Content-Type': 'multipart/form-data' //设置post文件的请求头
+            },
+            method:'post',
+            data
+        })
+    },
     //发布文章或者保存到草稿
     saveArticle(data){
         return request({
@@ -112,5 +123,39 @@ export default {
             method:'post',
             data
         })
-    }
+    },
+    // 获取用户已发文章列表
+    getLauchedArticleInfo (data) {
+        return request({
+        url: '/article/queryArticleByMyself',
+        method: 'post',
+        data
+        })
+    },
+    // 获取用户收藏的文章列表
+    getCollectionArticleInfo (data) {
+        return request({
+        url: '/article/queryCollectionByUserId',
+        method: 'post',
+        data
+        })
+    },
+    // 获取用户点赞的文章列表
+    getPointArticleInfo (data) {
+        return request({
+        url: '/article/queryPointByUserId',
+        method: 'post',
+        data
+        })
+    },
+    // 获取用户评论的文章列表
+    getCommentArticleInfo (data) {
+        return request({
+        url: '/article/queryCommentByUserId',
+        method: 'post',
+        data
+        })
+    },
+
+
 }

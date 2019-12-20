@@ -24,28 +24,13 @@ export default {
       data
     })
   },
-  // 获取用户已发文章列表
-  getLauchedArticleInfo (data) {
-    return request({
-      url: '/article/queryArticleByMyself',
-      method: 'post',
-      data
-    })
-  },
-  getCollectionArticleInfo (data) {
-    return request({
-      url: '/article/queryCollectionByUserId',
-      method: 'post',
-      data
-    })
-  },
   // 上传图片或者视频接口
   uploadPhoto(data){
     return request({
-      url:'/article/uploadPhoto',
-      headers: {
-        'Content-Type': 'multipart/form-data' //设置post文件的请求头
-      },
+      url:'/users/uploadfiles',
+      // headers: {
+      //   'Content-Type': 'multipart/form-data' //设置post文件的请求头
+      // },
       method:'post',
       data
     })
@@ -87,6 +72,7 @@ export default {
       method:'get'
     })
   },
+
   //校验token有效性
   checkToken(data) {
     return request({
@@ -94,8 +80,15 @@ export default {
         method: 'post',
         data
      })
+  },
+  // 获取用户信息
+  getUserInfo(data) {
+    return request({
+      url: '/users/info_json',
+      method: 'post',
+      data
+    })
   }
-
   // getIndexInfo(){
   //   return request({
   //     url:'/article/test',

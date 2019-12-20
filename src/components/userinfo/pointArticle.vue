@@ -5,9 +5,9 @@
                 {{ item.title }}
                 <el-tag>{{item.type_name}}</el-tag>
                 <span class="article_time">{{ item.create_time }}</span>
-                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article_id)" plain v-if="curuser_id === own.id">取消收藏</el-button>
+                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article_id)" plain v-if="curuser_id === own.id">取消点赞</el-button>
             </div>
-            <img class="article_img" :src="item.phont.photo_url" v-if="item.photo">
+            <img class="article_img" :src="item.photo_photo_url" v-if="item.photo">
             <div class="article_content">
                 <span>{{ item.simple_content | articleFilter }}</span>
             </div>
@@ -28,13 +28,13 @@
     import pagination from '../../components/pagination/pagination'
 
     export default {
-        name: "followarticle",
+        name: "pointarticle",
         data(){
             return {
                 articles: [],
                 own: {
                     id: getLocalStorage('user_id'),
-                    token: getLocalStorage('token')
+                    token: getLocalStorage('token'),
                 },
                 article_count: 0,
             }
@@ -42,7 +42,7 @@
         props:['curuser_id'],
         methods: {
             del(id) {
-                api.collecteArticle({
+                api.pointArticle({
                     token: this.own.token,
                     article_id: id
                 }).then(res => {
@@ -59,7 +59,7 @@
                 window.open(routeUrl.href,"_blank")
             },
             getNewList(val) {
-                api.getCollectionArticleInfo({
+                api.getPointArticleInfo({
                     token: this.own.token,
                     page: val,
                     user_id: this.curuser_id,
@@ -69,13 +69,14 @@
             } 
         },
         created(){
-            api.getCollectionArticleInfo({
+            api.getPointArticleInfo({
                 user_id: this.curuser_id,
-                token:this.own.token,
+                token: this.own.token,
                 page:1
             }).then(res => {
-                // console.log(res);
+                //console.log(res);
                 this.articles = res.article;
+                this.article_count = res.article_count;
             })
         },
         filters:{
@@ -94,6 +95,7 @@
         height: 185px;
         padding: 20px 20px;
         position: relative;
+        margin-bottom: 10px;
         .article_title {
             height: 30px;
             font-weight: 600;
