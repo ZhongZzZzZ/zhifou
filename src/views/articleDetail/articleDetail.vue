@@ -205,6 +205,17 @@
         .like_btn {
             float: right;
         }
+        .article_content /deep/ img {
+            max-width: 90%;
+            height: auto;
+            display: block;
+        }
+        .article_content /deep/ video {
+        width: 90% !important;
+        height:auto;
+        margin:auto;
+        display:block;
+    }
     }
     .user_main{
         float: right;

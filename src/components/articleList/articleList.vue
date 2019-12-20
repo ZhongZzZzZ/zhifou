@@ -204,23 +204,34 @@
         }
     }
     }
-     .full_article{
-         padding: 0px 20px 8px 20px;
-         position: relative;
-         overflow: hidden;
-         img{
-             width: 85%!important;
-         }
-         .readMore{
-             color:#8590a6;
-             font-size: 14px;
-             font-weight:600;
-             cursor: pointer;
-             position: absolute;
-             right: 27px;
-             bottom: 0px;
-         }
-     }
+    .full_article{
+        padding: 0px 20px 8px 20px;
+        position: relative;
+        overflow: hidden;
+        img{
+            width: 85%!important;
+        }
+        .readMore{
+            color:#8590a6;
+            font-size: 14px;
+            font-weight:600;
+            cursor: pointer;
+            position: absolute;
+            right: 27px;
+            bottom: 0px;
+        }
+    }
+    .full_article /deep/ img {
+        max-width: 90%;
+        height: auto;
+        display: block;
+    }
+    .full_article /deep/ video {
+        width: 90% !important;
+        height:auto;
+        margin:auto;
+        display:block;
+    }
     .control {
         font-size: 14px;
     }

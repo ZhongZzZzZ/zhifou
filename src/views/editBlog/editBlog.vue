@@ -2,7 +2,7 @@
     <div>
         <Nav></Nav>
         <div class="main" id="main">
-            <textarea class="title" v-model="title" placeholder="请输入标题（不超过25个字）" maxlength="25"></textarea>
+            <textarea class="title" v-model="title" placeholder="请输入标题（不超过30个字）" maxlength="30"></textarea>
             <div class="tag_radio">
                 请选择一个分类：
                 <el-radio border v-for="item in tags" :key="item" :label="item.id" v-model="radio">{{ item.name }}</el-radio>
@@ -238,7 +238,7 @@
         width: 100%;
         border: 0;
         font-family: 'Arial';
-        font-size: 32px;
+        font-size: 30px;
         font-weight: 600;
         line-height: 1.4;
         outline: none;
@@ -312,10 +312,12 @@
         display: block;
     }
     .showcontent /deep/ video {
-        max-width:90%;
+        width:90% !important;
         height:auto;
         margin:auto;
         display:block;
     }
-
+    .main /deep/ .el-drawer{
+        overflow: auto;
+    }
 </style>
