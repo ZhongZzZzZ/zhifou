@@ -8,7 +8,7 @@
         <div v-for="(item,index) in result" :key="index">
             <articleList :item="item"></articleList>
         </div>
-        <pagination :total="total" @getNewList="getNewList"></pagination>
+        <pagination :total="total" @getNewList="getNewList" v-if="total"></pagination>
     </div>
 </template>
 
