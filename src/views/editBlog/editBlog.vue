@@ -35,7 +35,7 @@
     import 'tinymce/plugins/contextmenu'
     import 'tinymce/plugins/wordcount'
     import 'tinymce/plugins/media'
-    import api from '../../api/user'
+    // import api from '../../api/user'
     import articleApi from '../../api/article'
     import Message from "element-ui/packages/message/src/main";
     import {getLocalStorage} from "../../utils/auth";
@@ -101,7 +101,7 @@
                         formdata.append('photo',blobInfo.blob())
                         formdata.append('token',getLocalStorage('token'))
                         formdata.append('article_id',articleId)
-                        api.uploadPhoto(formdata).then(res => {
+                        articleApi.uploadPhoto(formdata).then(res => {
                             console.log(res);
                             success(res.photo_name)
                         })
@@ -133,7 +133,7 @@
                                     formData.append('photo', file);
                                     formData.append('token', getLocalStorage('token'));
                                     formData.append('article_id', articleId);
-                                    api.uploadPhoto(formData).then(res => {
+                                    articleApi.uploadPhoto(formData).then(res => {
                                         console.log(res);callback(res.photo_name, {poster: res.shot_name})})
                                }
                             }

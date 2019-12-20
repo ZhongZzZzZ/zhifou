@@ -64,10 +64,10 @@
                             <div class="my_response" v-if="myreplyShow == res.reply_id">
                                 <img :src="user.user_url">
                                 <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myreplytoreply" maxlength="100" show-word-limit></el-input>
-                                <el-button class="comment-btn" type="primary" @click="replyreply(res.reply_id, res.to_user_id)">发送</el-button>
+                                <el-button class="comment-btn" type="primary" @click="replyreply(item.comment_id,res.reply_id, res.to_user_id)">发送</el-button>
                             </div>
                         </div>
-                        <el-pagination small layout="prev, pager, next" page-size="10" :total="reply_count" @current-change="currentChange(id)" > </el-pagination>
+                        <el-pagination small layout="prev, pager, next" page-size="10" :total="reply_count" @current-change="currentChange($event,item.comment_id)" > </el-pagination>
                     </div>
                 </div>
             </div>
@@ -106,15 +106,17 @@
                 comment_count: 0,
                 reply_count: 0,
                 response: [],
+                page: 1
             }
         },
         props:['article_id'],
         methods: {
             getNewList(val){ //评论的分页
+                this.page = val;
                 articleApi.getCommentInfo({
                     article_id: this.$route.query.id || this.article_id,
                     token:this.user.token,
-                    page: val
+                    page: this.page
                 }).then(res => {
                     this.comments = res.comment;
                     this.comment_count = res.comment_count;
@@ -126,7 +128,7 @@
                     token:this.user.token,
                     page: val
                 }).then(res => {
-                    // console.log(res);
+                    console.log(res);
                     this.response = res.reply;
                     this.reply_count = res.reply_count;
                 })
@@ -140,8 +142,9 @@
                 }).then(res => {
                     this.comments.unshift(res.comment[0]);
                     this.comment_count++;
-                    console.log(res);
+                    // console.log(res);
                     this.mycomment = '';
+                    this.comment_count++
                 })
             },
             reply(id) { // 获取回复列表信息
@@ -150,11 +153,11 @@
                     token:this.user.token,
                     page: 1
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.response = res.reply;
                     this.reply_count = res.reply_count;
+                    this.responseShow = id;
                 })
-                this.responseShow = id;
             },
             replyComment(comment_id,user_id) { // 对评论的回复
                 commentApi.addReplyToComment({
@@ -168,18 +171,22 @@
                     this.response.unshift(res.reply_comment[0]);
                     //this.comment_count++;
                     this.myresponse = '';
+                    this.reply_count++;
                 })
             },
-            replyreply(reply_id,user_id) { // 对回复的回复
+            replyreply(comment_id,reply_id,user_id) { // 对回复的回复
                 commentApi.addReplyToReply({
+                    comment_id: comment_id,
                     reply_id: reply_id,
-                    token:this.token,
+                    token:this.user.token,
+                    user_id: this.user.user_id,
                     reply_content: this.myreplytoreply,
                     from_user_id: user_id
                 }).then(res => {
                     console.log(res);
                     this.response.unshift(res.reply_reply[0]);
                     this.myreplytoreply = '';
+                    this.reply_count++;
                 })
             },
             delcomment(id) {
@@ -189,6 +196,7 @@
                 }).then(() => {
                     let item = this.comments.find(item => item.comment_id == id);
                     this.comments.splice(this.comments.indexOf(item), 1);
+                    this.comment_count--;
                 })
             },
             delreply(id) {
@@ -198,6 +206,7 @@
                 }).then(() => {
                     let item = this.response.find(item => item.reply_id == id);
                     this.response.splice(this.response.indexOf(item), 1);
+                    this.reply_count--;
                 })
             }
         },
@@ -358,7 +367,7 @@
         .myresponse_input {
             display: inline-block;
             margin-left: 10px;
-            width: 600px;
+            width: 94%;
         }
         .comment-btn {
             float: right;
@@ -384,7 +393,7 @@
             width: 602px;
         }
         .myresponse_input {
-            width: 572px;
+            width: 93%;
         }
         .el-pagination {
             margin: 10px -10px 0px 0px;

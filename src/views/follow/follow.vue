@@ -28,7 +28,7 @@
                 // // // var message = new Paho.Message(`{article:${title}}`);
                 // message.destinationName = `like/19`;
                 // this.mqtt.send(message)
-                this.mqtt.publish('like/19','一带带带',2,true);
+                this.mqtt.publish('like/24','一带带带',2,true);
             },
             addtopic(msg) {
                 this.msg = msg;
@@ -70,7 +70,7 @@
             //连接
             onconnect() {
                 //连接成功，订阅主题
-                this.mqtt.subscribe(`like/${this.userId}`,{qos:2})
+                this.mqtt.subscribe(`like/${this.userId}`,{qos:1})
                 //发布一个消息，再连接成功后，发送一个响应，确保连接没有问题；
                 // var message = new Paho.Message("Hello");
                 // message.destinationName = `like/${this.userId}`;

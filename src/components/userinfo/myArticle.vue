@@ -5,11 +5,11 @@
                 {{ item.title }}
                 <el-tag>{{item.type_name}}</el-tag>
                 <span class="article_time">{{ item.create_time }}</span>
-                <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id,index)" plain></el-button>
+                <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id,index)" plain v-if="curuser_id === user.id"></el-button>
             </div>
-            <img class="article_img" :src="item.photo_url" v-if="item.photo_url">
+            <img class="article_img" :src="item.photo.photo_url" v-if="item.photo">
             <div class="article_content">
-                <span>{{ item.simple_content }}</span>
+                <span>{{ item.simple_content | articleFilter }}</span>
             </div>
             <div class="article_footer">
                 <i class="el-icon-chat-line-square article_icon">{{ item.comment_count }}条评论</i>
@@ -18,27 +18,43 @@
                 <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">查看全文</el-button>
             </div>
         </div>
+        <pagination :total="article_count" @getNewList="getNewList" v-if="article_count"></pagination>
     </div>
 </template>
 
 <script>
-    import api from '../../api/user'
+    // import api from '../../api/user'
     import articleApi from '../../api/article'
     import {getLocalStorage} from "../../utils/auth";
+    import pagination from '../../components/pagination/pagination'
 
     export default {
         name: "myarticle",
         data(){
             return {
-                user:{},
-                articles: []
+                user:{
+                    id: getLocalStorage('user_id'),
+                    token: getLocalStorage('token')
+                },
+                articles: [],
+                article_count: 0,
+            }
+        },
+        props:['curuser_id'],
+        filters:{
+            articleFilter(content){
+                return content + '...'
             }
         },
         methods: {
             del(id,index) {
-                articleApi.delArticle({token:getLocalStorage('token'),article_id:id}).then(res => {
+                articleApi.delArticle({
+                    token:getLocalStorage('token'),
+                    article_id:id
+                }).then(res => {
                     console.log(res)
                     this.articles.splice(index, 1);
+                    this.article_count--;
                 })
 
             },
@@ -48,17 +64,32 @@
                     query:{id:id}
                 })
                 window.open(routeUrl.href,"_blank")
-            }
+            },
+            getNewList(val) {
+                articleApi.getLauchedArticleInfo({
+                    token: this.user.token,
+                    page: val,
+                    user_id: this.curuser_id,
+                }).then(res => {
+                    console.log(res);
+                    this.articles = res.article;
+                })
+            } 
         },
         created(){
-            api.getLauchedArticleInfo({
-                user_id: getLocalStorage('user_id'),
-                token:getLocalStorage('token'),
-                page:1
+            console.log(this.curuser_id)
+            articleApi.getLauchedArticleInfo({
+                token: this.user.token,
+                page: 1,
+                user_id: this.curuser_id,
             }).then(res => {
                 console.log(res);
                 this.articles = res.article;
+                this.article_count = res.article_count;
             })
+        },
+        components: {
+            pagination
         }
     }
 </script>
@@ -68,6 +99,7 @@
         height: 185px;
         padding: 20px 20px;
         position: relative;
+        margin-bottom: 10px;
         .article_title {
             height: 30px;
             font-weight: 600;

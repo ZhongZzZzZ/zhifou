@@ -1,22 +1,33 @@
 <template>
-    <!-- 私信测试专用 -->
     <div>
         <Nav style="position:sticky;"></Nav>
-        <div class="content">  
-            <el-col :span="6">
-                <el-menu default-active="1" class="el-menu-vertical-demo">
-                    <el-menu-item  v-for="item in users" :key="item.id" @click="chat(item)" :index="item.id">
-                        <img class="user_avatar" :src="item.url">
-                        <span slot="title">{{ item.name }}</span>
+        <div class="content">
+            <el-col :span="7">
+                <div class="search_item">
+                    <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @input="debounce(searchUser)()">
+                    </el-input>
+                </div>
+                <el-menu default-active="1" class="el-menu-vertical-demo" v-if="showResult">
+                    <el-menu-item v-if="noUser">查无此人……</el-menu-item>
+                    <el-menu-item  v-for="item in serchUsers" :key="item.user_id" @click="addList(item)" :index="item.user_id">
+                        <img class="user_avatar" :src="item.user_url">
+                        <span slot="title">{{ item.user_name }}</span>
+                    </el-menu-item>
+                </el-menu>
+                <el-menu default-active="1" class="el-menu-vertical-demo" v-else>
+                    <el-menu-item  v-for="item in users" :key="item.user_id" @click="chat(item)" :index="item.user_id">
+                        <img class="user_avatar" :src="item.user_url">
+                        <span slot="title">{{ item.user_name }}</span>
                     </el-menu-item>
                 </el-menu>
             </el-col>
             <div class="chat_window" v-if="chatShow">
-                <div class="chat_name">{{ current.name }}</div>
-                <div class="chat_content">
+                <div class="chat_name">{{ current.user_name }}</div>
+                <div class="chat_content" @scroll="onScroll(current.user_id)">
+                    <div class="loadmore"><i class="el-icon-loading" v-if="!noMore"></i> {{ more_msg }}</div>
                     <div class="chat_message" v-for="item in current.message" :key="item">
                         <div class="other_side" v-if="!item.role">
-                            <img :src="current.url" class="message_avatar">
+                            <img :src="current.user_url" class="message_avatar">
                             <div class="message_content"> {{ item.content }}</div>
                             <div class="corr">
                                 <em class="arrline">◆</em>
@@ -25,7 +36,7 @@
                         </div>
                         <div class="my_side" v-else>
                             <div class="message_content"> {{ item.content }}</div>
-                            <img :src="myimg" class="message_avatar">
+                            <img :src="user.user_url" class="message_avatar">
                             <div class="corr">
                                 <em class="arrline">◆</em>
                                 <span class="arrclr">◆</span>
@@ -36,7 +47,7 @@
                         <div class="my_side">
                             <div class="tip">{{tip}}</div>
                             <div class="message_content"> {{ item.content }}</div>
-                            <img :src="myimg" class="message_avatar">
+                            <img :src="user.user_url" class="message_avatar">
                             <div class="corr">
                                 <em class="arrline">◆</em>
                                 <span class="arrclr">◆</span>
@@ -45,8 +56,8 @@
                     </div>
                 </div>
                 <div class="chat_textbox">
-                    <textarea v-model="mymsg" @keyup.enter="onSubmit(current.id)"></textarea>
-                    <el-button type="primary" @click="onSubmit(current.id)">发送</el-button>
+                    <textarea v-model="mymsg" @keyup.enter="onSubmit(current.user_id)"></textarea>
+                    <el-button type="primary" @click="onSubmit(current.user_id)">发送</el-button>
                 </div>
             </div>
         </div>
@@ -57,6 +68,7 @@
     import imgsrc from "../../assets/logo.jpg"
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
+    
     export default {
         name: "message2",
         data() {
@@ -75,30 +87,29 @@
                     id: 0,
                     name:'',
                     url:'',
-                    message: [ // 0代表对方，1代表自己
-                        // { sequence_id: '1', from_id:'3', to_id:'2', role: 0, content: '在吗', create_time: '2019年12月6日 5：21：57'}, 
-                        // { sequence_id: '2', from_id:'2', to_id:'3', role: 1, content: '在',create_time: '2019年12月6日 5：22：57'},
-                    ],
-                    readymsg: [
-                        // { content: '发给你你却收不到', from_id: 2, to_id: 3 }
-                    ], // 未送达的消息
+                    message: [],// 0代表对方，1代表自己
+                    readymsg: [], // 未送达的消息 
                 },
-                tip:'发送中…'
+                tip:'发送中…',
+                more_msg: '查看更多',
+                noMore: false,
+                search:'', // 搜索关键字
+                showResult: false,
+                noUser: false
             };
         },
         methods: {
+            
             chat(cur) {
                 this.chatShow = true;
                 this.current.id = cur.id;
                 this.current.name = cur.name;
                 this.current.url = cur.url;
-                console.log(this.current.url);
                 var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.id + '/';
                 if(typeof(WebSocket) === "undefined") {
                     alert("您的浏览器不支持socket")
                 } else {
                     this.socket = new WebSocket(path) // 实例化socket
-                    console.log(this.socket);
                     this.socket.onopen = this.open // 监听socket连接
                     this.socket.onerror = this.error // 监听socket错误信息
                     this.socket.onmessage = this.getMessage // 监听socket错误信息
@@ -112,29 +123,65 @@
             },
             getMessage: function (msg) { // 接收信息
                 let data = JSON.parse(msg.data);
-                console.log("all:")
                 console.log(data)
-                for(let i in data) {
-                    //console.log(i + ":") 
-                    //console.log(data[0])
-                    if(data[i].role && this.current.readymsg.length) this.current.readymsg.shift();
-                    // console.log(this.current.readymsg)
-                    this.current.message.push(data[i]);
-                } 
+                if(data[0].send_type) this.addmessage(data);
+                else this.addrecord(data);
+            },
+            addrecord(record) { // 添加聊天记录
+                if(record[0].is_end) {
+                    this.noMore = true;
+                    this.more_msg = '没有更多了'
+                } else {
+                    if(record[0].is_first_hist) {
+                        if(record.length < 10) this.noMore = true;
+                        this.current.message = record.concat(this.current.message);
+                        this.$nextTick(() => {
+                            this.scrollToBottom();
+                        });
+                    } else {
+                        let container = document.getElementsByClassName('chat_content');
+                        let height = container[0].scrollHeight;
+                        this.current.message = record.concat(this.current.message);
+                        this.$nextTick(() => {
+                            container[0].scrollTop = container[0].scrollHeight - height;
+                        });
+                    }
+                }
+            },
+            addmessage(msg) { // 添加新信息
+                for(let i in msg) {
+                    if(msg[i].role && this.current.readymsg.length) this.current.readymsg.shift();
+                    this.current.message.push(msg[i]);
+                }
+                this.scrollToBottom();
             },
             close: function () {
                 console.log("socket已经关闭")
             },
-            onSubmit(to_id) {
+            onSubmit(to_id) { // 发送新消息
                 let curmsg = {
                     content: this.mymsg,
                     from_id: this.user.id,
-                    to_id: to_id
+                    to_id: to_id,
+                    send_type: 1
                 }
-                // console.log(curmsg);
                 this.socket.send(JSON.stringify(curmsg));
                 this.current.readymsg.push(curmsg)
                 this.mymsg = '';
+            },
+            onScroll(to_id) { // 上拉加载
+                let container = document.getElementsByClassName('chat_content');
+                let scrollTop = container[0].scrollTop;
+                if(scrollTop == 0 && !this.noMore) {
+                    let loadmore = {
+                        from_id: this.user.id,
+                        to_id: to_id,
+                        sequence_id: this.current.message[0].sequence_id,
+                        send_type: 0
+                    }
+                    console.log(loadmore)
+                    this.socket.send(JSON.stringify(loadmore));
+                }
             },
             scrollToBottom() {   // 滑动条保持在最下方
                 this.$nextTick(() => {
@@ -166,13 +213,18 @@
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
     }
+    .el-col {
+        border-right: solid 1px #e6e6e6;
+    }
     .user_avatar{
         width: 35px;
         height: 35px;
         margin-right: 5px;
     }
     .el-menu {
-        min-height: 700px;
+        height: 619px;
+        border: 0px;
+        overflow-y: auto;
     }
     .el-menu-item.is-active {
         background-color: #f4f7ff;
@@ -180,14 +232,18 @@
     .el-menu-item::after {
         content: "";
         position: absolute;
-        right: 36px;
+        right: 20px;
         left: 20px;
         bottom: 0;
         height: 1px;
         background-color: #f7f8fa;
     }
+    .search_item {
+        padding: 20px 20px !important;
+        border-bottom: solid 1px #e6e6e6;
+    }
     .chat_window {
-        padding-left: 27%;
+        padding-left: 30%;
         padding-right: 2%;
         .chat_name {
             font-size: 20px;
@@ -199,6 +255,10 @@
         .chat_content {
             height: 420px;
             overflow-y: auto;
+        }
+        .loadmore {
+            color:#d6d6d6;
+            text-align: center;
         }
         .chat_textbox {
             height: 230px;
@@ -280,7 +340,7 @@
                 .tip {
                     display: inline-block;
                     vertical-align: bottom;
-                    color: #e6e6e6;
+                    color: #d6d6d6;
                 }
             }
         }

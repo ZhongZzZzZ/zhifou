@@ -3,34 +3,37 @@
         <Nav style="position:sticky;"></Nav>
         <div class="main">
             <div class="info_show">
-                <div class="pic_box"><img class="pic" :src="avatar"></div>
+                <div class="pic_box"><img class="pic" :src="user.user_url"></div>
                 <div class="info">
                     <div class="info_title">
-                        <span>{{name}}</span>
-                        <i v-if="sex == 0" class="icon-sex el-icon-female"></i>
+                        <span>{{user.user_name}}</span>
+                        <i v-if="user.user_gender == 0" class="icon-sex el-icon-female"></i>
                         <i v-else class="icon-sex el-icon-male"></i>
-                        <!-- <el-badge value="hot" class="item">
-                            <el-tag>1000</el-tag>
-                        </el-badge> -->
+                        <el-badge :value="user.user_credit" class="item">
+                            <el-tag>{{ user.user_level_name }}</el-tag>
+                        </el-badge>
                     </div>
                     <div class="info_detail">
-                        <div>工号：{{account}}</div>
-                        <div>电话：{{phone}}</div>
-                        <div>邮箱：{{email}}</div>
-                        <el-button class="edit_btn" icon="el-icon-edit" @click="goEditInfo" plain>编辑个人信息</el-button>
+                        <div>工号：{{user.user_account}}</div>
+                        <div>电话：{{user.user_phone}}</div>
+                        <div>邮箱：{{user.email}}</div>
+                        <el-button class="edit_btn" icon="el-icon-edit" @click="goEditInfo" plain v-if="user.user_id === own.id">编辑个人信息</el-button>
                     </div>
                 </div>
             </div>
             <div class="article_list">
                 <el-tabs type="border-card" v-model="activeName">
                     <el-tab-pane label="已发文章" name="myarticle">
-                        <myarticle></myarticle>
+                        <myarticle :curuser_id="curuser_id"></myarticle>
                     </el-tab-pane>
-                    <el-tab-pane label="收藏文章" name="followarticle">
-                        <followarticle></followarticle>
+                    <el-tab-pane label="点赞文章" name="pointarticle">
+                        <pointarticle :curuser_id="curuser_id"></pointarticle>
                     </el-tab-pane>
                     <el-tab-pane label="已发评论" name="commentarticle">
-                        <commentarticle></commentarticle>
+                        <commentarticle :curuser_id="curuser_id"></commentarticle>
+                    </el-tab-pane>
+                    <el-tab-pane label="收藏文章" name="followarticle" v-if="user.user_id === own.id">
+                        <followarticle :curuser_id="curuser_id"></followarticle>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -42,9 +45,11 @@
     import myarticle from '@/components/userinfo/myArticle'
     import followarticle from '@/components/userinfo/followArticle'
     import commentarticle from '@/components/userinfo/commentarticle'
+    import pointarticle from '@/components/userinfo/pointArticle'
     import Nav from '../../components/navBar/nav'
     import {getLocalStorage} from "../../utils/auth";
     import defaultAvatar from '../../assets/unlogin.png'
+    import api from '../../api/user'
 
     // import { mapState } from 'vuex'
     export default {
@@ -52,13 +57,25 @@
         data(){
             return {
                 activeName: 'myarticle',
+                own: {
+                    id: getLocalStorage('user_id'),
+                    name: getLocalStorage('user_name'),
+                    avatar: getLocalStorage('user_url') || defaultAvatar,
+                    phone: getLocalStorage('user_phone') || '未填写...',
+                    account: getLocalStorage('user_account'),
+                    email: getLocalStorage('email'),
+                    sex: getLocalStorage('user_gender'),
+                },
+                user: {},
+                curuser_id: '',
             }
         },
         components: {
             'myarticle' : myarticle,
             'followarticle' : followarticle,
             'commentarticle': commentarticle,
-             Nav
+            'pointarticle': pointarticle,
+            Nav
         },
         methods: {
             goEditInfo() {
@@ -66,23 +83,19 @@
             },
         },
         created(){
-            this.name = getLocalStorage('user_name')
-            this.avatar = getLocalStorage('user_url') || defaultAvatar
-            this.phone = getLocalStorage('user_phone') || '未填写...'
-            this.account = getLocalStorage('user_account')
-            this.email = getLocalStorage('email')
-            this.sex = getLocalStorage('user_gender')
+            let id;
+            if(this.$route.query.id) id = this.$route.query.id;
+            else id = getLocalStorage('user_id');
+            this.curuser_id = id;
+            // console.log(id)
+            api.getUserInfo({
+                user_id: id,
+                token: getLocalStorage('token')
+            }).then(res => {
+                //console.log(res)
+                this.user = res.user;
+            })
         },
-        // computed:{
-        //     ...mapState({
-        //        "name":state =>state.user.name,
-        //         "sex":state =>state.user.gender,
-        //         "phone":state => state.user.phone,
-        //         "avatar":state => state.user.avatar,
-        //         "account":state =>state.user.account,
-        //         "id":state =>state.user.avatar
-        //     })
-        // }
     }
 </script>
 
