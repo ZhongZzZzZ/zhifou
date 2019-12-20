@@ -82,17 +82,33 @@ export default {
         })
     },
     //搜索文章接口
-    searchArticle(q,page){
+    searchArticle(q,page,id){
         return request({
             url:'/article/search',
             method:'get',
-            params:{q:q,page:page}
+            params:{q:q,page:page,q_uid:id}
         })
     },
     //返回热词搜索接口
     popularSearch(data){
         return request({
             url:'/article/rankSearch',
+            method:'post',
+            data
+        })
+    },
+    //点赞文章接口
+    addLikes(data){
+        return request({
+            url:'/article/pointArticle',
+            method:'post',
+            data
+        })
+    },
+    //收藏文章接口
+    addCollect(data){
+        return request({
+            url:'/article/collecteArticle',
             method:'post',
             data
         })

@@ -86,6 +86,14 @@ export default {
       url:'/users/search?q=' + data,
       method:'get'
     })
+  },
+  //校验token有效性
+  checkToken(data) {
+    return request({
+        url: '/users/checktoken',
+        method: 'post',
+        data
+     })
   }
 
   // getIndexInfo(){

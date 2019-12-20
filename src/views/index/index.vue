@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Nav style="position:sticky;"></Nav>
+        <Nav></Nav>
         <div class="index_container">
             <div class="main1">
                 <el-menu :default-active="$route.path"  class="el-menu-demo" mode="horizontal"  router>
@@ -27,6 +27,12 @@
                     <div class="slide_bar_item" @click="goToClass('1008')"><p class="iconfont iconicon4 icon_design" ></p>设计</div>
                     <div class="slide_bar_item" @click="goToClass('1009')"><p class="iconfont iconicon-test icon_else" ></p>其他</div>
                 </div>
+                <div class="side_bar" style="top:410px;height: 235px">
+                    <div class="searchContainer">
+                        <p class="popular">热搜榜</p>
+                        <p class="popular_item" v-for="(item,index) in popular" :key="index" @click="goSearch(item.keyword)">{{item.keyword}} <span class="iconfont iconhuo" style="color: #ff3204"></span></p>
+                    </div>
+                </div>
                 <div class="side_bar_img" >
                     <img src="../../assets/advantage.png" alt="" class="advan_img">
                 </div>
@@ -37,6 +43,8 @@
 
 <script>
     import Nav from '../../components/navBar/nav'
+    import api from "../../api/article";
+    import {getLocalStorage} from "../../utils/auth";
 
     export default {
         name: "index",
@@ -44,24 +52,16 @@
             return{
                 activeName: 'first',
                 isActived:false,
-                data:[]
+                data:[],
+                popular:[]
             }
         },
         created(){
-
+            api.popularSearch({token:getLocalStorage('token')}).then(res =>{
+                this.popular = res.search
+            })
         },
         methods: {
-
-            // goEditBlog(){
-            //     let routeUrl = this.$router.resolve({
-            //         path:'/editBlog',
-            //         query:{id:1}
-            //     })
-            //     window.open(routeUrl.href,'_blank')
-            // },
-            // goToHotPoint(){
-            //     console.log('goToHotPoint')
-            // },
             goToClass(val){
                 // let routeUrl = this.$router.resolve({
                 //     path:'/classification',
@@ -70,7 +70,16 @@
                 // console.log(this.$route)
                 // window.open(routeUrl.href,'_blank')
                 this.$router.push({path:'/classification',query:{id:val}})
-            }
+            },
+            goSearch(word){
+                var route = this.$router.resolve({
+                    path:'/searchResult',
+                    query:{
+                        q:word
+                    }
+                })
+                window.open(route.href,'_blank')
+            },
         },
         components:{
             Nav
@@ -85,6 +94,7 @@
         justify-content: center;
         position: relative;
         margin: 10px auto;
+        left: -135px;
         .main1{
             position: relative;
             width: 730px;
@@ -112,27 +122,51 @@
             min-width: 250px;
             max-width: 250px;
             background-color: #ffffff;
-            height: 250px;
+            height: 225px;
             // margin-top: 15px;
             box-shadow: 0 0px 15px rgba(26,26,26,.1);
             border-radius: 5px;
-            position: sticky;
-            top: 71px;
+            position: fixed;
+            top: 73px;
             padding: 15px;
             box-sizing: border-box;
             display: flex;
             flex-wrap:wrap;
             justify-content: space-around;
+            .searchContainer{
+                display: block;
+                width: 250px;
+                padding: 0;
+                .popular{
+                    border-bottom: 1px solid #cbd7ec;
+                    height: 40px;
+                    line-height: 40px;
+                    color: #8590a6;
+                    font-size: 15px;
+                    font-weight: normal;
+                    margin-top: -15px;
+                    position: relative;
+                }
+                .popular_item{
+                    color:#1a1a1a;
+                    font-size: 15px;
+                    font-weight: normal;
+                    height: 35px;
+                    line-height: 35px;
+                    cursor: pointer;
+                    padding: 0 15px ;
+                }
+            }
             &_img{
                 min-width: 250px;
                 max-width: 250px;
                 background-color: #ffffff;
                 height: 135px;
                 margin-top: 15px;
+                position: fixed;
                 box-shadow: 0 0px 15px rgba(26,26,26,.1);
                 border-radius: 5px;
-                position: sticky;
-                top: 440px;
+                top: 645px;
                 padding: 0px;
                 box-sizing: border-box;
                 display: flex;

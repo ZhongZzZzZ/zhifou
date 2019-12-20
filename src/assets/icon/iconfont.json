@@ -27,6 +27,13 @@
       "unicode_decimal": 58941
     },
     {
+      "icon_id": "1009220",
+      "name": "火",
+      "font_class": "huo",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
       "icon_id": "1032410",
       "name": "星星",
       "font_class": "xingxing",

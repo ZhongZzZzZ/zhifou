@@ -29,7 +29,6 @@ service.interceptors.response.use(
     response => {
         const res = response.data
         // 这里处理一些response 正常放回时的逻辑
-
         return res
     },
     error => {
@@ -37,7 +36,8 @@ service.interceptors.response.use(
         if(error.response.status === 500){
            Message.error({
                 message:'服务器错误',
-                type:'error'
+                type:'error',
+                duration:1000
             })
         }
     }

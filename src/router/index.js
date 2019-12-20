@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {getLocalStorage} from "../utils/auth";
+import api from '../api/user'
 const whiteList = ['/login','/register','/resetPassword','/sentPassword']
+import Message from "element-ui/packages/message/src/main";
 Vue.use(Router)
 
  const router = new Router({
@@ -104,11 +106,26 @@ Vue.use(Router)
 
 router.beforeEach((to,from,next)=>{
     if (getLocalStorage('token')){
-        next()
-    }else if(whiteList.indexOf(to.path)!== -1){
+            if(to.name == 'login' || to.name == 'register' || to.name == 'resetPassword' || to.name == 'resetPassword'){
+                next()
+            }else{
+                 api.checkToken({token:getLocalStorage('token')}).then(res =>{
+                     console.log(res)
+                    if(res.code === 401){
+                            next('/login')
+                        }else{
+                            next()
+                        }
+                }).catch(err => {
+                     Message.info('请重新登陆')
+                })
+            }
+    }else {
+        if(whiteList.indexOf(to.path)!== -1){
             next()
-    }else{
-        next('/login')
+         }else{
+            next('/login')
+        }
     }
 })
 export default router

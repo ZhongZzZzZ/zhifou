@@ -13,11 +13,10 @@
 </template>
 
 <script>
-    import api from '../../api/article'
+    import api from '../../api/article';
     import articleList from "../../components/articleList/articleList";
     import pagination from '../../components/pagination/pagination'
     import {getLocalStorage} from "../../utils/auth";
-    import Paho from 'paho-mqtt'
     export default {
         name: "hotPoint",
         data(){

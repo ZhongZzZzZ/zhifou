@@ -30,8 +30,8 @@
             </div>
             <!--展示评论-->
             <span class="iconfont iconpinglun common" @click="openComment(item.article_id)">{{!showComment ? (item.comment_count > 0 ?item.comment_count: 0 )  + '条': '收起'}}评论</span>
-            <span class="iconfont iconxingxing common">收藏</span>
-            <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes()">{{item.point_count}}个点赞</span>
+            <span class="iconfont iconxingxing common" :class="[item.collect_flag > 0 ? 'isCollect_active':'common']" @click="collectArticle(name,item.title,'collect',item.user.user_id,item.article_id)">{{item.collect_flag >0?'已':''}}收藏</span>
+            <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes(name,item.title,'like',item.user.user_id,item.article_id)">{{item.point_flag>0?'已':''}}点赞{{'  '+item.point_count}}</span>
             <span class="common page_view" >{{item.page_view}}阅读数</span>
             <div v-if="showComment" class="showComment">
                 <comment :article_id="article_id"></comment>
@@ -45,6 +45,7 @@
     import api from '../../api/article'
     import comment from "../../components/comment/comment";
     import {getLocalStorage} from "../../utils/auth";
+    import {EventBus} from "../../api/busEvent";
 
     export default {
         name: "articleList",
@@ -54,10 +55,13 @@
                 showAticle:false,
                 showComment:false,
                 FullArticle:'',
-                article_id:''
+                article_id:'',
+                userId:getLocalStorage('user_id'),
+                name:getLocalStorage('user_name')
             }
         },
         methods:{
+
             readMore(id) {
                 api.getFullArticle({article_id:id,token:getLocalStorage('token')}).then(res => this.FullArticle = res.content)
                 this.showAticle = !this.showAticle
@@ -74,12 +78,25 @@
                 console.log(this.article_id)
                 this.showComment = ! this.showComment
             },
-            addLikes(){
-                this.item.point_flag = !this.item.point_flag
-                console.log('点赞成功')
+            addLikes(name,val,type,id,article_id){   //点赞函数
+                api.addLikes({token:getLocalStorage('token'),article_id:article_id}).then(res =>{
+                    console.log(res)
+                    this.item.point_flag = res.point_flag
+                    this.item.point_count = res.point_count
+                    EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
+                    console.log('点赞成功')
+                })
             },
             hideFullArticle(){
                 this.showAticle = !this.showAticle
+            },
+            collectArticle(name,val,type,id,article_id){ //收藏函数
+                api.addCollect({token:getLocalStorage('token'),article_id:article_id}).then(res =>{
+                    console.log(res)
+                    this.item.collect_flag = res.collect_flag
+                    EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
+                    console.log('点赞成功')
+                })
             }
         },
         computed:{
@@ -92,7 +109,8 @@
         },
         components:{
             comment
-        }
+        },
+
     }
 </script>
 
@@ -219,6 +237,13 @@
         cursor: pointer;
         font-size: 14px;
         user-select: none;
+    }
+    .isCollect_active{
+       color: #e9b91f;
+       margin: 0 15px;
+       cursor: pointer;
+       font-size: 14px;
+       user-select: none;
     }
     .page_view{
         float: right;
