@@ -83,12 +83,31 @@
                 ele.scrollIntoView(true); // true 是默认的
             },
             store() { // 收藏
-                if(this.article.collect_flag) this.store_name = '取消收藏';
-                else this.store_name = '收藏';
+                articleApi.addCollect({token:getLocalStorage('token'),article_id:this.article.article_id}).then(res => {
+                    console.log(res)
+                    this.article.collect_flag = res.collect_flag
+                    if(this.article.collect_flag) {
+                        console.log('取消收藏')
+                        this.store_name = '取消收藏';
+                    }else{
+                        console.log('收藏')
+                        this.store_name = '收藏'
+                    } ;
+                })
             },
             point() { // 点赞
-                if(this.article.point_flag) this.point_name = '取消点赞';
-                else this.point_name = '点赞';
+                articleApi.addLikes({token:getLocalStorage('token'),article_id:this.article.article_id}).then(res => {
+                    console.log(res)
+                    this.article.point_flag = res.point_flag
+                    this.article.point_count = res.point_count
+                    if(this.article.point_flag) {
+                        console.log('取消点赞')
+                        this.point_name = '取消点赞';
+                    }else{
+                        console.log('点赞')
+                        this.point_name = '点赞'
+                    } ;
+                })
             },
             chat(id) { // 私信
                 let routeUrl = this.$router.resolve({

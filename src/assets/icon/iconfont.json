@@ -104,6 +104,13 @@
       "unicode_decimal": 59253
     },
     {
+      "icon_id": "5194037",
+      "name": "图钉",
+      "font_class": "tuding",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
       "icon_id": "5318188",
       "name": "收藏",
       "font_class": "shoucang",

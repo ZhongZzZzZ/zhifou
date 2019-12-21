@@ -22,8 +22,8 @@
     </div>
 </template>
 
-<script>
-    // import api from '../../api/user'
+<script>    // import api from '../../api/user'
+
     import articleApi from '../../api/article'
     import {getLocalStorage} from "../../utils/auth";
     import pagination from '../../components/pagination/pagination'
@@ -74,7 +74,7 @@
                     console.log(res);
                     this.articles = res.article;
                 })
-            } 
+            }
         },
         created(){
             console.log(this.curuser_id)

@@ -30,7 +30,8 @@
                 <div class="side_bar" style="top:410px;height: 235px">
                     <div class="searchContainer">
                         <p class="popular">热搜榜</p>
-                        <p class="popular_item" v-for="(item,index) in popular" :key="index" @click="goSearch(item.keyword)">{{item.keyword}} <span class="iconfont iconhuo" style="color: #ff3204"></span></p>
+                        <p v-if="popular.length == 0 " class="no_popular">暂无热搜~</p>
+                        <p class="popular_item" v-for="(item,index) in popular" :key="index" @click="goSearch(item.keyword)" v-else>{{item.keyword}} <span class="iconfont iconhuo" style="color: #ff3204"></span></p>
                     </div>
                 </div>
                 <div class="side_bar_img" >
@@ -63,12 +64,6 @@
         },
         methods: {
             goToClass(val){
-                // let routeUrl = this.$router.resolve({
-                //     path:'/classification',
-                //     query:{id:val}
-                // })
-                // console.log(this.$route)
-                // window.open(routeUrl.href,'_blank')
                 this.$router.push({path:'/classification',query:{id:val}})
             },
             goSearch(word){
@@ -155,6 +150,12 @@
                     line-height: 35px;
                     cursor: pointer;
                     padding: 0 15px ;
+                }
+                .no_popular{
+                    text-align: center;
+                    color: #8590a6;
+                    font-size: 15px;
+                    margin-top: 15px;
                 }
             }
             &_img{

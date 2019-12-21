@@ -2,7 +2,7 @@
     <div>
         <div class="comment-title">
             <span class="maintitle">评论</span>
-            <span>共有{{ comment_count }}条评论</span>
+            <span class="all_comment">共有{{ comment_count }}条评论</span>
         </div>
 
         <!-- 发表评论 -->
@@ -19,9 +19,9 @@
         <!-- 用户评论 -->
         <div class="user-comments">
             <div class="comment-title">
-                <span>用户评论</span>
+                <span class="all_comment">用户评论</span>
             </div>
-            <div class="comment-item" v-if="comments.length == 0">该文章还没有用户评论，快来抢沙发~</div>
+            <div class="comment-item no_comment" v-if="comments.length == 0">该文章还没有用户评论，快来抢沙发~</div>
             <div v-else>
             <div class="comment-item" v-for="item in comments" :key="item">
                 <img :src="item.user_url" >
@@ -239,6 +239,10 @@
         border-bottom: 2px solid #8DAFFC;
         color: #333;
         font-size: 12px;
+        .all_comment{
+            color: #8590a6;
+            font-size: 13px;
+        }
     }
     .maintitle {
         color: black;
@@ -338,6 +342,11 @@
                 position: absolute;
                 right: 0px;
             }
+        }
+        .no_comment{
+            text-align: center;
+            font-size: 15px;
+            color: #8590a6;
         }
         .comment-content {
             position: relative;

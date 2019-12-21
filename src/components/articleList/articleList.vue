@@ -83,7 +83,9 @@
                     console.log(res)
                     this.item.point_flag = res.point_flag
                     this.item.point_count = res.point_count
-                    EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
+                    if(res.point_flag > 0){
+                        EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
+                    }
                     console.log('点赞成功')
                 })
             },
@@ -94,8 +96,10 @@
                 api.addCollect({token:getLocalStorage('token'),article_id:article_id}).then(res =>{
                     console.log(res)
                     this.item.collect_flag = res.collect_flag
-                    EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
-                    console.log('点赞成功')
+                    if (res.collect_flag > 0){
+                        EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
+                    }
+                    console.log('收藏成功')
                 })
             }
         },

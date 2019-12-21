@@ -25,10 +25,6 @@
     },
     methods:{
         sentMqtt(val,id){
-            // var message = new Paho.Message('一代游戏传奇退役');
-            // // // var message = new Paho.Message(`{article:${title}}`);
-            // message.destinationName = `like/6`;
-            // this.mqtt.send(message)
             this.mqtt.publish(`like/${id}`,val,2,true);
         },
         MQTTconnect() {
@@ -67,12 +63,7 @@
         },
         //连接
         onconnect() {
-            //连接成功，订阅主题
             this.mqtt.subscribe(`like/${this.userId}`,{qos:2})
-            //发布一个消息，再连接成功后，发送一个响应，确保连接没有问题；
-            // var message = new Paho.Message("Hello");
-            // message.destinationName = `like/${this.userId}`;
-            // this.mqtt.send(message);
         },
         //连接丢失
         onConnectionLost(response) {
