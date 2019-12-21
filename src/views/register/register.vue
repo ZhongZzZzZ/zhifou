@@ -105,10 +105,6 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        // var formdata = new FormData();
-                        // formdata.append('user_account',this.ruleForm.email)
-                        // formdata.append('password',this.ruleForm.pass)
-                        // formdata.append('user_name',this.ruleForm.name)
                         api.register({
                             email:this.ruleForm.email,
                             password:this.ruleForm.pass,

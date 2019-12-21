@@ -13,7 +13,7 @@
                 <div v-for="(item,index) in data" :key="index">
                     <articleList :item="item"></articleList>
                 </div>
-                <div v-if="data.length ==0">当前分类没有信息哦</div>
+                <div v-if="data.length ==0" class="no_class">当前分类没有信息哦~</div>
                 <pagination :total="total" @getNewList="getNewList" :currentPage="this.params.page" class="pagination"></pagination>
             </el-tabs>
         </div>
@@ -98,6 +98,12 @@
         right: 15px;
         padding-bottom: 15px;
         overflow: hidden;
+    }
+    .no_class{
+        font-size: 15px;
+        text-align: center;
+        color: #6c778c;
+        margin: 30px 0;
     }
 }
 </style>

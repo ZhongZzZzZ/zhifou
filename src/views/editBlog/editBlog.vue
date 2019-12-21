@@ -58,6 +58,8 @@
                 radio: 1009,
                 text:'',
                 article_id:'',
+                ifSend:'存入草稿箱',
+                sentType:0,
                 tags: [
                     { id: 1001, name: '前端' },
                     { id: 1002, name: '后端' },
@@ -149,49 +151,50 @@
                 console.log(this.drawer)
             },
             saveArticle(val){
-                articleApi.saveArticle({
-                    token:getLocalStorage('token'),
-                    article_id:articleId,
-                    title:this.title,
-                    user_id:getLocalStorage('user_id'),
-                    content:this.tinymceHtml,
-                    type_id: this.radio,
-                    flag:val
-                }).then(() => {
-                    if(val == 1){
-                        Message.success('发布成功')
-                    }else {
-                        Message.success('存入草稿成功')
-                    }
-                    this.$router.push({path:'/hotPoint'})}
-                ).catch(
-                    Message.error(err => '发送失败')
-                )
-            },
-            send(val) {
-                var flag;
-                this.saveArticle(val)
+                // articleApi.saveArticle({
+                //     token:getLocalStorage('token'),
+                //     article_id:articleId,
+                //     title:this.title,
+                //     user_id:getLocalStorage('user_id'),
+                //     content:this.tinymceHtml,
+                //     type_id: this.radio,
+                //     flag:val
+                // }).then(() => {
+                //     if(val == 1){
+                //         Message.success('发布成功')
+                //     }else {
+                //         Message.success('存入草稿成功')
+                //     }
 
+            },
+                // ).catch(
+                //     Message.error(err => '发送失败')
+                // )
+
+            send(val) {
+                this.ifSend = '发布'
+                this.sentType = val
+                this.$router.push({path:'/hotPoint'})
             },
             draft(val) {
-                this.saveArticle(val)
+                this.ifSend = '存入草稿箱'
+                this.sentType = val
+                this.$router.push({path:'/hotPoint'})
             },
-            uploadImg(){
+    },
 
-            }
-        },
         watch: {
             value (newValue) {
                 console.log(newValue);
                 this.tinymceHtml = newValue;
             },
             tinymceHtml (newValue) {
-                if (newValue == '' || this.title == '') this.isNull = true;
+                if (newValue.trim() == '' || this.title.trim() == '') this.isNull = true;
                 else this.isNull = false;
                 this.$emit('input', newValue)
             },
             title (newValue) {
-                if (newValue == '' || this.title == '') this.isNull = true;
+                if (newValue.trim() == '' || this.title.trim() == '') this.isNull = true;
                 else this.isNull = false;
                 this.title = newValue;
             }
@@ -214,12 +217,36 @@
                         console.log(res)
                     })
             }
-
         },
         mounted() {
             tinymce.init({})
         },
-        components: {Editor,Nav}
+        components: {Editor,Nav},
+        beforeRouteLeave (to, from , next) {
+            this.$confirm(`是否${this.ifSend}`, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                articleApi.saveArticle({
+                    token:getLocalStorage('token'),
+                    article_id:articleId,
+                    title:this.title,
+                    user_id:getLocalStorage('user_id'),
+                    content:this.tinymceHtml,
+                    type_id: this.radio,
+                    flag:this.sentType
+                }).then(() => {
+                     Message.success(`${this.ifSend}成功`)
+                     next()
+                }
+                ).catch(
+                    Message.error(err => `${this.ifSend}失败`)
+                )
+            }).catch((err) => {
+               next()
+                })
+        }
     }
 </script>
 

@@ -3,7 +3,6 @@
         <Nav style="position:sticky;"></Nav>
         <div class="main">
             <div class="info_edit">
-                <!-- action="http://192.168.195.9:8123/zhifou/users/uploadfiles" -->
                 <el-upload
                     class="avatar-uploader"
                     action="string"
@@ -42,7 +41,6 @@
 </template>
 
 <script>
-    // import imgsrc from '../../assets/avatar.jpg'
     import Nav from '../../components/navBar/nav'
     import api from '../../api/user'
     import {getLocalStorage} from "../../utils/auth";
@@ -67,10 +65,7 @@
             imgchange(file) {
                 const isJPG = file.raw.type === 'image/jpeg';
                 const isLt2M = file.raw.size / 1024 / 1024 < 2;
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                    return
-                }
+
                 if (!isLt2M) {
                     this.$message.error('上传头像图片大小不能超过 2MB!');
                     return

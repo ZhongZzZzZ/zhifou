@@ -33,13 +33,11 @@ service.interceptors.response.use(
     },
     error => {
         // 这里处理一些response 出错时的逻辑
-        if(error.response.status === 500){
            Message.error({
                 message:'服务器错误',
                 type:'error',
                 duration:1000
             })
-        }
     }
 )
 

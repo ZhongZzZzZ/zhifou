@@ -49,7 +49,6 @@
     import defaultAvatar from '../../assets/unlogin.png'
     import api from '../../api/user'
 
-    // import { mapState } from 'vuex'
     export default {
         name: "userinfo",
         data(){
@@ -85,12 +84,10 @@
             if(this.$route.query.id) id = this.$route.query.id;
             else id = getLocalStorage('user_id');
             this.curuser_id = id;
-            // console.log(id)
             api.getUserInfo({
                 user_id: id,
                 token: getLocalStorage('token')
             }).then(res => {
-                //console.log(res)
                 this.user = res.user;
             })
         },

@@ -100,7 +100,7 @@
                     user_name:'',
                     user_url:'',
                     message: [],// 0代表对方，1代表自己
-                    readymsg: [], // 未送达的消息 
+                    readymsg: [], // 未送达的消息
                 },
                 tip:'发送中…',
                 more_msg: '查看更多',
@@ -176,6 +176,7 @@
                 console.log(data)
                 if(data[0].send_type) this.addmessage(data);
                 else this.addrecord(data);
+
             },
 
             addrecord(record) { // 添加聊天记录

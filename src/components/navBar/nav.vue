@@ -17,13 +17,6 @@
                                       @keyup.enter.native="search"></el-input>
                             <el-button type="primary" class="searchBtn" @click="search">搜索</el-button>
                             <div class="nav_user">
-                                <!-- <el-dropdown v-if="userData == null">
-                                    <img class="user_avatar" src="../../assets/unlogin.png">
-                                    <el-dropdown-menu slot="dropdown">
-                                        <router-link to="/userinfo"><el-dropdown-item>个人主页</el-dropdown-item></router-link>
-                                        <router-link to="/login" @click.native="clearStorage"><el-dropdown-item>退出</el-dropdown-item></router-link>
-                                    </el-dropdown-menu>
-                                </el-dropdown> -->
                                 <el-dropdown>
                                     <img class="user_avatar" :src="user_url">
                                     <el-dropdown-menu slot="dropdown">
@@ -101,7 +94,6 @@
                   }
               })
                 window.open(route.href,'_blank')
-              // this.$router.push({path:'/searchResult',query:{q:this.state}})
             },
             goSearch(word){
                 var route = this.$router.resolve({

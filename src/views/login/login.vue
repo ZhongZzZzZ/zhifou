@@ -9,14 +9,14 @@
                     <el-input type="password" v-model.trim="ruleForm.password" autocomplete="on"  prefix-icon="el-icon-link" show-password placeholder="请输入密码...">
                     </el-input>
                 </el-form-item>
-                <el-form-item label="" prop="verCode">
+                <el-form-item label="" prop="captcha_1">
                     <el-input v-model.trim="ruleForm.captcha_1" autocomplete="on" class="login_verCode" placeholder="验证码" @focus="getVercodeImg"></el-input>
                     <img class="login_verPic" @click="changeVerPic" :src="imgsrc" alt="验证码" v-if=" imgsrc!== ''">
                 </el-form-item>
             </el-form>
             <div class="tip">
                 <span class="resetPsw" @click="$router.push({path:'resetPassword'})">忘记密码？</span>
-                <span class="register" @click="$router.push({path:'/register'})">注册</span>  
+                <span class="register" @click="$router.push({path:'/register'})">注册</span>
                 <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')" class="login_btn">提交</el-button>
             </div>
         </div>
@@ -49,6 +49,13 @@
                     callback();
                 }
             };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('验证码不能为空'));
+                } else {
+                    callback();
+                }
+            };
             return {
                 ruleForm: {
                     user_account: '',
@@ -67,7 +74,7 @@
                         { validator: validatePass, trigger: 'blur' ,required: true}
                     ],
                     captcha_1:[
-                        { validator: validatePass1, trigger: 'blur' ,required: true}
+                        { validator: validatePass2, trigger: 'blur' ,required: true}
                     ]
                 },
             };
@@ -90,11 +97,10 @@
                                 setLocalStorage('email',data.email)
                                 setLocalStorage('credit',data.user_credit)
                                 this.$router.replace({path:'/hotPoint'})
-
-                            }else if(res.code == '301'){
+                            }else if(res.code == '401'){
                                 this.$message.error('用户不存在')
                                 return false
-                            }else if(res.code == '302'){
+                            }else if(res.code == '402'){
                                 this.$message.error('密码错误')
                                 return false
                             }else if(res.code == '404'){
@@ -108,23 +114,6 @@
                                 return false
                             }
                         })
-                        // this.$store.dispatch('login',this.ruleForm).then(res => {
-                        //     if(res.code == '200'){
-                        //             this.$router.replace({path:'/hotPoint'})
-                        //             }else if(res.code == '301'){
-                        //                 this.$message.error('用户不存在')
-                        //                 return false
-                        //             }else if(res.code == '302'){
-                        //                 this.$message.error('密码错误')
-                        //                 return false
-                        //             }else if(res.code == '404'){
-                        //                 this.$message.error('登陆失败')
-                        //                 return false
-                        //             }else{
-                        //                 this.$message.error('服务器错误')
-                        //                 return false
-                        //             }
-                        // })
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -142,7 +131,6 @@
                 }
             },
             changeVerPic(){
-                // console.log("changeWaiting...");
                 this.isFirst = true;
                 this.getVercodeImg();
             }

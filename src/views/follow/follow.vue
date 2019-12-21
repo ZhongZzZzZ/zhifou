@@ -84,12 +84,13 @@
                 return rows
             }
         },
-        created() {
-            // this.MQTTconnect()
+     methods:{
+
         },
         methods:{
             
         }
+    }
     }
 </script>
 
