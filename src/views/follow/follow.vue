@@ -1,94 +1,156 @@
 <template>
-    <div v-rainbowbg>
-    <div class="article_container" v-rainbow>
-        我看你打码
-    </div>
-        <div class="article_container" v-rainbow>我看你打码
-        </div>
-        <div class="article_container" v-rainbow>
-            我看你打码
-        </div>
-        <div class="article_container" v-rainbow>
-            我看你打码
-        </div>
-        <div class="article_container" v-rainbow>
-            我看你打码
-        </div>
-        <div class="article_container" v-rainbow>
-            我看你打码
-        </div>
-        <div class="article_container" v-rainbow>.
-            我看你打码
-        </div>
-        <div class="article_container" v-rainbow>
-            我看你打码
-        </div>
-        <div class="article_container" v-rainbow>
-            我看你打码
-        </div>
+    <div class="article_container">
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="note_bg">
+                    <div class="tietu_box">
+                        <img src="../../assets/圣诞1.gif" class="tietu">
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="note_bg">
+                    <div class="tietu_box">
+                        <img src="../../assets/圣诞2.gif" class="tietu">
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="note_bg">
+                    <div class="tietu_box">
+                        <img src="../../assets/圣诞3.gif" class="tietu">
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20" v-for="(row,index) in rows" :key="index">
+            <el-col :span="8" v-for="item of row" :key="item.id">
+                <div class="note_bg">
+                    <div class="note">
+                        <img :src="img_url" class="avatar">
+                        <span class="user_name">匿名</span>
+                        <div class="note_content">{{ item.content }}</div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
 
     </div>
 </template>
 
 <script>
+    import hehua from '../../assets/荷花.png'
+    import Paho from 'paho-mqtt'
+    import {getLocalStorage} from "../../utils/auth";
 
-export default {
-     name: "follow",
-     data(){
-        return{
-
-          }
+    export default {
+        name: "follow",
+        data(){
+            return{
+                reconnectTimeout: 2000,
+                mqtt: {},
+                msg:"/zhifou",
+                userId:getLocalStorage('user_id'),
+                img_url: hehua,
+                notes: [{
+                    id: 1,
+                    content: '太好看了吧这网站，是哪个神仙前端做的',
+                    user_name: 'LInhz'
+                },
+                {
+                    id: 2,
+                    content: '知否名字好听有好用，我好喜欢窝',
+                    user_name: 'LInhz'
+                },
+                {
+                    id: 3,
+                    content: '太好看了吧这网站，是哪个神仙前端做的太好看了吧这网站，是哪个神仙前端做的太好看了吧这网站，是哪个神仙前端做的太好看了吧这网站，是哪个神仙前端做的太好看了吧这网站，是哪个神仙前端做的太好看了吧这网站，是',
+                    user_name: 'LInhz'
+                },
+                ]
+            }
         },
-     created() {
-
+        computed: {
+            rows() {
+                const rows = [];
+                this.notes.forEach((item, index) => {
+                    const row = Math.floor(index / 3)
+                    if (!rows[row]) {
+                    rows[row] = []
+                    }
+                    rows[row].push(item)
+                })
+                return rows
+            }
         },
      methods:{
 
         },
-    directives:{
-         rainbow:{
-             inserted:function (el) {
-                 var str = "#";
-                 //定义十六进制单个码数组好进行遍历
-                 var arr = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"]
-                 for(var i = 0; i < 6; i++) {
-                     //想一想为什么这里的关键字Math.random()后面要乗16而不是15或者17.
-                     var num = parseInt(Math.random()*16);
-                     str += arr[num];
-                 }
-                el.style.color = str
-             }
-         },
-         rainbowbg:{
-            inserted:function (el) {
-                var str = "#";
-                //定义十六进制单个码数组好进行遍历
-                var arr = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"]
-                for(var i = 0; i < 6; i++) {
-                    //想一想为什么这里的关键字Math.random()后面要乗16而不是15或者17.
-                    var num = parseInt(Math.random()*16);
-                    str += arr[num];
-                }
-                el.style.backgroundColor = str
-            }
-        }
-    }
+
     }
 </script>
 
 <style lang="scss" scoped>
     .article_container{
         position: relative;
-        width: 200px;
+        padding: 0px 15px;
+    }
+    .el-row {
+        margin-bottom: 25px;
+    }
+    .el-col{
+        position: relative;
+    }
+    .note_bg {
+        width: 100%;
         height: 200px;
-        background-color: #fff;
-        box-shadow: 0 0 5px #bbb;
-        display: inline-block;
+        position: relative;;
+        z-index: 1;
+        background: #8DAFFC;
+        box-shadow: 0 0px 5px rgba(26, 26, 26, 0.1);
+    }
+    .note {
+        position: absolute;
+        box-shadow: 0 0px 5px rgba(26, 26, 26, 0.1);
+        background: #fff;
+        z-index: 2;
+        width: 200px;
+        height: 180px;
+        top: -5px;
+        left: 5px;
+        padding: 10px;
+    }
+    .avatar {
+        border: 1px solid #99999940;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+    }
+    .user_name {
+        margin-left: 5px;
         font-size: 16px;
-        font-weight: 600;
-        margin: 0 15px 15px 0;
-        overflow: hidden;
-        animation: swag 2s infinite;
+        font-weight: bold;
+        line-height: 30px;
+    }
+    .note_content {
+        margin-top: 3px;
+        font-size: 14px;
+    }
+    .tietu_box {
+        position: absolute;
+        box-shadow: 0 0px 5px rgba(26, 26, 26, 0.1);
+        background: #fff;
+        z-index: 2;
+        width: 220px;
+        height: 200px;
+        top: -5px;
+        left: 5px;
+        padding: 0px;
+    }
+    .tietu {
+        width: 220px;
+        height: 200px;
     }
     @keyframes swag {
         0%{

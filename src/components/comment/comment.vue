@@ -38,7 +38,7 @@
                 <!-- 对评论的回复 -->
                 <i class="el-icon-chat-round" @click="myresponse='',myresponseShow = item.comment_id" v-if="myresponseShow != item.comment_id">回复</i>
                 <i class="el-icon-chat-round" @click="myresponseShow=0" v-else>取消回复</i>
-                <i class="el-icon-delete" @click="delcomment(item.comment_id)" v-if="item.user_id == user.user_id">删除</i>
+                <i class="el-icon-delete" @click="delcomment(item.comment_id)" v-if="item.from_user_id == user.user_id">删除</i>
 
                 <div class="my_response" v-if="myresponseShow == item.comment_id">
                     <img :src="user.user_url">
@@ -51,20 +51,20 @@
                     <div class="comment-item" v-if="response.length == 0">该评论下无回复~</div>
                     <div v-else>
                         <div class="comment-item" v-for="res in response" :key="res">
-                            <img :src="res.to_user_url" >
+                            <img :src="res.from_user_url" >
                             <div class="comment-content">
-                                <span class="content-username">{{ res.to_user_name }} <span class="huifu">回复</span> {{ res.from_user_name }}：</span>
+                                <span class="content-username">{{ res.from_user_name }} <span class="huifu">回复</span> {{ res.to_user_name }}：</span>
                                 <span>{{ res.reply_content }}</span>
                             </div>
                             <div class="comment-time">{{ res.create_time }}</div>
                             <i class="el-icon-chat-round" @click="myreplytoreply='',myreplyShow = res.reply_id" v-if="myreplyShow != res.reply_id">回复</i>
                             <i class="el-icon-chat-round" @click="myreplyShow=0" v-else>取消回复</i>
-                            <i class="el-icon-delete" @click="delreply(res.reply_id)" v-if="res.to_user_id == user.user_id">删除</i>
+                            <i class="el-icon-delete" @click="delreply(res.reply_id)" v-if="res.from_user_id == user.user_id">删除</i>
                             <!-- 对回复的回复 -->
                             <div class="my_response" v-if="myreplyShow == res.reply_id">
                                 <img :src="user.user_url">
                                 <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myreplytoreply" maxlength="100" show-word-limit></el-input>
-                                <el-button class="comment-btn" type="primary" @click="replyreply(item.comment_id,res.reply_id, res.to_user_id)">发送</el-button>
+                                <el-button class="comment-btn" type="primary" @click="replyreply(item.comment_id,res.reply_id, res.from_user_id)">发送</el-button>
                             </div>
                         </div>
                         <el-pagination small layout="prev, pager, next" page-size="10" :total="reply_count" @current-change="currentChange($event,item.comment_id)" > </el-pagination>
@@ -128,7 +128,7 @@
                     token:this.user.token,
                     page: val
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.response = res.reply;
                     this.reply_count = res.reply_count;
                 })
@@ -153,7 +153,7 @@
                     token:this.user.token,
                     page: 1
                 }).then(res => {
-                    // console.log(res);
+                    console.log(res);
                     this.response = res.reply;
                     this.reply_count = res.reply_count;
                     this.responseShow = id;
@@ -222,7 +222,7 @@
                 token:this.user.token,
                 page:1
             }).then(res => {
-                console.log(res);
+                //console.log(res);
                 this.comments = res.comment;
                 this.comment_count = res.comment_count;
             })

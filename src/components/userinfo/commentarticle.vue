@@ -7,10 +7,15 @@
             <div class="article_box">
                 <div class="article_title">
                     {{ item.title }}
-                    <el-tag>{{item.type_name}}</el-tag>
-                    <span class="article_time">{{ item.create_time }}</span>
                 </div>
-                <img class="article_img" :src="item.photo.photo_url" v-if="item.photo">
+                <div class="article_info">
+                    <el-tag>{{item.type_name}}</el-tag>
+                    <span class="info_item">作者：{{ item.user.user_name }}</span>
+                    <span class="info_item">发布时间：{{ item.create_time }}</span>
+                </div>
+                <div class="img_box" v-if="item.photo.photo_url">
+                    <img class="article_img" :src="item.photo.photo_url">
+                </div>
                 <div class="article_content">
                     <span>{{ item.simple_content | articleFilter }}</span>
                 </div>
@@ -35,18 +40,18 @@
                     <div class="comment-item" v-for="res in response" :key="res">
                         <img :src="res.to_user_url" >
                         <div class="comment-content">
-                            <span class="content-username">{{ res.to_user_name }} <span class="huifu">回复</span> {{ res.from_user_name }}：</span>
+                            <span class="content-username">{{ res.from_user_name }} <span class="huifu">回复</span> {{ res.to_user_name }}：</span>
                             <span>{{ res.reply_content }}</span>
                         </div>
                         <div class="comment-time">{{ res.create_time }}</div>
                         <i class="el-icon-chat-round" @click="myreplytoreply='',myreplyShow = res.reply_id" v-if="myreplyShow != res.reply_id">回复</i>
                         <i class="el-icon-chat-round" @click="myreplyShow=0" v-else>取消回复</i>
-                        <i class="el-icon-delete" @click="delreply(res.reply_id)" v-if="res.to_user_id == own.id">删除</i>
+                        <i class="el-icon-delete" @click="delreply(res.reply_id)" v-if="res.from_user_id == own.id">删除</i>
                         <!-- 对回复的回复 -->
                         <div class="my_response" v-if="myreplyShow == res.reply_id">
                             <img :src="own.user_url">
                             <el-input  class="myresponse_input" type="textarea" placeholder="请输入内容" v-model="myreplytoreply" maxlength="100" show-word-limit></el-input>
-                            <el-button class="comment-btn" type="primary" @click="replyreply(item.comment_id,res.reply_id, res.to_user_id)">发送</el-button>
+                            <el-button class="comment-btn" type="primary" @click="replyreply(item.comment_id,res.reply_id, res.from_user_id)">发送</el-button>
                         </div>
                     </div>
                     <el-pagination small layout="prev, pager, next" page-size="10" :total="reply_count" @current-change="currentChange($event,item.comment_id)" > </el-pagination>
@@ -54,7 +59,7 @@
             </div>
 
         </div>
-        <pagination :total="article_count" @getNewList="getNewList"></pagination>
+        <pagination :total="article_count" @getNewList="getNewList" v-if="article_count"></pagination>
     </div>
 </template>
 
@@ -231,7 +236,7 @@
         float: right;
     }
     .article_box {
-        height: 185px;
+        height: 220px;
         padding: 20px 20px;
         position: relative;
         // border: 1px solid #f7f8fa;
@@ -241,13 +246,32 @@
             height: 30px;
             font-weight: 600;
             font-size: 18px;
+            margin: 0px 5px;
+        }
+        .article_info {
             margin-bottom: 10px;
         }
-        .article_img {
-            width: 200px;
-            border-radius: 5px;
+        .info_item {
+            font-weight: 400;
+            font-size: 14px;
+            color: #909399;
+            vertical-align: bottom;
+            margin: 0px 5px;
+        }
+        .img_box {
+            width: 180px;
+            height: 120px;
             float: left;
             margin-right: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .article_img {
+            position: absolute;
+            top:-27%;
+            left: -20%;
+            width: 250px;
         }
         .article_content {
             height: 120px;
