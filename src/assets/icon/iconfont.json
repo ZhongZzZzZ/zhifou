@@ -55,6 +55,13 @@
       "unicode_decimal": 58895
     },
     {
+      "icon_id": "1106018",
+      "name": "播放",
+      "font_class": "bofang1",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
       "icon_id": "1221242",
       "name": "点赞",
       "font_class": "dianzan",
@@ -118,6 +125,13 @@
       "unicode_decimal": 58893
     },
     {
+      "icon_id": "5327376",
+      "name": "播放",
+      "font_class": "bofang3",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
       "icon_id": "5383815",
       "name": "运营",
       "font_class": "huabanfuben",
@@ -165,6 +179,13 @@
       "font_class": "bofang",
       "unicode": "e717",
       "unicode_decimal": 59159
+    },
+    {
+      "icon_id": "10817388",
+      "name": "播放图标",
+      "font_class": "bofangtubiao",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
     }
   ]
 }

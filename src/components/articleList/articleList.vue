@@ -30,8 +30,8 @@
             </div>
             <!--展示评论-->
             <span class="iconfont iconpinglun common" @click="openComment(item.article_id)">{{!showComment ? (item.comment_count > 0 ?item.comment_count: 0 )  + '条': '收起'}}评论</span>
-            <span class="iconfont iconxingxing common" :class="[item.collect_flag > 0 ? 'isCollect_active':'common']" @click="collectArticle(name,item.title,'collect',item.user.user_id,item.article_id)">{{item.collect_flag >0?'已':''}}收藏</span>
-            <span class="iconfont  icondianzan" :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes(name,item.title,'like',item.user.user_id,item.article_id)">{{item.point_flag>0?'已':''}}点赞{{'  '+item.point_count}}</span>
+            <span class="common animation" :class="[item.collect_flag > 0 ? 'isCollect_active':'common']" @click="collectArticle(name,item.title,'collect',item.user.user_id,item.article_id)"> <span class="iconfont iconxingxing animation"></span> {{item.collect_flag >0?'已':''}}收藏</span>
+            <span  :class="[item.point_flag > 0 ? 'islike_active':'common']" @click="addLikes(name,item.title,'like',item.user.user_id,item.article_id)"><span class="iconfont  icondianzan animation"></span>{{item.point_flag>0?'已':''}}点赞{{'  '+item.point_count}}</span>
             <span class="common page_view" >{{item.page_view}}阅读数</span>
             <div v-if="showComment" class="showComment">
                 <comment :article_id="article_id"></comment>
@@ -119,6 +119,23 @@
 </script>
 
 <style lang="scss" scoped>
+    /*@keyframes scale {*/
+    /*    0%{*/
+    /*        transform: scale(1);*/
+    /*    }*/
+    /*    25%{*/
+    /*        transform: scale(0.5);*/
+    /*    }*/
+    /*    50%{*/
+    /*        transform: scale(1);*/
+    /*    }*/
+    /*    75%{*/
+    /*        transform: scale(1.5);*/
+    /*    }*/
+    /*    100%{*/
+    /*         transform: scale(1);*/
+    /*     }*/
+    /*}*/
     .article_list{
         width:100%;
         margin: 0px auto;
@@ -185,10 +202,15 @@
             user-select: none
         }
         .video_play{
-            font-size: 40px;
-            border-radius:50%;
+            width: 43px;
+            display: inline-block;
+            height: 43px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 50%;
+            font-size: 39px;
+            text-align: center;
             position:absolute;
-            color: #c7c7c7;
+            color: rgba(0, 0, 0, 1);
             top:50%;
             left:50%;
             transform: translate(-50%,-50%);
@@ -245,7 +267,11 @@
         cursor: pointer;
         font-size: 14px;
         user-select: none;
+        /*.animation{*/
+        /*    animation: scale 0.5s;*/
+        /*}*/
     }
+
     .islike_active{
         color: #ff6535;
         margin: 0 15px;

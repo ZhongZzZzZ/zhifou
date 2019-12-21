@@ -90,5 +90,13 @@ export default {
         overflow: hidden;
         animation: swag 2s infinite;
     }
+    @keyframes swag {
+        0%{
+            transform: translateX(0);
+        }
+        100%{
+            transform: translateX(-1000px);
+        }
+    }
 </style>
 
