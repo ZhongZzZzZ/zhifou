@@ -9,9 +9,7 @@
                         <span>{{user.user_name}}</span>
                         <i v-if="user.user_gender == 0" class="icon-sex el-icon-female"></i>
                         <i v-else class="icon-sex el-icon-male"></i>
-                        <el-badge :value="user.user_credit" class="item">
-                            <el-tag>{{ user.user_level_name }}</el-tag>
-                        </el-badge>
+                        <el-tag>{{ user.user_level_name }}</el-tag>
                     </div>
                     <div class="info_detail">
                         <div>工号：{{user.user_account}}</div>

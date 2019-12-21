@@ -4,6 +4,7 @@
             <img :src="item.user.user_url" class="article_avatar">
             <div class="article_time_name">
                 <span class="article_name">{{item.user.user_name}}</span>
+                <i class="el-icon-medal level_name">{{ item.level_name }}</i>
                 <p class="article_time">{{item.create_time}}</p>
             </div>
             <p class="article_title">
@@ -75,16 +76,16 @@
             },
             openComment(id){
                 this.article_id = id
-                console.log(this.article_id)
+                // console.log(this.article_id)
                 this.showComment = ! this.showComment
             },
             addLikes(name,val,type,id,article_id){   //点赞函数
                 api.addLikes({token:getLocalStorage('token'),article_id:article_id}).then(res =>{
-                    console.log(res)
+                    // console.log(res)
                     this.item.point_flag = res.point_flag
                     this.item.point_count = res.point_count
                     EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
-                    console.log('点赞成功')
+                    // console.log('点赞成功')
                 })
             },
             hideFullArticle(){
@@ -92,10 +93,10 @@
             },
             collectArticle(name,val,type,id,article_id){ //收藏函数
                 api.addCollect({token:getLocalStorage('token'),article_id:article_id}).then(res =>{
-                    console.log(res)
+                    // console.log(res)
                     this.item.collect_flag = res.collect_flag
                     EventBus.$emit('sentMqtt',`${val + "*&^*&^" +name + "*&^*&^" + type}`,id)
-                    console.log('点赞成功')
+                    // console.log('点赞成功')
                 })
             }
         },
@@ -129,13 +130,17 @@
         position: relative;
         top:18px;
         margin-left: 15px;
-    .article_name{
-        font-size: 18px;
-    }
-    .article_time{
-        color: #6d6d6d;
-        font-size: 12px;
-    }
+        .article_name{
+            font-size: 18px;
+        }
+        .article_time{
+            color: #6d6d6d;
+            font-size: 12px;
+        }
+        .level_name {
+            margin-left:5px;
+            color: #8DAFFC;
+        }
     }
     .article_title{
         font-size: 18px;
@@ -213,12 +218,11 @@
         }
         .readMore{
             color:#8590a6;
-            font-size: 14px;
+            font-size: 12px;
             font-weight:600;
             cursor: pointer;
-            position: absolute;
-            right: 27px;
-            bottom: 0px;
+            float: right;
+            margin: 10px 5px 0px 0px;
         }
     }
     .full_article /deep/ img {
@@ -228,12 +232,12 @@
     }
     .full_article /deep/ video {
         width: 90% !important;
-        height:auto;
+        height: fit-content;
         margin:auto;
         display:block;
     }
     .control {
-        font-size: 14px;
+        font-size: 12px;
     }
     .common{
         color:#8590a6;

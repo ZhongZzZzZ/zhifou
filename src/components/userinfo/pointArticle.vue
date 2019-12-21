@@ -3,11 +3,16 @@
         <div class="article_box" v-for="item in articles" :key="item">
             <div class="article_title">
                 {{ item.title }}
-                <el-tag>{{item.type_name}}</el-tag>
-                <span class="article_time">{{ item.create_time }}</span>
                 <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article_id)" plain v-if="curuser_id === own.id">取消点赞</el-button>
             </div>
-            <img class="article_img" :src="item.photo_photo_url" v-if="item.photo">
+             <div class="article_info">
+                <el-tag>{{item.type_name}}</el-tag>
+                <span class="article_time">作者：{{ item.user.user_name }}</span>
+                <span class="article_time">发布时间：{{ item.create_time }}</span>
+            </div>
+            <div class="img_box" v-if="item.photo.photo_url">
+                <img class="article_img" :src="item.photo.photo_url">
+            </div>
             <div class="article_content">
                 <span>{{ item.simple_content | articleFilter }}</span>
             </div>
@@ -92,7 +97,7 @@
 
 <style lang="scss" scoped>
     .article_box {
-        height: 185px;
+        height: 220px;
         padding: 20px 20px;
         position: relative;
         margin-bottom: 10px;
@@ -100,14 +105,16 @@
             height: 30px;
             font-weight: 600;
             font-size: 18px;
-            margin-bottom: 10px;
         }
         .article_time {
             font-weight: 400;
             font-size: 14px;
             color: #909399;
             vertical-align: bottom;
-            margin-left: 5px;
+            margin: 0px 5px;
+        }
+        .article_info {
+            margin-bottom: 10px;
         }
         .del_btn {
             float: right;
@@ -116,11 +123,21 @@
         .del_btn:hover {
             color: #fff;
         }
-        .article_img {
-            width: 200px;
-            border-radius: 5px;
+        .img_box {
+            width: 180px;
+            height: 120px;
             float: left;
             margin-right: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .article_img {
+            position: absolute;
+            top:-27%;
+            left: -20%;
+            width: 250px;
+            
         }
         .article_content {
             height: 120px;

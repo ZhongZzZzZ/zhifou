@@ -7,7 +7,9 @@
                 <span class="article_time">{{ item.create_time }}</span>
                 <el-button class="del_btn" icon="el-icon-minus" @click="del(item.article_id,index)" plain v-if="curuser_id === user.id"></el-button>
             </div>
-            <img class="article_img" :src="item.photo.photo_url" v-if="item.photo">
+            <div class="img_box" v-if="item.photo.photo_url">
+                <img class="article_img" :src="item.photo.photo_url">
+            </div>
             <div class="article_content">
                 <span>{{ item.simple_content | articleFilter }}</span>
             </div>
@@ -119,11 +121,20 @@
         .del_btn:hover {
             color: #fff;
         }
-        .article_img {
-            width: 200px;
-            border-radius: 5px;
+        .img_box {
+            width: 180px;
+            height: 120px;
             float: left;
             margin-right: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .article_img {
+            position: absolute;
+            top:-27%;
+            left: -20%;
+            width: 250px;
         }
         .article_content {
             height: 120px;
