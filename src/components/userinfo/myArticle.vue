@@ -53,8 +53,8 @@
                 articleApi.delArticle({
                     token:getLocalStorage('token'),
                     article_id:id
-                }).then(res => {
-                    console.log(res)
+                }).then(() => {
+                    // console.log(res)
                     this.articles.splice(index, 1);
                     this.article_count--;
                 })
@@ -73,7 +73,7 @@
                     page: val,
                     user_id: this.curuser_id,
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.articles = res.article;
                 })
             }
@@ -85,7 +85,7 @@
                 page: 1,
                 user_id: this.curuser_id,
             }).then(res => {
-                console.log(res);
+                // console.log(res);
                 this.articles = res.article;
                 this.article_count = res.article_count;
             })

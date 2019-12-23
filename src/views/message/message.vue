@@ -74,12 +74,12 @@
 </template>
 
 <script>
-    // import imgsrc from "../../assets/logo.jpg"
     import myimg from "../../assets/unlogin.png"
     import Nav from '../../components/navBar/nav'
     import api from '../../api/user'
     import {getLocalStorage} from "../../utils/auth";
-    // import { log } from 'util';
+    import {EventBus} from "../../api/busEvent";
+
     export default {
         name: "message",
         data() {
@@ -92,6 +92,7 @@
                     id: getLocalStorage('user_id'),
                     user_name: getLocalStorage('user_name'),
                     user_url: getLocalStorage('user_url'),
+                    token: getLocalStorage('token')
                 },
                 users: [], // 对话用户列表
                 serchUsers: [], // 搜索用户列表
@@ -144,22 +145,28 @@
                 this.chat(cur)
             },
             chat(cur) { // 建立对话
-                console.log(cur)
-                this.chatShow = true;
-                this.current = cur;
-                this.current.message = [];
-                this.current.readymsg = [];
-                this.more_msg = '查看更多';
-                this.noMore = false;
-                var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
-                if (typeof (WebSocket) === "undefined") {
-                    alert("您的浏览器不支持socket")
-                } else {
-                    this.socket = new WebSocket(path) // 实例化socket
-                    this.socket.onopen = this.open // 监听socket连接
-                    this.socket.onerror = this.error // 监听socket错误信息
-                    this.socket.onmessage = this.getMessage // 监听socket信息
-                }
+                // console.log(cur)
+                api.checkMsgToken({
+                    token: this.user.token
+                }).then(res => {
+                    if(res.code == 200 ){
+                        this.chatShow = true;
+                        this.current = cur;
+                        this.current.message = [];
+                        this.current.readymsg = [];
+                        this.more_msg = '查看更多';
+                        this.noMore = false;
+                        var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
+                        if (typeof (WebSocket) === "undefined") {
+                            alert("您的浏览器不支持socket")
+                        } else {
+                            this.socket = new WebSocket(path) // 实例化socket
+                            this.socket.onopen = this.open // 监听socket连接
+                            this.socket.onerror = this.error // 监听socket错误信息
+                            this.socket.onmessage = this.getMessage // 监听socket信息
+                        }
+                    }
+                })
             },
 
             open: function () {
@@ -204,13 +211,13 @@
             },
             addmessage(msg) { // 添加新信息
                 for(let i in msg) {
-                    console.log(this.current.readymsg);
-                    if(msg[i].role && this.current.readymsg.length){
-                        console.log(this.current.readymsg);
+                    if(msg[i].role && this.current.readymsg.length){ 
                         this.current.readymsg.shift();
-                        console.log(this.current.readymsg)
                     }
                     this.current.message.push(msg[i]);
+                    if(!msg[i].role) {
+                        EventBus.$emit('sentMqtt',`${this.current.user_id + "*&^*&^" + this.current.user_name + "*&^*&^" + 'message'}`,this.user.id)
+                    }
                     this.$forceUpdate(); // 强制渲染
                 }
                 this.scrollToBottom();

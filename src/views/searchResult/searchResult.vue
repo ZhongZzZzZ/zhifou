@@ -55,9 +55,9 @@
 .container{
     position: relative;
     margin: 15px auto;
-    width: 850px;
+    width: 960px;
     min-height: 980px;
     background-color: #fff;
-
+    padding: 20px 10px;
 }
 </style>

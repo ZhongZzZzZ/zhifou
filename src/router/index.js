@@ -57,11 +57,6 @@ Vue.use(Router)
             name:'message',
             component: ()=>import('../views/message/message')
         },
-        { // 测试私信用
-            path:'/message2',
-            name:'message2',
-            component: ()=>import('../views/message/message2')
-        },
         {
             path:'/editBlog',
             name:'editBlog',
@@ -116,7 +111,7 @@ router.beforeEach((to,from,next)=>{
                         }else{
                             next()
                         }
-                }).catch(err => {
+                }).catch(() => {
                      Message.info('请重新登陆')
                 })
             }
