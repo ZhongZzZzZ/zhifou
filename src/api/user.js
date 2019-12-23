@@ -28,9 +28,6 @@ export default {
   uploadPhoto(data){
     return request({
       url:'/users/uploadfiles',
-      // headers: {
-      //   'Content-Type': 'multipart/form-data' //设置post文件的请求头
-      // },
       method:'post',
       data
     })
@@ -72,7 +69,6 @@ export default {
       method:'get'
     })
   },
-
   //校验token有效性
   checkToken(data) {
     return request({
@@ -88,18 +84,13 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 私信接口检验token
+  checkMsgToken(data) {
+    return request({
+      url: '/chat/check',
+      method: 'post',
+      data
+    })
   }
-  // getIndexInfo(){
-  //   return request({
-  //     url:'/article/test',
-  //     method:'get'
-  //   })
-  // }
-  // // 获取用户信息
-  // getUserInfo () {
-  //   return request({
-  //     url: '/userinfo',
-  //     method: 'get'
-  //   })
-  // },
 }

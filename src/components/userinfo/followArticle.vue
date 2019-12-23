@@ -49,10 +49,10 @@
         props:['curuser_id'],
         methods: {
             del(id) {
-                api.collecteArticle({
+                api.addCollect({
                     token: this.own.token,
                     article_id: id
-                }).then(res => {
+                }).then(() => {
                     let item = this.articles.find(item => item.id == id);
                     this.articles.splice(this.articles.indexOf(item), 1);
                     this.article_count--;

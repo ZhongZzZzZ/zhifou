@@ -88,10 +88,10 @@
 
 <style lang="scss" scoped>
 .class_container{
-    width: 900px;
+    width: 960px;
     background-color: #fff;
     margin: 8px auto;
-    padding: 8px;
+    padding: 10px;
     position: relative;
     .order_type{
         position: absolute;

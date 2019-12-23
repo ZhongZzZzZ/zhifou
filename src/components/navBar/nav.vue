@@ -221,7 +221,7 @@
         }
         .nav_message {
             float: right;
-            margin: 11px 10px 11px 200px;
+            margin: 11px 10px 11px 249px;
             font-size: 35px;
             color: #8DAFFC;
         }

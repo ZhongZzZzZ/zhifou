@@ -156,10 +156,44 @@ export default {
         data
         })
     },
-    getIndexAd(){
-        return request ({
-            url:"/article/getIndexPhoto",
-            method:'get'
+
+    getIndexAd() {
+        return request({
+            url: "/article/getIndexPhoto",
+            method: 'get'
+        })
+    },
+    // 获取留言板
+    getMessageBoardInfo(data) {
+        return request({
+            url: '/article/queryMessageBoard',
+            method: 'post',
+            data
+        })
+    },
+    // 发布留言
+    addMessageBoard(data) {
+        return request({
+            url: '/article/addMessageBoard',
+            method: 'post',
+            data
+        })
+    },
+    // 查看个人留言
+    getUserMessageBoardInfo(data) {
+        return request({
+            url: '/article/queryMessageBoardByUserId',
+            method: 'post',
+            data
+        })
+    },
+    // 删除个人留言
+    deleteMessageBoard(data) {
+        return request({
+            url: '/article/deleteMessageBoard',
+            method: 'post',
+            data
+
         })
     }
 }

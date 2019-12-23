@@ -57,11 +57,6 @@ Vue.use(Router)
             name:'message',
             component: ()=>import('../views/message/message')
         },
-        { // 测试私信用
-            path:'/message2',
-            name:'message2',
-            component: ()=>import('../views/message/message2')
-        },
         {
             path:'/editBlog',
             name:'editBlog',
@@ -104,30 +99,32 @@ Vue.use(Router)
     ]
 })
 
-// router.beforeEach((to,from,next)=>{
-//     if (getLocalStorage('token')){
-//             if(to.name == 'login' || to.name == 'register' || to.name == 'resetPassword' || to.name == 'resetPassword'){
-//                 next()
-//             }else{
-//                  api.checkToken({token:getLocalStorage('token')}).then(res =>{
-//                      console.log(res)
-//                     if(res.code === 401){
-//                             next('/login')
-//                         }else{
-//                             next()
-//                         }
-//                 }).catch(err => {
-//                      Message.info('请重新登陆')
-//                      next('/login')
-//                 })
-//             }
-//     }else {
-//         if(whiteList.indexOf(to.path)!== -1){
-//             next()
-//          }else{
-//             next('/login')
-//         }
-//     }
-// })
+
+router.beforeEach((to,from,next)=>{
+    if (getLocalStorage('token')){
+            if(to.name == 'login' || to.name == 'register' || to.name == 'resetPassword' || to.name == 'resetPassword'){
+                next()
+            }else{
+                 api.checkToken({token:getLocalStorage('token')}).then(res =>{
+                     console.log(res)
+                    if(res.code === 401){
+                            next('/login')
+                        }else{
+                            next()
+                        }
+                }).catch(err => {
+                     Message.info('请重新登陆')
+                     next('/login')
+                })
+            }
+    }else {
+        if(whiteList.indexOf(to.path)!== -1){
+            next()
+         }else{
+            next('/login')
+        }
+    }
+})
+
 export default router
 

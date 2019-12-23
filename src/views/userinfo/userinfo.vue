@@ -24,6 +24,9 @@
                     <el-tab-pane label="已发文章" name="myarticle">
                         <myarticle :curuser_id="curuser_id"></myarticle>
                     </el-tab-pane>
+                    <el-tab-pane label="已发留言" name="messageboard">
+                        <messageboard :curuser_id="curuser_id"></messageboard>
+                    </el-tab-pane>
                     <el-tab-pane label="点赞文章" name="pointarticle">
                         <pointarticle :curuser_id="curuser_id"></pointarticle>
                     </el-tab-pane>
@@ -44,6 +47,7 @@
     import followarticle from '@/components/userinfo/followArticle'
     import commentarticle from '@/components/userinfo/commentarticle'
     import pointarticle from '@/components/userinfo/pointArticle'
+    import messageboard from '@/components/userinfo/messageboard'
     import Nav from '../../components/navBar/nav'
     import {getLocalStorage} from "../../utils/auth";
     import defaultAvatar from '../../assets/unlogin.png'
@@ -72,6 +76,7 @@
             'followarticle' : followarticle,
             'commentarticle': commentarticle,
             'pointarticle': pointarticle,
+            'messageboard': messageboard,
             Nav
         },
         methods: {

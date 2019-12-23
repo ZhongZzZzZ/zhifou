@@ -41,7 +41,7 @@
                 password :'123456',
                 keepAliveInterval:1000000,
                 onSuccess: this.onconnect,
-                onFailure: function(message) {
+                onFailure: function() {
                     //连接失败定时重连
                     setTimeout(this.MQTTconnect, this.reconnectTimeout);
                 }
@@ -67,6 +67,7 @@
         },
         //连接丢失
         onConnectionLost(response) {
+            console.log(response)
         },
         //接收到消息，处理
         onMessageArrived(message) {
@@ -74,7 +75,22 @@
             var msg = message.payloadString;
             let arr = msg.split('*&^*&^')
             console.log(arr)
-            if (arr[2] == 'like'){
+            if(arr[2] == 'message'){
+                let _this = this;
+                this.$notify({
+                    title: '提示',
+                    message: `${arr[1]}给您发私信，点击查看`,
+                    type:"success",
+                    duration:1500,
+                    onClick() {
+                        let routeUrl = _this.$router.resolve({
+                            path:'/message',
+                            query:{id:arr[0]}
+                        })
+                        window.open(routeUrl.href,"_blank")
+                    }
+                });
+            }else if (arr[2] == 'like'){
                 this.$notify({
                     title: '提示',
                     message: `${arr[1]}点赞了您的文章:${arr[0]}`,

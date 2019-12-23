@@ -1,93 +1,74 @@
 <template>
     <div>
-        <div class="article_box" v-for="item in articles" :key="item">
-            <div class="article_title">
-                {{ item.title }}
-                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article_id)" plain v-if="curuser_id === own.id">取消点赞</el-button>
-            </div>
-             <div class="article_info">
-                <el-tag>{{item.type_name}}</el-tag>
-                <span class="article_time">作者：{{ item.user.user_name }}</span>
-                <span class="article_time">发布时间：{{ item.create_time }}</span>
-            </div>
-            <div class="img_box" v-if="item.photo.photo_url">
-                <img class="article_img" :src="item.photo.photo_url">
-            </div>
+        <div class="article_box" v-for="(item,index) in articles" :key="index">
             <div class="article_content">
-                <span>{{ item.simple_content | articleFilter }}</span>
+                <el-button class="del_btn" icon="el-icon-minus" @click="del(item.board_id,index)" plain v-if="curuser_id === user.id"></el-button>
+                <span>{{ item.content }}</span>
             </div>
             <div class="article_footer">
-                <i class="el-icon-chat-line-square article_icon">{{ item.comment_count }}条评论</i>
-                <i class="el-icon-view article_icon">浏览量{{ item.page_view }}</i>
-                <i class="el-icon-thumb article_icon">点赞{{ item.point_count }}</i>
-                <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">查看全文</el-button>
+                <span class="article_time">{{ item.create_time }}</span>
             </div>
         </div>
         <pagination :total="article_count" @getNewList="getNewList" v-if="article_count"></pagination>
     </div>
 </template>
 
-<script>
-    import api from '../../api/article'
+<script>    
+    import articleApi from '../../api/article'
     import {getLocalStorage} from "../../utils/auth";
     import pagination from '../../components/pagination/pagination'
 
     export default {
-        name: "pointarticle",
+        name: "messageboard",
         data(){
             return {
-                articles: [],
-                own: {
+                user:{
                     id: getLocalStorage('user_id'),
-                    token: getLocalStorage('token'),
+                    token: getLocalStorage('token')
                 },
+                articles: [],
                 article_count: 0,
             }
         },
         props:['curuser_id'],
-        methods: {
-            del(id) {
-                api.addLikes({
-                    token: this.own.token,
-                    article_id: id
-                }).then(() => {
-                    let item = this.articles.find(item => item.id == id);
-                    this.articles.splice(this.articles.indexOf(item), 1);
-                    this.article_count--;
-                })
-            },
-            detail(id) {
-                let routeUrl = this.$router.resolve({
-                    path:'/articleDetail',
-                    query:{id:id}
-                })
-                window.open(routeUrl.href,"_blank")
-            },
-            getNewList(val) {
-                api.getPointArticleInfo({
-                    token: this.own.token,
-                    page: val,
-                    user_id: this.curuser_id,
-                }).then(res => {
-                    this.articles = res.article;
-                })
-            } 
-        },
-        created(){
-            api.getPointArticleInfo({
-                user_id: this.curuser_id,
-                token: this.own.token,
-                page:1
-            }).then(res => {
-                //console.log(res);
-                this.articles = res.article;
-                this.article_count = res.article_count;
-            })
-        },
         filters:{
             articleFilter(content){
                 return content + '...'
             }
+        },
+        methods: {
+            del(id,index) {
+                articleApi.deleteMessageBoard({
+                    token:getLocalStorage('token'),
+                    board_id:id
+                }).then(res => {
+                    console.log(res)
+                    this.articles.splice(index, 1);
+                    this.article_count--;
+                })
+            },
+            getNewList(val) {
+                articleApi.getLauchedArticleInfo({
+                    token: this.user.token,
+                    page: val,
+                    user_id: this.curuser_id,
+                }).then(res => {
+                    console.log(res);
+                    this.articles = res.article;
+                })
+            }
+        },
+        created(){
+            console.log(this.curuser_id)
+            articleApi.getUserMessageBoardInfo({
+                token: this.user.token,
+                page: 1,
+                user_id: this.curuser_id,
+            }).then(res => {
+                console.log(res);
+                this.articles = res.board;
+                this.article_count = res.board_count;
+            })
         },
         components: {
             pagination
@@ -97,7 +78,7 @@
 
 <style lang="scss" scoped>
     .article_box {
-        height: 220px;
+        height: 140px;
         padding: 20px 20px;
         position: relative;
         margin-bottom: 10px;
@@ -105,20 +86,17 @@
             height: 30px;
             font-weight: 600;
             font-size: 18px;
+            margin-bottom: 10px;
         }
         .article_time {
             font-weight: 400;
             font-size: 14px;
             color: #909399;
             vertical-align: bottom;
-            margin: 0px 5px;
-        }
-        .article_info {
-            margin-bottom: 10px;
+            margin-left: 5px;
         }
         .del_btn {
             float: right;
-            color: #909399;
         }
         .del_btn:hover {
             color: #fff;
@@ -137,7 +115,6 @@
             top:-27%;
             left: -20%;
             width: 250px;
-            
         }
         .article_content {
             height: 120px;
