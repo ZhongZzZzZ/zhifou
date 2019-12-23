@@ -35,22 +35,20 @@
                 </div>
             </el-col>
         </el-row>
-
+        <emoji></emoji>
     </div>
 </template>
 
 <script>
     import hehua from '../../assets/荷花.png'
-    import Paho from 'paho-mqtt'
     import {getLocalStorage} from "../../utils/auth";
+    import emoji from '../../components/emoji/Comment'
 
     export default {
         name: "follow",
         data(){
             return{
-                reconnectTimeout: 2000,
-                mqtt: {},
-                msg:"/zhifou",
+
                 userId:getLocalStorage('user_id'),
                 img_url: hehua,
                 notes: [{
@@ -84,14 +82,67 @@
                 return rows
             }
         },
-     methods:{
-
-        },
-
+        components:{
+            emoji
+        }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+    .icon {
+        position: relative;
+        margin-top: 20px;
+        .iconfont {
+            cursor: pointer;
+            color: #F7BA2A;
+        }
+        .emoji-box {
+            position: absolute;
+            z-index: 10;
+            left: -10px;
+            top: 24px;
+            box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.2);
+            background: white;
+            .el-button {
+                position: absolute;
+                border: none;
+                color: #FF4949;
+                right: 12px;
+                top: 12px;
+                z-index: 10;
+            }
+            .arrow {
+                left: 10px;
+            }
+        }
+        .submit {
+            float: right;
+        }
+    }
+    .comment {
+        margin-top: 20px;
+        .item {
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid #bfcbd9;
+        }
+    }
+    .clearfix {
+        &:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+    }
+    .fade-enter-active, .fade-leave-active { transition: opacity .5s; }
+    .fade-enter, .fade-leave-active { opacity: 0; }
+    .fade-move { transition: transform .4s; }
+    .list-enter-active, .list-leave-active { transition: all .5s; }
+    .list-enter, .list-leave-active { opacity: 0; transform: translateX(30px); }
+    .list-leave-active { position: absolute !important; }
+    .list-move { transition: all .5s;}
     .article_container{
         position: relative;
         padding: 0px 15px;
@@ -117,6 +168,7 @@
         z-index: 2;
         width: 200px;
         height: 180px;
+        overflow: auto;
         top: -5px;
         left: 5px;
         padding: 10px;

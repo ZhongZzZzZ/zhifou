@@ -156,6 +156,10 @@ export default {
         data
         })
     },
-
-
+    getIndexAd(){
+        return request ({
+            url:"/article/getIndexPhoto",
+            method:'get'
+        })
+    }
 }

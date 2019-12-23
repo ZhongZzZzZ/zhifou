@@ -35,8 +35,15 @@
                     </div>
                 </div>
                 <div class="side_bar_img" >
-                    <img src="../../assets/advantage.png" alt="" class="advan_img">
+                    <div class="block" style="height: 125px;width:240px">
+                        <el-carousel trigger="click" height="135px">
+                            <el-carousel-item v-for="(item,index) in advanPhoto" :key="index">
+                                <img :src="item" alt="" class="advan_img">
+                            </el-carousel-item>
+                        </el-carousel>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -54,12 +61,17 @@
                 activeName: 'first',
                 isActived:false,
                 data:[],
-                popular:[]
+                popular:[],
+                advanPhoto:[]
             }
         },
         created(){
             api.popularSearch({token:getLocalStorage('token')}).then(res =>{
                 this.popular = res.search
+            });
+            api.getIndexAd().then(res => {
+                console.log(res)
+               this.advanPhoto = res.advertise
             })
         },
         methods: {
@@ -176,6 +188,7 @@
                 align-items: center;
                 .advan_img{
                     width: 240px;
+                    height: 126px;
                     border-radius: 8px;
                 }
             }
