@@ -206,5 +206,12 @@
         top: -20px;
         left: -10px;
     }
+    @keyframes swag {
+        0%{
+            transform: translateX(0);
+        }
+        100%{
+            transform: translateX(-1000px);
+        }
+    }
 </style>
-
