@@ -115,7 +115,12 @@
         components:{
             comment
         },
-
+        mounted() {
+            EventBus.$on('resetFlag',(val)=> {
+                this.showAticle = false;
+                this.showComment = false;
+            })
+        }
     }
 </script>
 

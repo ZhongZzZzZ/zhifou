@@ -17,6 +17,8 @@
     import articleList from "../../components/articleList/articleList";
     import pagination from '../../components/pagination/pagination'
     import {getLocalStorage} from "../../utils/auth";
+    import {EventBus} from "../../api/busEvent";
+
     export default {
         name: "hotPoint",
         data(){
@@ -54,6 +56,7 @@
             },
             orderType(val){
                 this.order_type = val
+                EventBus.$emit('resetFlag',false)
                 this.getIndexInfo()
             }
         },

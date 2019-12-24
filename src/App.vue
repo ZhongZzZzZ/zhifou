@@ -12,7 +12,7 @@
   name: 'App',
     data(){
       return{
-          reconnectTimeout: 2000,
+          reconnectTimeout: 200,
           mqtt: {},
           msg:"",
           userId:getLocalStorage('user_id')
@@ -34,12 +34,12 @@
                 "mqttjs" + this.userId //防止多个浏览器打开，导致的问题，保证唯一性
             );
             var options = {
-                timeout: 10000,
+                timeout: 5,
                 useSSL: false,
                 cleanSession: false,
                 userName :'dave',
                 password :'123456',
-                keepAliveInterval:1000000,
+                keepAliveInterval:100,
                 onSuccess: this.onconnect,
                 onFailure: function() {
                     //连接失败定时重连
