@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="comment_info" v-if="curuser_id === own.id">
-                <el-button class="comment_btn" icon="el-icon-delete" @click="del(item.comment_id)" plain>删除评论</el-button>
+                <el-button class="comment_btn" icon="el-icon-delete" @click="del(item.comment_id,index)" plain>删除评论</el-button>
                 <el-button icon="el-icon-caret-bottom" @click="reply(item.comment_id)" v-if="!responseShow">查看回复</el-button>
                 <el-button icon="el-icon-caret-top" @click="responseShow = 0" v-if="responseShow==item.comment_id">收起回复</el-button>
                 <i class="el-icon-s-comment reply_count">共有{{ item.reply_count }}条回复</i>
@@ -90,14 +90,13 @@
         },
         props:['curuser_id'],
         methods: {
-            del(id) {
+            del(id,index) {
                 commentApi.deleteComment({
                     token: this.own.token,
                     comment_id:id
                 }).then(res => {
                     console.log(res)
-                    let item = this.articles.find(item => item.comment_id == id);
-                    this.articles.splice(this.articles.indexOf(item), 1);
+                    this.articles.splice(index, 1);
                     this.article_count--;
                 })
             },
@@ -114,7 +113,7 @@
                     token: this.own.token,
                     page: val
                 }).then(res => {
-                    this.articles = res.article;
+                    this.articles = res.data;
                 })
             },
             reply(id) { // 回复列表
