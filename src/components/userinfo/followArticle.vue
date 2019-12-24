@@ -2,27 +2,27 @@
     <div>
         <div class="article_box" v-for="item in articles" :key="item">
             <div class="article_title">
-                {{ item.title }}
+                {{ item.article.title }}
                 <!-- <el-tag>{{item.type_name}}</el-tag>
                 <span class="article_time">{{ item.create_time }}</span> -->
-                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article_id)" plain v-if="curuser_id === own.id">取消收藏</el-button>
+                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article.article_id)" plain v-if="curuser_id === own.id">取消收藏</el-button>
             </div>
             <div class="article_info">
-                <el-tag>{{item.type_name}}</el-tag>
-                <span class="article_time">作者：{{ item.user.user_name }}</span>
-                <span class="article_time">发布时间：{{ item.create_time }}</span>
+                <el-tag>{{item.article.type_name}}</el-tag>
+                <span class="article_time">作者：{{ item.article.user.user_name }}</span>
+                <span class="article_time">发布时间：{{ item.article.create_time }}</span>
             </div>
             <div class="img_box" v-if="item.photo.photo_url">
                 <img class="article_img" :src="item.photo.photo_url">
             </div>
             <div class="article_content">
-                <span>{{ item.simple_content | articleFilter }}</span>
+                <span>{{ item.article.simple_content | articleFilter }}</span>
             </div>
             <div class="article_footer">
                 <i class="el-icon-chat-line-square article_icon">{{ item.comment_count }}条评论</i>
-                <i class="el-icon-view article_icon">浏览量{{ item.page_view }}</i>
-                <i class="el-icon-thumb article_icon">点赞{{ item.point_count }}</i>
-                <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article_id)">查看全文</el-button>
+                <i class="el-icon-view article_icon">浏览量{{ item.article.page_view }}</i>
+                <i class="el-icon-thumb article_icon">点赞{{ item.article.point_count }}</i>
+                <el-button type="primary" icon="el-icon-zoom-in" @click="detail(item.article.article_id)">查看全文</el-button>
             </div>
         </div>
         <pagination :total="article_count" @getNewList="getNewList" v-if="article_count"></pagination>
@@ -81,8 +81,8 @@
                 token:this.own.token,
                 page:1
             }).then(res => {
-                // console.log(res);
-                this.articles = res.article;
+                console.log(res);
+                this.articles = res.data;
             })
         },
         filters:{
