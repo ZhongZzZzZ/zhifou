@@ -17,13 +17,35 @@
                                       @keyup.enter.native="search"></el-input>
                             <el-button type="primary" class="searchBtn" @click="search">搜索</el-button>
                             <div class="nav_user">
-                                <el-dropdown>
-                                    <img class="user_avatar" :src="user_url">
-                                    <el-dropdown-menu slot="dropdown">
-                                        <router-link to="/userinfo"><el-dropdown-item>个人主页</el-dropdown-item></router-link>
-                                        <router-link to="/login" @click.native="clearStorage"><el-dropdown-item>退出</el-dropdown-item></router-link>
-                                    </el-dropdown-menu>
-                                </el-dropdown>
+                                <img class="user_avatar" :src="user_url">
+                                <div class="user_panel" >
+                                    <p class="user_name">
+                                        {{userInfo.user_name}} <span :class="[userInfo.gender > 0 ?'el-icon-male':'el-icon-female']"></span>
+                                    </p>
+                                    <p class="user_level"><i class="el-icon-trophy level_name">{{ userInfo.user_level_name }}</i></p>
+                                    <div class="get_user_nums">
+                                        <div class="nums_item">
+                                            <p>文章数</p>
+                                            <span>{{userInfo.user_write_count}}</span>
+                                        </div>
+                                        <div class="nums_item">
+                                            <p>获赞数</p>
+                                            <span>{{userInfo.user_point}}</span>
+                                        </div>
+                                        <div class="nums_item">
+                                            <p>收藏数</p>
+                                            <span>{{userInfo.user_collect_count}}</span>
+                                        </div>
+                                    </div>
+                                    <div  class="user_item user_border">
+                                        <span class="iconfont iconziyuanxhdpi "></span>{{userInfo.user_account}}
+                                        <span class="iconfont iconjifen credit"></span>积分:{{userInfo.user_credit}}
+                                    </div>
+                                    <router-link class="use_info" to="/userinfo" tag="div"><span class="iconfont iconyonghu"></span>个人主页</router-link>
+                                    <div class="user_item"><span class="iconfont iconshouji">：{{userInfo.user_phone}}</span></div>
+                                    <div class="user_item"><span class="iconfont iconyouxiang">：{{userInfo.email}}</span></div>
+                                    <router-link class="use_info user_border_top" to="/login" @click.native="clearStorage" tag="div"><span class="iconfont icontuichu2"></span>退出</router-link>
+                                </div>
                             </div>
                             <div class="nav_message">
                                 <router-link to="/message"><i class="el-icon-chat-dot-round"></i></router-link>
@@ -49,6 +71,7 @@
     import {getLocalStorage} from "../../utils/auth";
     import api from '../../api/article'
     import search from "../../api/search";
+    import user from '../../api/user'
     export default {
         name: "nav",
         data(){
@@ -61,11 +84,15 @@
                 popular:[],
                 isSearch:false,
                 popularWord: [],
-                historyWord:[]
+                historyWord:[],
+                userInfo:[]
             }
         },
         created(){
-
+           user.getUserInfo({token:getLocalStorage('token'),user_id:getLocalStorage('user_id')}).then(res =>{
+              this.userInfo = res.user
+               console.log(res.user)
+           })
         },
         methods:{
             clearStorage(){
@@ -227,7 +254,18 @@
         }
         .nav_user{
             float: right;
+            position: relative;
             margin: 11px 10px;
+            &:hover{
+                >img{
+                    transform: scale(1.5) translateY(7px);
+                }
+                >div{
+                    transition: all 0.5s;
+                    visibility: visible;
+                    opacity:1;
+                }
+            }
         }
         .nav_login{
             float: right;
@@ -242,6 +280,86 @@
             height: 35px;
             border: 1px solid #99999940;
             border-radius: 50%;
+            z-index: 29999;
+            transition-duration:0.5s;
+            position: relative;
+        }
+        .user_panel{
+            width:250px;
+            z-index: 0;
+            background-color: #fff;
+            position: absolute;
+            transform: translateX(-42%);
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+            box-shadow: 0 0 4px #bbb;
+            .get_user_nums{
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: center;
+                border-bottom: 1px solid #eee;
+                width: 100%;
+                .nums_item{
+                    color: #636363;
+                    text-align: center;
+                    font-weight: normal;
+                    padding:5px 15px;
+                    border-right: 1px solid #a8a8a8;
+                    &:last-child{
+                        border-right: none;
+                    }
+                }
+
+            }
+            .user_border{
+                border-bottom: 1px solid #eee;
+                display: flex;
+                justify-content: space-around;
+            }
+            .user_border_top{
+                border-top: 1px solid #eee;
+                margin-top: 8px;
+            }
+            .user_name{
+                margin-top: 33px;
+                font-size: 16px;
+                font-weight: normal;
+                text-align: center;
+                margin-bottom: 14px
+            }
+            .user_level{
+                text-align: center;
+                margin-bottom: 8px;
+                color: #6fa9ff;
+            }
+            .use_info{
+                height: 30px;
+                line-height: 30px;
+                color: #636363;
+                font-size: 16px;
+                cursor: pointer;
+                padding: 4px 20px;
+                font-weight: normal;
+                &:hover{
+                    background-color: #eee;
+                }
+            }
+            .user_item{
+                height: 30px;
+                line-height: 30px;
+                color: #636363;
+                font-size: 16px;
+                padding: 4px 20px;
+                font-weight: normal;
+                margin: 8px 0;
+                .credit{
+                    font-size: 18px;
+                    padding-left: 24px;
+                    color: #5272ff;
+                }
+            }
         }
     }
 </style>

@@ -1,10 +1,11 @@
 <template>
     <div class="article_container">
-        <div class="mynote">
-            <el-input  class="mynote_input" type="textarea" placeholder="请输入内容" v-model="mynote" maxlength="100" show-word-limit></el-input>
-            <el-button class="submit_btn" type="primary" @click="onsubmit">发送</el-button>
-        </div>
+<!--        <div class="mynote">-->
+<!--            <el-input  class="mynote_input" type="textarea" placeholder="请输入内容" v-model="mynote" maxlength="100" show-word-limit></el-input>-->
+<!--            <el-button class="submit_btn" type="primary" @click="onsubmit">发送</el-button>-->
+<!--        </div>-->
         <!-- 主题图 -->
+        <emoji @callBack="callBack" ></emoji>
         <el-row :gutter="20">
             <el-col :span="8" v-for="item in topic_img" :key="item">
                 <div class="note_bg">
@@ -13,40 +14,25 @@
                     </div>
                 </div>
             </el-col>
-            <!-- <el-col :span="8">
-                <div class="note_bg">
-                    <div class="tietu_box">
-                        <img :src="topic_img.christmas_2" class="tietu">
-                    </div>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="note_bg">
-                    <div class="tietu_box">
-                        <img :src="topic_img.christmas_3" class="tietu">
-                    </div>
-                </div>
-            </el-col> -->
         </el-row>
         <!-- 便利贴列表 -->
         <el-row :gutter="20" v-for="(row,index) in rows" :key="index">
-            <el-col :span="8" v-for="item of row" :key="item.board_id">
+            <el-col :span="8" v-for="(item,index) of row" :key="index">
                 <div class="note_bg">
                     <div class="note">
                         <img :src="item.board_url" class="avatar">
                         <span class="user_name">匿名</span>
-                        <div class="note_content">{{ item.content }}</div>
+<!--                        <div class="note_content">{{ item.content }}</div>-->
+                        <p v-html="item.content"></p>
                         <div class="create_time">{{ item.create_time }}</div>
                     </div>
                     <p class="iconfont icontuding icon_tuding"></p>
                 </div>
+
             </el-col>
         </el-row>
 
-        <emoji></emoji>
-
         <pagination :total="note_count" @getNewList="getNewList" v-if="note_count"></pagination>
-
     </div>
 </template>
 
@@ -87,27 +73,35 @@
             pagination
         },
         methods:{
-            onsubmit(){
-                api.addMessageBoard({
-                    user_id: getLocalStorage('user_id'),
-                    content: this.mynote,
-                    token: getLocalStorage('token')
-                }).then(res => {
-                    console.log(res);
-                    this.notes.unshift(res.board);
-                    this.note_count = res.board_count;
-                    this.mynote = '';
-                })
-            },
+            // onsubmit(){
+            //     api.addMessageBoard({
+            //         user_id: getLocalStorage('user_id'),
+            //         content: this.mynote,
+            //         token: getLocalStorage('token')
+            //     }).then(res => {
+            //         console.log(res);
+            //         this.notes.unshift(res.board);
+            //         this.note_count = res.board_count;
+            //         this.mynote = '';
+            //     })
+            // },
             getNewList(val){
                     api.getMessageBoardInfo({
                     token: getLocalStorage('token'),
                     page: val,
                 }).then(res => {
                     console.log(res);
+
                     this.note_count = res.board_count;
                     this.notes = res.board;
                 })
+            },
+            callBack(data){  //接收从子组件传来的数组，实现动态更新便利贴
+                this.notes.unshift(data);
+                this.notes.pop()
+            },
+            callBack1(data){  //接收从子组件传来的数组，实现动态更新便利贴总数
+                this.note_count = data;
             }
         },
         created(){
@@ -127,60 +121,21 @@
 </script>
 
 <style lang="scss" >
-    .icon {
-        position: relative;
-        margin-top: 20px;
-        .iconfont {
-            cursor: pointer;
-            color: #F7BA2A;
-        }
-        .emoji-box {
-            position: absolute;
-            z-index: 10;
-            left: -10px;
-            top: 24px;
-            box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.2);
-            background: white;
-            .el-button {
-                position: absolute;
-                border: none;
-                color: #FF4949;
-                right: 12px;
-                top: 12px;
-                z-index: 10;
-            }
-            .arrow {
-                left: 10px;
+        .emoji-item-common {
+            background: url("../../assets/img/emoji_sprite.png");
+            display: inline-block;
+            &:hover {
+                cursor: pointer;
             }
         }
-        .submit {
-            float: right;
+        .emoji-size-small {
+            // 表情大小
+            zoom: 0.3;
         }
-    }
-    .comment {
-        margin-top: 20px;
-        .item {
-            margin-top: 20px;
-            padding: 10px;
-            border-top: 1px solid #bfcbd9;
+        .emoji-size-large {
+            zoom: 0.5; // emojipanel表情大小
+            margin: 4px;
         }
-    }
-    .clearfix {
-        &:after {
-            content: '';
-            display: block;
-            height: 0;
-            clear: both;
-            visibility: hidden;
-        }
-    }
-    .fade-enter-active, .fade-leave-active { transition: opacity .5s; }
-    .fade-enter, .fade-leave-active { opacity: 0; }
-    .fade-move { transition: transform .4s; }
-    .list-enter-active, .list-leave-active { transition: all .5s; }
-    .list-enter, .list-leave-active { opacity: 0; transform: translateX(30px); }
-    .list-leave-active { position: absolute !important; }
-    .list-move { transition: all .5s;}
     .article_container{
         position: relative;
         padding: 0px 15px;
@@ -267,12 +222,5 @@
         top: -20px;
         left: -10px;
     }
-    @keyframes swag {
-        0%{
-            transform: translateX(0);
-        }
-        100%{
-            transform: translateX(-1000px);
-        }
-    }
+    @import "../../assets/css/emoji.css"; // 导入精灵图样式
 </style>

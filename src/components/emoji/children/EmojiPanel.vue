@@ -81,6 +81,7 @@ export default {
 </script>
 <style scoped>
 .emoji-panel-wrap {
+  z-index: 999;
   box-sizing: border-box;
   border: 1px solid #cccccc;
   border-radius: 5px;

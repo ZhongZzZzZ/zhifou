@@ -3,7 +3,8 @@
         <div class="article_box" v-for="(item,index) in articles" :key="index">
             <div class="article_content">
                 <el-button class="del_btn" icon="el-icon-minus" @click="del(item.board_id,index)" plain v-if="curuser_id === user.id"></el-button>
-                <span>{{ item.content }}</span>
+<!--                <span>{{ item.content }}</span>-->
+                <span v-html="item.content"></span>
             </div>
             <div class="article_footer">
                 <span class="article_time">{{ item.create_time }}</span>
@@ -13,7 +14,7 @@
     </div>
 </template>
 
-<script>    
+<script>
     import articleApi from '../../api/article'
     import {getLocalStorage} from "../../utils/auth";
     import pagination from '../../components/pagination/pagination'
@@ -76,7 +77,27 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+    @import "../../assets/css/emoji.css"; // 导入精灵图样式
+    .comment-wrap {
+        width: 680px;
+        margin-bottom: 30px;
+        .emoji-item-common {
+            background: url("../../assets/img/emoji_sprite.png");
+            display: inline-block;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .emoji-size-small {
+            // 表情大小
+            zoom: 0.3;
+        }
+        .emoji-size-large {
+            zoom: 0.5; // emojipanel表情大小
+            margin: 4px;
+        }
+    }
     .article_box {
         height: 140px;
         padding: 20px 20px;

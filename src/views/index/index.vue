@@ -5,7 +5,7 @@
             <div class="main1">
                 <el-menu :default-active="$route.path"  class="el-menu-demo" mode="horizontal"  router>
                     <el-menu-item index="/hotPoint" class="index_nav" >热榜</el-menu-item>
-                    <el-menu-item index="/follow" class="index_nav">关注</el-menu-item>
+                    <el-menu-item index="/follow" class="index_nav">留言板</el-menu-item>
 <!--                    <el-menu-item @click="goEditBlog" class="editBlog"><el-button class="el-icon-plus">写博客</el-button></el-menu-item>-->
                 </el-menu>
                 <el-divider></el-divider>
