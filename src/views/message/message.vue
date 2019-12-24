@@ -110,6 +110,7 @@
                 showResult: false,
                 noUser: false,
                 submittip: false,
+                path:''
             };
         },
         methods: {
@@ -156,11 +157,11 @@
                         this.current.readymsg = [];
                         this.more_msg = '查看更多';
                         this.noMore = false;
-                        var path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
+                        this.path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
                         if (typeof (WebSocket) === "undefined") {
                             alert("您的浏览器不支持socket")
                         } else {
-                            this.socket = new WebSocket(path) // 实例化socket
+                            this.socket = new WebSocket(this.path) // 实例化socket
                             this.socket.onopen = this.open // 监听socket连接
                             this.socket.onerror = this.error // 监听socket错误信息
                             this.socket.onmessage = this.getMessage // 监听socket信息
@@ -174,9 +175,21 @@
             },
             error: function () {
                 console.log("连接错误")
+                this.reconnect()
             },
             close: function () {
                 console.log("socket已经关闭")
+            },
+            reconnect() {
+                setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
+                    this.socket = new WebSocket(this.path);
+                    this.socket.onclose = function () {
+                        this.reconnect()
+                    };
+                    this.socket.onerror = function () {
+                        this.reconnect()
+                    };
+                    }, 2000);
             },
             getMessage: function (msg) { // 接收信息
                 let data = JSON.parse(msg.data);
@@ -187,6 +200,7 @@
             },
 
             addrecord(record) { // 添加聊天记录
+                console.log('addrecord')
                 if(record[0].is_end) {
                     this.noMore = true;
                     this.more_msg = '没有更多了'
@@ -210,6 +224,7 @@
                 }
             },
             addmessage(msg) { // 添加新信息
+                console.log('addmessage')
                 for(let i in msg) {
                     if(msg[i].role && this.current.readymsg.length){ 
                         this.current.readymsg.shift();

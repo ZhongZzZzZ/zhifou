@@ -40,14 +40,19 @@
             <div class="user_info">
                 <img :src="article.user.user_url" class="user_avatar" @click="userinfo(article.user.user_id)">
                 <div class="user_name" @click="userinfo(article.user.user_id)">{{ article.user.user_name }}</div>
+                <i class="el-icon-medal level_name">{{ article.level_name }}</i>
                 <div class="user_like">
                     <div class="article">
                         <div class="hot_title">文章</div>
                         <strong>{{ article.write_count }}</strong>
                     </div>
                     <div class="collection">
-                        <div class="hot_title">收藏</div>
-                        <strong>{{ article.star_count }}</strong>
+                        <div class="hot_title">获赞</div>
+                        <strong>{{ article.user_point_count }}</strong>
+                    </div>
+                    <div class="credit">
+                        <div class="hot_title">积分</div>
+                        <strong>{{ article.user.user_credit }}</strong>
                     </div>
                 </div>
                 <el-button type="primary" class="chat_btn" icon="el-icon-chat-dot-round" @click="chat(article.user.user_id)">私信</el-button>
@@ -92,7 +97,7 @@
                     }else{
                         console.log('收藏')
                         this.store_name = '收藏'
-                    } ;
+                    };
                 })
             },
             point() { // 点赞
@@ -106,7 +111,7 @@
                     }else{
                         console.log('点赞')
                         this.point_name = '点赞'
-                    } ;
+                    };
                 })
             },
             chat(id) { // 私信
@@ -263,6 +268,10 @@
                 font-weight: 600;
                 margin-left: 10px;
             }
+            .level_name {
+                margin-left:5px;
+                color: #8DAFFC;
+            }
             .user_like {
                 border-top: 1px solid #ebebeb;
                 margin-top: 15px;
@@ -280,14 +289,21 @@
                 .article {
                     display: inline-block;
                     border-right: 1px solid #ebebeb;
-                    padding-right: 30px;
+                    padding-right: 20px;
                     text-align:center;
                 }
                 .collection {
                     display: inline-block;
-                    padding-left: 30px;
+                    border-right: 1px solid #ebebeb;
+                    padding: 0px 20px;
                     text-align:center;
                 }
+                .credit {
+                    display: inline-block;
+                    padding-left: 20px;
+                    text-align:center;
+                }
+
             }
             .chat_btn {
                 margin-top: 15px;
