@@ -21,16 +21,13 @@
                     <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" prefix-icon="el-icon-link" show-password placeholder="再次输入密码"></el-input>
                     <span class="register" @click="$router.push({path:'/login'})">返回登陆</span>
                 </el-form-item>
-<!--                <el-form-item label="" prop="verCode">-->
-<!--                    <el-input v-model.trim="verCode" autocomplete="on" class="register_verCode" placeholder="验证码"></el-input>-->
-<!--                    <el-button class="register_btn" type="primary" @click.native="sendCode" :disabled="sendflag">{{computedTime>0 ? `已发送${computedTime}s` : '发送验证码'}}</el-button>-->
-<!--                </el-form-item>-->
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
+        <div class="snowMask"></div>
     </div>
 </template>
 
@@ -60,13 +57,6 @@
                     callback();
                 }
             };
-            // var validatePass3 = (rule, value, callback) => {
-            //     if (value === '') {
-            //         callback(new Error('请输入验证码'));
-            //     } else {
-            //         callback();
-            //     }
-            // };
             return {
                 ruleForm: {
                     pass: '',
@@ -95,9 +85,6 @@
                         { required: true, message: '请输入工号', trigger: 'blur' },
                         { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
                     ]
-                    // verCode:[{
-                    //     validator: validatePass3, trigger: 'blur' ,required: true
-                    // }]
                 }
             };
         },
@@ -172,22 +159,9 @@
             align-items: center;
             justify-content: center;
         }
-        // .register_container{
-        //     width: 370px;
-        //     background-color: rgba(38,38,38,0.35);
-        //     height: 883px;
-        //     position: absolute;
-        //     top:0px;
-        //     left: 100%;
-        //     transform: translate(-100%,0);
-        //     box-shadow: 0 0 10px 10px #f3f3f3;
-        //     /*border-radius: 8px;*/
-        // }
+        
         .register_input{
             width: 350px;
-            // position: absolute;
-            // left: 0%;
-            // top:25%;
             .register{
                 color:#fff;
                 font-weight: bold;
@@ -202,6 +176,25 @@
             .register_btn{
                margin-left: 15px;
             }
+        }
+        @keyframes snow{
+            0% {
+                background-position: 0 0, 0 0;
+            }
+            100% {
+                background-position: 500px 500px, 1000px 500px;
+            }
+        }
+        
+        .snowMask {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: url('../../assets/snow1.png'),url('../../assets/snow2.png');
+            animation: 10s snow linear infinite;
+            pointer-events: none;
         }
     }
 </style>

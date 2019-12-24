@@ -81,7 +81,7 @@
                     title: '提示',
                     message: `${arr[1]}给您发私信，点击查看`,
                     type:"success",
-                    duration:1500,
+                    duration:2000,
                     onClick() {
                         let routeUrl = _this.$router.resolve({
                             path:'/message',

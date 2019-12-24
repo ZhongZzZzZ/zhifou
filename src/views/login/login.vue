@@ -20,6 +20,7 @@
                 <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')" class="login_btn">提交</el-button>
             </div>
         </div>
+        <div class="snowMask"></div>
     </div>
 </template>
 
@@ -202,7 +203,24 @@
             }
         }
     }
-
-
+    @keyframes snow{
+        0% {
+            background-position: 0 0, 0 0;
+        }
+        100% {
+            background-position: 500px 500px, 1000px 500px;
+        }
+    }
+    
+    .snowMask {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: url('../../assets/snow1.png'),url('../../assets/snow2.png');
+        animation: 10s snow linear infinite;
+        pointer-events: none;
+    }
 }
 </style>

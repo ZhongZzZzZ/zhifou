@@ -237,8 +237,9 @@
                     type_id: this.radio,
                     flag:this.sentType
                 }).then(() => {
-                     Message.success(`${this.ifSend}成功`)
-                     next()
+                    if(this.ifSend == '发布') Message.success(`${this.ifSend}成功，积分+5`)
+                    else Message.success(`${this.ifSend}成功`)
+                    next()
                 }
                 ).catch(
                     Message.error(err => `${this.ifSend}失败`)
