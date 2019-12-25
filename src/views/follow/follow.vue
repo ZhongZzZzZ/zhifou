@@ -98,7 +98,7 @@
             },
             callBack(data){  //接收从子组件传来的数组，实现动态更新便利贴
                 this.notes.unshift(data);
-                this.notes.pop()
+                // this.notes.pop()
             },
             callBack1(data){  //接收从子组件传来的数组，实现动态更新便利贴总数
                 this.note_count = data;
