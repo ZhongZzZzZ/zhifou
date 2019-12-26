@@ -230,8 +230,9 @@
                         this.current.readymsg.shift();
                     }
                     this.current.message.push(msg[i]);
-                    if(!msg[i].role) {
-                        EventBus.$emit('sentMqtt',`${this.current.user_id + "*&^*&^" + this.current.user_name + "*&^*&^" + 'message'}`,this.user.id)
+                    if(msg[i].role) {
+                        EventBus.$emit('sentMqtt',`${this.current.user_id + "*&^*&^" + this.user.user_name + "*&^*&^" + 'message'}`,this.current.user_id)
+                        console.log('ffff')
                     }
                     this.$forceUpdate(); // 强制渲染
                 }

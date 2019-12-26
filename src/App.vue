@@ -34,12 +34,12 @@
                 "mqttjs" + this.userId //防止多个浏览器打开，导致的问题，保证唯一性
             );
             var options = {
-                timeout: 5,
+                timeout: 50000,
                 useSSL: false,
                 cleanSession: false,
                 userName :'zhifou',
                 password :'123456',
-                keepAliveInterval:100,
+                keepAliveInterval:100000,
                 onSuccess: this.onconnect,
                 onFailure: function() {
                     //连接失败定时重连
@@ -76,6 +76,7 @@
             let arr = msg.split('*&^*&^')
             console.log(arr)
             if(arr[2] == 'message'){
+                console.log('fffffmessage')
                 let _this = this;
                 this.$notify({
                     title: '提示',
