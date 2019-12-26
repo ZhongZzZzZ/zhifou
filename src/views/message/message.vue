@@ -157,7 +157,7 @@
                         this.current.readymsg = [];
                         this.more_msg = '查看更多';
                         this.noMore = false;
-                        this.path = 'ws://192.168.195.9:8123/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
+                        this.path = 'ws://192.168.195.9:8008/ws/chat/' + this.user.id + '-' + cur.user_id + '/';
                         if (typeof (WebSocket) === "undefined") {
                             alert("您的浏览器不支持socket")
                         } else {

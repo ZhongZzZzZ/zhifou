@@ -29,7 +29,7 @@
         },
         MQTTconnect() {
             this.mqtt = new Paho.Client(  //实例化一个对象
-                '192.168.193.30',
+                '192.168.195.9',
                 9001,
                 "mqttjs" + this.userId //防止多个浏览器打开，导致的问题，保证唯一性
             );
@@ -37,7 +37,7 @@
                 timeout: 5,
                 useSSL: false,
                 cleanSession: false,
-                userName :'dave',
+                userName :'zhifou',
                 password :'123456',
                 keepAliveInterval:100,
                 onSuccess: this.onconnect,
