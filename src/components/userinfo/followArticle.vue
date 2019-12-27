@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="article_box" v-for="item in articles" :key="item">
+        <div class="article_box" v-for="(item,index) in articles" :key="item">
             <div class="article_title">
                 {{ item.article.title }}
                 <!-- <el-tag>{{item.type_name}}</el-tag>
                 <span class="article_time">{{ item.create_time }}</span> -->
-                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article.article_id)" plain v-if="curuser_id === own.id">取消收藏</el-button>
+                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article.article_id,index)" plain v-if="curuser_id === own.id">取消收藏</el-button>
             </div>
             <div class="article_info">
                 <el-tag>{{item.article.type_name}}</el-tag>
@@ -48,13 +48,12 @@
         },
         props:['curuser_id'],
         methods: {
-            del(id) {
+            del(id,index) {
                 api.addCollect({
                     token: this.own.token,
                     article_id: id
                 }).then(() => {
-                    let item = this.articles.find(item => item.id == id);
-                    this.articles.splice(this.articles.indexOf(item), 1);
+                    this.articles.splice(index, 1);
                     this.article_count--;
                 })
             },
@@ -71,7 +70,7 @@
                     page: val,
                     user_id: this.curuser_id,
                 }).then(res => {
-                    this.articles = res.article;
+                    this.articles = res.data;
                 })
             } 
         },
@@ -83,6 +82,7 @@
             }).then(res => {
                 console.log(res);
                 this.articles = res.data;
+                this.article_count = res.article_count;
             })
         },
         filters:{

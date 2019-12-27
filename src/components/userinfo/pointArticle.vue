@@ -47,13 +47,13 @@
         },
         props:['curuser_id'],
         methods: {
-            del(id) {
+            del(id,index) {
                 api.addLikes({
                     token: this.own.token,
                     article_id: id
                 }).then(() => {
-                    let item = this.articles.find(item => item.id == id);
-                    this.articles.splice(this.articles.indexOf(item), 1);
+                    // let item = this.articles.find(item => item.article.id == id);
+                    this.articles.splice(index, 1);
                     this.article_count--;
                 })
             },
@@ -70,7 +70,7 @@
                     page: val,
                     user_id: this.curuser_id,
                 }).then(res => {
-                    this.articles = res.article;
+                    this.articles = res.data;
 
                 })
             }
