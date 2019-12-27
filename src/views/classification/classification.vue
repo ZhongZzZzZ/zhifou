@@ -26,6 +26,7 @@
     import api from '../../../src/api/article'
     import articleList from "../../components/articleList/articleList";
     import {getLocalStorage} from "../../utils/auth";
+    import {EventBus} from "../../api/busEvent";
 
     export default {
         name: "classification",
@@ -59,6 +60,7 @@
         },
         methods:{
             querryList(){
+                EventBus.$emit('resetFlag',false)
                 api.getQueryArticle(this.params).then(res => {
                     this.total = res.article_count;
                     this.data = res.article;

@@ -34,6 +34,7 @@
         },
         methods:{
             getIndexInfo(){
+                EventBus.$emit('resetFlag',false)
                 api.getIndexInfo({
                         page:this.page,
                         token:getLocalStorage('token'),

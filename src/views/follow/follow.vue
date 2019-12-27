@@ -121,6 +121,7 @@
 </script>
 
 <style lang="scss" >
+    @import "../../assets/css/emoji.css"; // 导入精灵图样式
         .emoji-item-common {
             background: url("../../assets/img/emoji_sprite.png");
             display: inline-block;
@@ -222,5 +223,5 @@
         top: -20px;
         left: -10px;
     }
-    @import "../../assets/css/emoji.css"; // 导入精灵图样式
+
 </style>

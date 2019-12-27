@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="article_box" v-for="item in articles" :key="item">
+        <div class="article_box" v-for="(item,index) in articles" :key="item">
             <div class="article_title">
                 {{ item.article.title }}
-                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article.article_id)" plain v-if="curuser_id === own.id">取消点赞</el-button>
+                <el-button class="del_btn" icon="el-icon-star-on" @click="del(item.article.article_id,index)" plain v-if="curuser_id === own.id">取消点赞</el-button>
             </div>
              <div class="article_info">
                 <el-tag>{{item.article.type_name}}</el-tag>
@@ -31,6 +31,7 @@
     import api from '../../api/article'
     import {getLocalStorage} from "../../utils/auth";
     import pagination from '../../components/pagination/pagination'
+
 
     export default {
         name: "pointarticle",
@@ -70,8 +71,9 @@
                     user_id: this.curuser_id,
                 }).then(res => {
                     this.articles = res.article;
+
                 })
-            } 
+            }
         },
         created(){
             api.getPointArticleInfo({
@@ -137,7 +139,7 @@
             top:-27%;
             left: -20%;
             width: 250px;
-            
+
         }
         .article_content {
             height: 120px;

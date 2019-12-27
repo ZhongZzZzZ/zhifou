@@ -25,7 +25,7 @@
     },
     methods:{
         sentMqtt(val,id){
-            this.mqtt.publish(`like/${id}`,val,2,true);
+            this.mqtt.publish(`like/${id}`,val,1,true);
         },
         MQTTconnect() {
             this.mqtt = new Paho.Client(  //实例化一个对象
