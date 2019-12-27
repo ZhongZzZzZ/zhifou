@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## 转自 https://www.jianshu.com/p/adc33ac846f9?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation
 
 ## vue-cli3项目搭建配置以及性能优化
@@ -817,3 +818,6 @@ master分支为基础包，vi_mint_ui分支为优化后项目，可根据自己�
 注：转载请带上文章出处，避免带来不必要麻烦。
 
 
+=======
+# zhifou
+>>>>>>> 59d98e4d43333c721802517c5315e94884c27151
